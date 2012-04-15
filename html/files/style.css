@@ -1,0 +1,309 @@
+/*
+
+#-#-#-#-#-#-#-#-#-#-#-#    DériVoile calc'    #-#-#-#-#-#-#-#-#-#-#-#
+
+VERSION : @v
+DATE : @date
+LICENCE : ./COPYING
+SITE WEB : http://calc.derivoile.fr
+
+Copyright (C) 2011-2012 Pierre Monchalin, http://derivoile.fr
+Vous êtes libre de distribuer et modifier ce programme.
+Pensez à me laisser un petit mot si vous distribuez une copie !
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+*/
+
+
+@font-face {
+	font-family: 'fontomasRegular';
+	src: url('./fonts/fontomas.eot');
+	src: url('./fonts/fontomas.eot?#iefix') format('embedded-opentype'),
+		url('./fonts/fontomas.woff') format('woff'),
+		url('./fonts/fontomas.ttf') format('truetype'),
+		url('./fonts/fontomas.svg#fontomasRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------- DEFAUT ---------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+
+html.bg {
+        background: url('./background.jpg') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+}
+
+body {
+	font: normal 1em Arial, sans-serif;
+	margin: 0;
+	padding: 20px;
+	text-align: center;
+	overflow-y: scroll;
+	background-color: transparent;
+}
+
+
+div {
+	text-align: justify;
+}
+
+
+h1, h2 { text-align: center; }
+h1 {
+	margin-bottom: 30px;
+	padding-bottom: 0;
+}
+p {
+	margin: 15px 0;
+	padding: 0;
+}
+
+
+a {
+	color: #005FA3;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+
+input, select {
+	font: normal 0.9em Arial, sans-serif;
+}
+input, textarea {
+	border:  1px solid #C9D7F1;
+	padding: 5px;
+	margin: 2px;
+	vertical-align: middle;
+}
+label {
+	vertical-align: middle;
+}
+.button {
+	background-color: #D9E4F8;
+	color: #005FA3;
+	font-size: 1em;
+}
+.button:hover {
+	border-color: #a5c5ff;
+}
+
+
+table {
+	font: normal 1em Arial, sans-serif;
+	margin: 0 auto;
+	border-collapse: collapse;
+	color: #005FA3;
+}
+thead td {
+	background-color: #D9E4F8;
+	font-weight: bold;
+}
+td {
+	border: 1px solid #C9D7F1;
+	text-align: center;
+	padding: 5px; 
+}
+
+
+.divAstuce {
+	padding: 10px;
+	margin: 20px;
+	display: inline-block;
+	max-width: 500px;
+	border: 1px solid #C9D7F1;
+	background: #eaf0fc;
+}
+.divAstuce span {
+	color: #005FA3;
+}
+.divAstuce p { margin: 0; padding: 0; }
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------- POPUP --------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+#popup {
+	background-color: #4C4C4C;
+	color: #CCCCCC;
+	text-align: justify;
+	overflow-y: auto;
+}
+
+#popup table {
+	color: #CCCCCC;
+}
+#popup table td {
+	border-color: #000000;
+}
+#popup table thead td {
+	background-color: #5F5F5F;
+}
+
+#popup a { color: #ffffff; }
+
+#popup .reponse { display: none; text-align: left; }
+#popup .question {
+	color: #ffffff;
+	cursor: pointer;
+	padding-left: 10px;
+	margin-top: 20px;
+}
+#popup .question:hover {
+	text-decoration: underline;
+}
+
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------- NAVIGATION ------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+
+#navEtapes {
+	text-align: center;
+	margin: 0 0 10px 0;
+}
+
+
+.etapes a {
+	margin: 6px 15px;
+	padding: 6px;
+	background-color: #2D2D2D;
+	border: 1px solid #000000;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	color: #CCCCCC;
+}
+.etapes a:hover {
+	background-color: #4C4C4C;
+	text-decoration: none;
+}
+.etapes a.selected {
+	color: #ffffff;
+	font-weight: bold;
+}
+.etapes span {
+	font-weight: bold;
+}
+
+
+.fleche {
+	width: 0;
+	height: 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-bottom: 16px solid #2D2D2D;
+}
+
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------- FORMULAIRE ------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+#etapes {
+	padding: 5px 20px;
+	background: #ffffff;
+	border: 1px solid #2D2D2D;
+}
+
+#etape0 {
+	text-align: center;
+}
+
+#etape2 ol {
+	text-align: left;
+}
+#etape2 div {
+	text-align: center;
+}
+
+
+.probleme {
+	background-color: #ffd5d5;
+}
+
+
+.tps input {
+	width: 30px; /* pour les DNF, ... */
+	text-align: center;
+}
+.rating {
+	display: none;
+	width: 50px;
+}
+
+
+.removeManche, .removeEquipage {
+	font-family: 'fontomasRegular';
+	font-size: 20px;
+	color: #ff8080;
+	vertical-align: middle;
+	margin-left: 6px;
+	font-weight: normal;
+}
+.removeManche:hover, .removeEquipage:hover {
+	color: red;
+	text-decoration: none;
+}
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------- RÉSULTATS -------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+#etape4, #manches {
+	text-align: center;
+}
+
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------- IMPRESSION ------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+@media print {
+	body { font-size: 0.9em; background: #ffffff; }
+	#top, #bottom, #navEtapes, .fleche, .etapes { display: none; }
+	.fleche { border-color: #ffffff; }
+	#etapes { border: none; padding: 0; }
+	#etape4 { margin: 0 }
+	a { color: #000000; }
+	table, td {
+		border-color: #C0C0C0;
+		color: #000000;
+	}
+	thead td {
+		background-color: #E0E0E0;
+	}
+}

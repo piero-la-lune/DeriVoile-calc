@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+#-#-#-#-#-#-#-#-#-#-#-#    DériVoile calc'    #-#-#-#-#-#-#-#-#-#-#-#
+
+VERSION : @v
+DATE : @date
+LICENCE : ./COPYING
+SITE WEB : http://calc.derivoile.fr
+
+Copyright (C) 2011-2012 Pierre Monchalin, http://derivoile.fr
+Vous êtes libre de distribuer et modifier ce programme.
+Pensez à me laisser un petit mot si vous distribuez une copie !
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+-->
+
+<ui version="4.0">
+ <class>FenPrincipale</class>
+ <widget class="QMainWindow" name="FenPrincipale">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>9</pointsize>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string notr="true">DériVoile calc'</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="ressources.qrc">
+    <normaloff>:/icones/icones/icone.png</normaloff>:/icones/icones/icone.png</iconset>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuClassement">
+    <property name="title">
+     <string>Classement</string>
+    </property>
+    <addaction name="actionNouveau"/>
+    <addaction name="actionOuvrir"/>
+    <addaction name="separator"/>
+    <addaction name="actionEnregistrer"/>
+    <addaction name="actionEnregistrer_sous"/>
+    <addaction name="separator"/>
+    <addaction name="actionExporter"/>
+    <addaction name="actionExporter_en_HTML"/>
+    <addaction name="actionImprimer"/>
+   </widget>
+   <widget class="QMenu" name="menu_propos">
+    <property name="title">
+     <string>À propos</string>
+    </property>
+    <addaction name="actionAide"/>
+    <addaction name="separator"/>
+    <addaction name="actionConsulter_les_ratings"/>
+    <addaction name="actionExtraits_des_R_gles_de_Course"/>
+    <addaction name="separator"/>
+    <addaction name="action_propos"/>
+   </widget>
+   <addaction name="menuClassement"/>
+   <addaction name="menu_propos"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNouveau"/>
+   <addaction name="actionOuvrir"/>
+   <addaction name="actionEnregistrer"/>
+   <addaction name="separator"/>
+   <addaction name="actionExporter_en_HTML"/>
+   <addaction name="actionExporter"/>
+   <addaction name="actionImprimer"/>
+  </widget>
+  <action name="actionNouveau">
+   <property name="icon">
+    <iconset resource="ressources.qrc">
+     <normaloff>:/icones/icones/document-new.png</normaloff>:/icones/icones/document-new.png</iconset>
+   </property>
+   <property name="text">
+    <string>Nouveau</string>
+   </property>
+   <property name="statusTip">
+    <string>Créer un nouveau classement.</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionOuvrir">
+   <property name="icon">
+    <iconset resource="ressources.qrc">
+     <normaloff>:/icones/icones/document-open.png</normaloff>:/icones/icones/document-open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Ouvrir</string>
+   </property>
+   <property name="statusTip">
+    <string>Ouvrir un classement existant (*.race).</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionEnregistrer">
+   <property name="icon">
+    <iconset resource="ressources.qrc">
+     <normaloff>:/icones/icones/document-save.png</normaloff>:/icones/icones/document-save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Enregistrer</string>
+   </property>
+   <property name="statusTip">
+    <string>Enregistrer ce classement (*.race).</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionExporter">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="ressources.qrc">
+     <normaloff>:/icones/icones/application-pdf.png</normaloff>:/icones/icones/application-pdf.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exporter en PDF...</string>
+   </property>
+   <property name="iconText">
+    <string>PDF</string>
+   </property>
+   <property name="statusTip">
+    <string>Exporter ce classement au format PDF.</string>
+   </property>
+  </action>
+  <action name="actionImprimer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="ressources.qrc">
+     <normaloff>:/icones/icones/document-print.png</normaloff>:/icones/icones/document-print.png</iconset>
+   </property>
+   <property name="text">
+    <string>Imprimer</string>
+   </property>
+   <property name="statusTip">
+    <string>Imprimer ce classement.</string>
+   </property>
+   <property name="font">
+    <font/>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionAide">
+   <property name="icon">
+    <iconset resource="ressources.qrc">
+     <normaloff>:/icones/icones/help-contents.png</normaloff>:/icones/icones/help-contents.png</iconset>
+   </property>
+   <property name="text">
+    <string>Aide</string>
+   </property>
+   <property name="statusTip">
+    <string>Questions fréquentes.</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="actionConsulter_les_ratings">
+   <property name="text">
+    <string>Consulter les ratings</string>
+   </property>
+  </action>
+  <action name="actionExtraits_des_R_gles_de_Course">
+   <property name="text">
+    <string>Extraits des Régles de Course</string>
+   </property>
+  </action>
+  <action name="action_propos">
+   <property name="icon">
+    <iconset resource="ressources.qrc">
+     <normaloff>:/icones/icones/help-about.png</normaloff>:/icones/icones/help-about.png</iconset>
+   </property>
+   <property name="text">
+    <string>À propos...</string>
+   </property>
+   <property name="statusTip">
+    <string>À propos de DériVoile calc'...</string>
+   </property>
+  </action>
+  <action name="actionEnregistrer_sous">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Enregistrer sous...</string>
+   </property>
+   <property name="statusTip">
+    <string>Enregistrer ce classement dans un nouveau fichier (*.race).</string>
+   </property>
+  </action>
+  <action name="actionExporter_en_HTML">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="ressources.qrc">
+     <normaloff>:/icones/icones/text-html.png</normaloff>:/icones/icones/text-html.png</iconset>
+   </property>
+   <property name="text">
+    <string>Exporter en HTML...</string>
+   </property>
+   <property name="iconText">
+    <string>HTML</string>
+   </property>
+   <property name="statusTip">
+    <string>Exporter ce classement au format HTML.</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="ressources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
