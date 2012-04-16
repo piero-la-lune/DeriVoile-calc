@@ -31,44 +31,46 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 -->
 
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="shortcut icon" href="qrc:/html/files/favicon.ico" />
+		<!--[if lt IE 9]>
+			<script src="qrc:/html/files/html5.js"></script>
+		<![endif]-->
 
 		<title>DériVoile calc' - Calculateur ultra simple de résultats de régates</title>
 		<link rel="stylesheet" type="text/css" media="all" href="qrc:/html/files/style.css" />
 <style>
-#navEtapes, .fleche, #etape1, #etape2, #etape3, #etape4, #divRatings { display: none; }
+.navEtapes, .btCalculer, #etape1, #etape2, #etape3, #etape4, #divRatings, #d1, #d2, #d3, #d4, #d5 { display: none; }
 </style>
 		<script type="text/javascript" src="qrc:/html/files/jquery.js"></script>
 		<script type="text/javascript" src="qrc:/html/files/script.js" charset="utf-8"></script>
 		<script type="text/javascript" src="qrc:/html/files/calcul.js" charset="utf-8"></script>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	</head>
-	<body>
 
-<div id="formulaire">
-	<div id="navEtapes">
-		<p class="etapes"><a href="#" class="selected">Étape 1</a><span>»»</span><a href="#">Étape 2</a><span>»»</span><a href="#">Étape 3</a><span>»»</span><a href="#" id="calculer">Classement</a></p>
+	</head>
+	<body class="withoutheader">
+
+<section id="formulaire">
+	<div class="navEtapes">
+		<p><a href="#" class="a">Étape 1</a><span>»»</span><a href="#">Étape 2</a><span>»»</span><a href="#">Étape 3</a></p>
 	</div>
-	<div class="fleche"></div>
 	<div id="etapes">
 		<div id="etape0">
-			<h1>DériVoile calc' (v@v)</h1>
-			<h2>Calculateur ultra simple de résultats de régates</h2>
+			<h2>DériVoile calc' (v@v)</h2>
+			<h3>Calculateur ultra simple de résultats de régates</h3>
 			<p>&nbsp;</p>
 			<div class="divAstuce">
 				<p><span>Astuce :</span> laissez les cases vides plutôt que de les remplir avec des 0.</p>
-			</div>
-			<div class="divAstuce">
-				<p><span>Astuce :</span> suivez la progression de l'ouverture et du calcul d'un classement en bas à droite de la fenêtre.</p>
 			</div>
 			<p>&nbsp;</p>
 			<p>Suivez les différentes étapes, puis cliquez sur « Classement ». À tout moment, vous pouvez revenir à une étape précédante.</p>
 			<p style="text-align: center"><input type="button" class="button" value="Commencer : aller à l'étape 1 !" /></p>
 			<p>&nbsp;</p>
 			<p>&nbsp;</p>
-			<p style="font-size:0.8em"><i>DériVoile calc' est un programme proposé par DériVoile (http://derivoile.fr). © 2011-2012 Pierre Monchalin</i></p>
+			<p style="font-size:0.8em;"><i>DériVoile calc' est un programme proposé par DériVoile (http://derivoile.fr). © 2011-2012 Pierre Monchalin</i></p>
 		</div>
 		<div id="etape1">
-			<p><label for="nomRegate">Donnez un nom à la régate : </label><input type="text" value="" id="nomRegate" style="width: 300px" maxlength="200" /> (facultatif)</p>
+			<p><label for="nomRegate">Nom de la régate (facultatif) : </label><input type="text" value="" id="nomRegate" maxlength="200" size="30" /></p>
 			<p><label for="typeClassement">Type de classement : </label><select id="typeClassement"><option value="temps">Classement en temps compensés</option><option value="scratch">Classement scratch</option></select></p>
 			<p id="pTypeBateau"><label for="typeBateaux">Types de bateaux : </label><select id="typeBateaux"><option value="deriveurs">Dériveurs</option><option value="multicoques">Multicoques</option></select></p>
 		</div>
@@ -84,35 +86,37 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 				<li>Entrez le nom de tous les équipages dans la première colonne. Vous pouvez en ajouter à tout moment en cliquant sur « Ajouter un équipage » en bas du tableau.</li>
 				<li>Pour chaque manche courue, entrez la place obtenue par chaque équipage dans la colonne correspondante.</li>
 			</ol>
+			<p>&nbsp;</p>
+			<p style="text-align:center"><label for="showManche">Afficher </label><select id="showManche"><option value="all">toutes les manches</option><option value="1">la manche n°1</option></select>.</p>
 			<div>
 			<table>
 				<thead>
 					<tr>
-						<td style="width: 200px">Nom de l'équipage</td>
-						<td>Type de bateau</td>
-						<td>Manche n°1<a href="#" title="Supprimer cette manche" class="removeManche">X</a></td>
+						<td>Équipage</td>
+						<td>M1<a href="#" title="Supprimer cette manche" class="removeManche">w</a></td>
 					</tr>
 				</thead>
 				<tbody>
 				</tbody>
 				<tfoot>
 					<tr>
-						<td colspan="2">Heure de départ des manches</td>
-						<td class="tps"><input type="text" value="00" class="h" size="2" />:<input type="text" value="00" class="min" size="2" />:<input type="text" value="00" class="s" size="2" /></td>
+						<td>Heure de départ des manches<br />(facultatif)</td>
+						<td class="tps"><input type="text" class="h" size="2" placeholder="h" /><br /><input type="text" class="min" size="3" placeholder="min" /><br /><input type="text" class="s" size="2" placeholder="s" /></td>
 					</tr>
 				</tfoot>
 			</table>
 			</div>
-			<p style="text-align: center"><input class="button" type="button" value="Ajouter un équipage" id="addEquipage" />&nbsp;&nbsp;&nbsp;<input type="button" class="button" value="Ajouter une manche" id="addManche" /></p>
+			<p style="text-align: center"><input class="button" type="button" value="Ajouter un équipage" id="addEquipage" /><input type="button" class="button" value="Ajouter une manche" id="addManche" /></p>
 		</div>
 		<div id="etape3">
 			<p><b>Options de classement :</b></p>
 			<p><label for="manchesRetirees">Nombre de plus mauvaises manches à retirer : </label><input type="text" size="1" value="0" id="manchesRetirees" /></p>
 		</div>
 		<div id="etape4">
-			<h1>Résultats de la régate « <span></span> » :</h1>
+			<h2>Résultats de la régate « <span></span> » :</h2>
 			<p id="stats"></p>
-			<table>
+			<table id="resultsSmall"><tbody></tbody></div>
+			<table id="results">
 				<thead>
 					<tr>
 					</tr>
@@ -127,7 +131,8 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 			</div>
 		</div>
 	</div>
-</div>
+	<p class="btCalculer"><a href="#" id="calculer">Calculer le classement...</a></p>
+</section>
 
 
 <div id="divRatings">

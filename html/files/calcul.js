@@ -97,7 +97,7 @@ else {
 }
 if (isNaN(coef)) {
 	FenPrincipale.calculM('Vous devez renseigner tous les types de bateau.');
-	tr.find("td:eq(1)").addClass('probleme');
+	tr.find("td:eq(0)").addClass('probleme');
 	$.gotoEtape('2');
 	return false;
 }
@@ -133,7 +133,7 @@ for (i=0; i<this.nbManche; i++) {
 	if (tps < 0) {
 		FenPrincipale.calculM('L\'heure de départ indiquée pour la manche n°'+(i+1)+' est après l\'heure d\'arrivée de l\'équipage nommé "'+tr.find(".nom").val()+'", ce qui est impossible ! Merci de corriger ce problème.');
 		$("#etape2 tfoot td").eq(i+1).addClass('probleme');
-		tr.find("td").eq(i+2).addClass('probleme');
+		tr.find("td").eq(i+1).addClass('probleme');
 		$.gotoEtape('2');
 		return false;
 	}
@@ -170,13 +170,16 @@ else {
 	this.initialisationTextes = function() {
 
 $("#manches").html('');
-$("#etape4 table:eq(0) thead tr").html('<td>Position</td><td style="min-width:200px">Équipage</td><td>Bateau</td><td>Points</td>');
+$("#etape4 #results thead tr").html('<td>Position</td><td style="min-width:200px">Équipage</td><td>Bateau</td><td>Points</td>');
 for (i=0; i<this.nbManche; i++) {
-	$("#etape4 table:eq(0) thead tr").append('<td>M'+(i+1)+'</td>');
-	$("#manches").append('<p>&nbsp;</p><h2>Manche n°'+(i+1)+'</h2><table><thead><tr><td>Position</td><td>Points</td><td style="min-width:200px">Équipage</td><td>Temps réel</td><td>Temps compensé</td></tr></thead><tbody></tbody></table><p>&nbsp;</p>');
+	$("#etape4 #results thead tr").append('<td>M'+(i+1)+'</td>');
+	$("#manches").append('<p>&nbsp;</p><h2>Manche n°'+(i+1)+'</h2><table><thead><tr><td>Position</td><td style="min-width:200px">Équipage</td><td>Points</td><td>Temps réel</td><td>Temps compensé</td></tr></thead><tbody></tbody></table><p>&nbsp;</p>');
 }
-$("#etape4 table:eq(0) tbody").html('');
-$("#etape4 h1 span").html(this.nomRegate);
+$("#etape4 #results tbody").html('');
+$("#etape4 #resultsSmall tbody").html('');
+$("#etape4 #results").show()
+$("#etape4 #resultsSmall").hide();
+$("#etape4 h2 span").html(this.nomRegate);
 var stats = this.nbEquipage+' équipages classés.';
 if (this.nbManche < 2) { stats +=  ' '+this.nbManche+' manche courue'; }
 else { stats +=  ' '+this.nbManche+' manches courues'; }
@@ -209,7 +212,7 @@ for (j=0; j<this.nbEquipage; j++) {
 	if (id.length == 0) { break; }
 	for (k=0; k<id.length; k++) { // Calcul/Ajout des points pour ces équipages
 		this.manches[i][id[k]]['points'] = (id.length-1)/2+j+1;
-		$("#manches table").eq(i).find('tbody').append('<tr><td>'+(j+1)+'</td><td>'+this.manches[i][id[k]]['points']+'</td><td>'+this.equipages[id[k]]['nom']+'</td><td>'+this.formateTemps(this.manches[i][id[k]]['reel'])+'</td><td>'+this.formateTemps(this.manches[i][id[k]]['compense'])+'</td></tr>');
+		$("#manches table").eq(i).find('tbody').append('<tr><td data-label="Position"><b>'+(j+1)+'</b></td><td data-label="Équipage">'+this.equipages[id[k]]['nom']+'</td><td data-label="Points">'+this.manches[i][id[k]]['points']+'</td><td data-label="Tps réel">'+this.formateTemps(this.manches[i][id[k]]['reel'])+'</td><td data-label="Tps compensé">'+this.formateTemps(this.manches[i][id[k]]['compense'])+'</td></tr>');
 		this.equipages[id[k]]['points'] += this.manches[i][id[k]]['points'];
 		this.equipages[id[k]]['pointsOrdonnes'].unshift(this.manches[i][id[k]]['points']);
 		this.addArraySort(this.manches[i][id[k]]['points'], this.equipages[id[k]]['pointsTries']);
@@ -218,7 +221,7 @@ for (j=0; j<this.nbEquipage; j++) {
 }
 for (j=0; j<this.nbEquipage; j++) {  // Traitement des équipages sans temps (DNF, DNC, BFD, ...)
 	if ($.inArray(this.manches[i][j]['reel'], this.abrs) >= 0) {
-		$("#manches table").eq(i).find('tbody').append('<tr><td>-</td><td>'+(this.nbEquipage+1)+'</td><td>'+this.equipages[j]['nom']+'</td><td>'+this.manches[i][j]['reel']+'</td><td>'+this.manches[i][j]['reel']+'</td></tr>');
+		$("#manches table").eq(i).find('tbody').append('<tr><td data-label="Position"><b>-</b></td><td data-label="Équipage">'+this.equipages[j]['nom']+'</td><td data-label="Points">'+(this.nbEquipage+1)+'</td><td data-label="Temps réel">'+this.manches[i][j]['reel']+'</td><td data-label="Temps compensé">'+this.manches[i][j]['reel']+'</td></tr>');
 		this.equipages[j]['points'] += (this.nbEquipage+1);
 		this.equipages[j]['pointsOrdonnes'].unshift(this.nbEquipage+1);
 		this.equipages[j]['pointsTries'].push(this.nbEquipage+1);
@@ -295,7 +298,8 @@ for (j=0; j<this.nbEquipage; j++) {
 	}
 }
 var texte = '<tr><td>'+(i+1)+'</td><td>'+this.equipages[id]['nom']+'</td><td>'+this.equipages[id]['type']+'</td><td>'+this.equipages[id]['points']+'</td>';
-var points = new Array();
+var texte2 = '<tr><td>'+(i+1)+'.</td><td>'+this.equipages[id]['nom']+'<span> ('+this.equipages[id]['type']+')</span></td><td>'+this.equipages[id]['points']+' points (';
+// var points = new Array();
 for (j=0; j<this.nbManche; j++) {
 	var t = '';
 	if (this.manches[j][id]['points'] == this.nbEquipage+1) { t = this.manches[j][id]['reel']; }
@@ -307,10 +311,13 @@ for (j=0; j<this.nbManche; j++) {
 			break;
 		}
 	}
-	points.push(t);
+// 	points.push(t);
 	texte += '<td>'+t+'</td>';
+	if (j < this.nbManche-1) { texte2 += t+', '; }
+	else { texte2 += t+')</td>'; }
 }
-$("#etape4 table:eq(0) tbody").append(texte+'</tr>');
+$("#etape4 #results tbody").append(texte+'</tr>');
+$("#etape4 #resultsSmall tbody").append(texte2+'</tr>');
 this.equipages[id]['points'] = 0;
 
 FenPrincipale.progression(parseInt((i+1)*28/nbEquipage)+70);
@@ -329,12 +336,13 @@ else {
 		// ----------------------------------- Affichage des résultats ----------------------------------- //
 	this.affichage = function() {
 if ($("#typeClassement").val() != 'temps') {
-	$("#etape4 table:gt(0) tr").each(function() { $(this).find("td:gt(2)").hide(); });
-	$("#etape4 table:eq(0) tr").each(function() { $(this).find("td:eq(2)").hide(); });
+	$("#etape4 #manches table tr").each(function() { $(this).find("td:gt(2)").hide(); });
+	$("#etape4 #results tr").each(function() { $(this).find("td:eq(2)").hide(); });
+	$("#etape4 #resultsSmall span").hide();
 }
 FenPrincipale.progression(100);
-$.gotoEtape('4');
 FenPrincipale.calculM('');
+$.gotoEtape('4');
 return true;
 	};
 	

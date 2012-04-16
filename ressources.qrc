@@ -22,10 +22,11 @@
     <qresource prefix="/html/files">
         <file alias="background.jpg">html/files/background.jpg</file>
         <file alias="jquery.js">html/files/jquery.js</file>
-        <file alias="json.js">html/files/json.js</file>
         <file alias="script.js">html/files/script.js</file>
         <file alias="style.css">html/files/style.css</file>
         <file alias="calcul.js">html/files/calcul.js</file>
+        <file alias="html5.js">html/files/html5.js</file>
+        <file alias="favicon.ico">html/files/favicon.ico</file>
     </qresource>
     <qresource prefix="/html/files/fonts">
         <file alias="fontomas.eot">html/files/fonts/fontomas.eot</file>

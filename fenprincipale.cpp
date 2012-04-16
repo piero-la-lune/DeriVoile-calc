@@ -59,7 +59,7 @@ FenPrincipale::FenPrincipale(QWidget *parent) : QMainWindow(parent), ui(new Ui::
 	statusBar()->addPermanentWidget(progres);
 	this->setTitre();
 
-	statusBar()->showMessage("DériVoile calc' est un programme proposé par DériVoile (http://derivoile.fr). © 2011 Pierre Monchalin");
+	statusBar()->showMessage("DériVoile calc' est un programme proposé par DériVoile (http://derivoile.fr). © 2011-2012 Pierre Monchalin");
 
 	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
 	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(updater(QNetworkReply*)));

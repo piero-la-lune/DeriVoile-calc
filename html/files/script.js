@@ -33,7 +33,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	var recents = new Array();
 	var selects = new Array();
 	var select = 'deriveurs';
-	var manche = '<td class="tps"><input type="text" value="" class="h" /><span>:</span><input type="text" value="" class="min" /><span>:</span><input type="text" value="" class="s" /></td>';
+	var placeholder = 'min';
 
 	var nbManche = 1;
 	var nbEquipage = 0;
@@ -72,7 +72,10 @@ td {\
 	text-align: center;\
 	padding: 5px; \
 }";
-		FenPrincipale.exporterHTML('<html><head><meta charset="utf-8" /><style>'+style+'</style></head><body>'+$("#etape4").html()+'</body></html>');
+var clone = $("#etape4").clone();
+clone.find("#resultsSmall").remove();
+clone.find("#results").show();
+		FenPrincipale.exporterHTML('<html><head><meta charset="utf-8" /><style>'+style+'</style></head><body>'+clone.html()+'</body></html>');
 	}
 
 	$.enregistrer = function() {
@@ -137,8 +140,9 @@ td {\
 			// Remise à zéro
 			ouverture2 = function() {
 		$("#etape2 table tbody").html(' ');
-		$("#etape2 table thead").html('<tr><td>Nom de l\'équipage</td><td>Type de bateau</td></tr>');
+		$("#etape2 table thead").html('<tr><td>Équipage</td></tr>');
 		$("#etape2 table tfoot td:gt(0)").remove();
+		$("#showManche option:gt(0)").remove();
 			// Récupération des données principales
 		$("#nomRegate").val((donnees['nomRegate'] === undefined) ? '' : donnees['nomRegate']);
 		$("#typeBateaux").val((donnees['bateaux'] === undefined) ? 'deriveurs' : donnees['bateaux']).change();
@@ -190,9 +194,9 @@ td {\
 
 			ouverture6 = function() {
 		if ($("#typeClassement").val() != 'temps') { $("#etape1 #typeClassement").change(); } // Si le classement est au scratch
-		$("#etape0 input").click();
 		FenPrincipale.progression(100);
-		FenPrincipale.ouvrir("")
+		FenPrincipale.ouvrir("");
+		$("#etape0 input").click();
 		return true;
 			};
 		
@@ -200,17 +204,22 @@ td {\
 	};
 
 	$.getEquipage = function() {
-		var ligne = '<tr><td class="tdNom"><input type="text" value="" class="nom" style="width: 140px" /><a href="#" title="Supprimer cet équipage" class="removeEquipage">X</a></td><td class="tdBateau">'+$.getSelect()+'<br /><input type="text" value="1,000" class="rating" /></td>';
-		for (i=0; i<nbManche; i++) { ligne += manche; }
+		var ligne = '<tr><td><input type="text" value="" class="nom" placeholder="Nom de l\'équipage" /><a href="#" title="Supprimer cet équipage" class="removeEquipage">w</a><span class="tpBateau">'+$.getSelect()+'<input type="text" value="1,000" class="rating" /></span></td>';
+		for (i=0; i<nbManche; i++) { ligne += $.getManche(placeholder); }
 		ligne += '</tr>';
 		return ligne;
-	}
+	};
+
+	$.getManche = function(txt) {
+		return '<td class="tps"><input type="text" value="" class="h" size="2" placeholder="h" /><br /><input type="text" value="" class="min" size="3" placeholder="'+txt+'" /></br><input type="text" value="" class="s" size="2" placeholder="s" /></td>';
+	};
 
 	$.addEquipage = function() {
 		nbEquipage++;
 		$("#etape2 table tbody").append($.getEquipage);
 		if ($("#typeClassement").val() != 'temps') { $("#etape1 #typeClassement").change(); }
-	}
+		if ($("#showManche").val() != 'all') { $("#showManche").change(); }
+	};
 
 	$.removeEquipage = function(num) {
 		nbEquipage--;
@@ -220,53 +229,80 @@ td {\
 	$.addManche = function() {
 		nbManche++;
 		$("#etape2 tbody tr").each(function() {
-			$(this).append(manche);
+			$(this).append($.getManche(placeholder));
 		});
-		$("#etape2 thead tr").append('<td>Manche n°'+nbManche+'<a href="#" title="Supprimer cette manche" class="removeManche">X</a></td>');
-		$("#etape2 tfoot tr").append(manche);
-		$("#etape2 tfoot tr td").last().find("input").val('00');
+		$("#etape2 thead tr").append('<td>M'+nbManche+'<a href="#" title="Supprimer cette manche" class="removeManche">w</a></td>');
+		$("#etape2 tfoot tr").append($.getManche('min'));
 		if ($("#typeClassement").val() != 'temps') { $("#etape1 #typeClassement").change(); }
+		$("#showManche").append('<option value="'+nbManche+'">la manche n°'+nbManche+'</option>');
+		$(window).resize();
+		if ($("#showManche").val() != 'all') { $("#showManche").val(nbManche).change(); }
 	};
 	
 	$.removeManche = function(num) {
 		nbManche--;
-		$("#etape2 thead td").eq(num+1).remove();
+		$("#etape2 thead td").eq(num).remove();
 		$("#etape2 tbody tr").each(function() {
-			$(this).find("td").eq(num+1).remove();
+			$(this).find("td").eq(num).remove();
 		});
-		$("#etape2 tfoot td").eq(num).remove();
+		$("#etape2 tfoot td").eq(num-1).remove();
 		var i = 1;
-		$("#etape2 thead td:gt(1)").each(function() {
-			$(this).html('Manche n°'+i+'<a href="#" title="Supprimer cette manche" class="removeManche">X</a>');
+		$("#etape2 thead td:gt(0)").each(function() {
+			$(this).html('M'+i+'<a href="#" title="Supprimer cette manche" class="removeManche">w</a>');
 			i++;
 		});
+		if ($("#showManche").val() != 'all') { $("#showManche").val('1').change(); }
+		$("#showManche option:last").remove();
 	};
 
 	$.gotoEtape = function(etape) {
 		if (etapeActuelle.attr('id') == 'etape'+etape) { return false; }
-		var a = $(".etapes a:eq("+(parseInt(etape)-1)+")");
+		var a = $(".navEtapes a:eq("+(parseInt(etape)-1)+")");
 		$("#etapes").css('height', $("#etapes").height());
 		etapeActuelle.fadeOut('fast', function() {
 			etapeActuelle = $("#etape"+etape);
 			$("#etapes").animate({height: $("#etape"+etape).height()});
 			etapeActuelle.fadeIn(function() {
 				$("#etapes").css('height', 'auto');
+				$.resizeTable();
 			});
-			$(".fleche").animate({marginLeft: a.offset().left-28+parseInt(a.outerWidth()/2)});
 		});
 		$("#etape2 ol").hide();
-		$(".etapes a").removeClass('selected');
+		$(".navEtapes a").removeClass('selected');
 		a.addClass('selected');
 		FenPrincipale.setEtape(etape);
 	};
 
 	$.getSelect = function() {
-		var selection = '<select><option value="default" selected="selected">----- Choisissez -----</option>';
+		var selection = '<select><option value="default" selected="selected">Type de bateau :</option>';
 		if (recents['default'] !== undefined) { rct = recents['default']; } else { rct = ''; }
 		selection += '<optgroup label="Récents :">'+rct+'</optgroup>';
 		selection += '<optgroup label="Autres :"><option value="autre">Rentrer un coefficient :</option></optgroup>';
 		selection += '<optgroup label="Tous :">'+selects[select]+'</optgroup>';
 		return selection;
+	};
+
+	$.resizeTable = function() {
+		if (etapeActuelle.attr('id') == 'etape4') {
+			t = etapeActuelle.find("#results");
+			if (t.css('display') != 'none') { t.attr('data-width', t.outerWidth()); }
+			if (etapeActuelle.innerWidth() < parseInt(t.attr('data-width'))) {
+				$("#results").hide();
+				$("#resultsSmall").show();
+				$("#manches table").addClass('restricted');
+			}
+			else {
+				$("#resultsSmall").hide();
+				$("#results").show();
+				$("#manches table").removeClass('restricted');
+			}
+		}
+		else if (etapeActuelle.attr('id') == 'etape2') {
+			t = etapeActuelle.find("table");
+			if ($("#showManche").val() == 'all' && etapeActuelle.innerWidth() < t.outerWidth()) {
+				$("#showManche").val(nbManche).change();
+			}
+		}
 	};
 
 })(jQuery)
@@ -292,22 +328,15 @@ $(document).ready(function() {
 /*------------------------------------------------ NAVIGATION -------------------------------------------------*/
 /*-------------------------------------------------------------------------------------------------------------*/
 
-$(".etapes a:eq(0)").click(function() { $.gotoEtape('1'); return false; });
-$(".etapes a:eq(1)").click(function() { $.gotoEtape('2'); return false; });
-$(".etapes a:eq(2)").click(function() { $.gotoEtape('3'); return false; });
+$(".navEtapes a:eq(0)").click(function() { $.gotoEtape('1'); return false; });
+$(".navEtapes a:eq(1)").click(function() { $.gotoEtape('2'); return false; });
+$(".navEtapes a:eq(2)").click(function() { $.gotoEtape('3'); return false; });
 
 $("#etape0 input").click(function() {
-	$("#navEtapes").slideDown();
-	$(".fleche").slideDown();
-	$.gotoEtape('1');
+	$(".navEtapes").slideDown();
+	$(".btCalculer").slideDown();
+	$.gotoEtape('1'); return false;
 });
-
-$(window).resize(function() {
-	var a = $(".etapes a:eq("+(etapeActuelle.index()-1)+")");
-	$(".fleche").animate({marginLeft: a.offset().left-28+parseInt(a.outerWidth()/2)});
-});
-
-$(".fleche").css({marginLeft: parseInt($(document).width()/2)-8});
 
 
 
@@ -336,7 +365,7 @@ $(".removeEquipage").live('click', function() {
 
 $(".removeManche").live('click', function() {
 	if (nbManche < 2) { return false; }
-	$.removeManche($(this).parent().index()-1);
+	$.removeManche($(this).parent().index());
 	return false;
 });
 
@@ -346,10 +375,10 @@ $("#calculer").click(function() {
 
 $("tbody .tps input").live('keyup', function() {
 	if ($(this).val().length >= 2 && !isNaN($(this).val())) {
-		if ($(this).index() < 4) {
-			$(this).next().next().focus();
+		if ($(this).index() < 2) {
+			$(this).next().focus();
 		}
-		else if ($(this).parents('tr').index() < nbEquipage-1) {
+		else if ($(this).parents("tr").index() < nbEquipage-1) {
 			$(this).parents("tr").next().find("td").eq($(this).parent().index()).find("input").eq(0).focus();
 		}
 		else {
@@ -358,13 +387,19 @@ $("tbody .tps input").live('keyup', function() {
 	}
 });
 
-$("#etape2 select").live('change', function() {
+$("#etape2 table select").live('change', function() {
 	if (recents[$(this).val()] === undefined && $(this).val() != 'default' && $(this).val() != 'autre') {
 		var txt = '<option value="'+$(this).val()+'">'+$(this).find(':selected').text()+'</option>';
 		$("#etape2 select").each(function() { $(this).find("optgroup:eq(0)").prepend(txt); });
 		$(this).find("optgroup:eq(0) option:eq(0)").attr("selected","selected");
 		recents[$(this).val()] = true;
 		recents['default'] += txt;
+	}
+	if ($(this).val() == 'autre') {
+		$(this).parent().find(".rating").show();
+	}
+	else {
+		$(this).parent().find(".rating").hide();
 	}
 });
 
@@ -383,33 +418,42 @@ $("#typeClassement").change(function() {
 	if (val == 'temps') {
 		$("#pTypeBateau").show();
 		$("#etape2 table tfoot").show();
-		$("#etape2 table thead td:eq(1)").show();
-		$("#etape2 table .tdBateau").show();
+		$("#etape2 table .tpBateau").show();
 		$("#etape2 table .tps").find("*").show();
+		placeholder = 'min';
+		$("#etape2 table .tps").find(".min").attr('placeholder', placeholder);
 	}
 	else {
 		$("#pTypeBateau").hide();
 		$("#etape2 table tfoot").hide();
-		$("#etape2 table thead td:eq(1)").hide();
-		$("#etape2 table .tdBateau").hide();
+		$("#etape2 table .tpBateau").hide();
 		$("#etape2 table .tps").find("*:not(.min)").hide();
+		placeholder = 'n°';
+		$("#etape2 table .tps").find(".min").attr('placeholder', placeholder);
 	}
+	$("#showManche").val('all').change();
 });
 $("#typeBateaux").change(function() {
 	select = $(this).val();
 	recents = new Array();
-	$("#etape2 select").remove();
+	$("#etape2 table select").remove();
 	$("#etape2 table tbody tr").each(function() {
-		$(this).find("td:eq(1)").prepend($.getSelect());
+		$(this).find(".tpBateau").prepend($.getSelect());
 		$(this).find(".rating").hide();
 	});
 });
-$("#etape2 table select").live('change', function() {
-	if ($(this).val() == 'autre') {
-		$(this).parent().find(".rating").show();
+$("#showManche").change(function() {
+	if ($(this).val() == 'all') {
+		$("#etape2 table .tps").show();
+		$("#etape2 table thead td:gt(0)").show();
 	}
 	else {
-		$(this).parent().find(".rating").hide();
+		var nb = parseInt($(this).val());
+		$("#etape2 table tr .tps").hide();
+		$("#etape2 table thead td:gt(0)").hide();
+		$("#etape2 table tbody tr").each(function() { $(this).find(".tps").eq(nb-1).show(); });
+		$("#etape2 table thead td").eq(nb).show();
+		$("#etape2 table tfoot .tps").eq(nb-1).show()
 	}
 });
 
@@ -422,6 +466,17 @@ $("#etape2 table select").live('change', function() {
 $(".question").click(function() {
 	$(this).next(".reponse").toggle();
 });
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------------- TABLES --------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+$(window).bind("orientationchange resize", function(){
+	$.resizeTable();
+});
+
 
 
 });
