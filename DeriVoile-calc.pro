@@ -11,7 +11,9 @@ FORMS += \
     fenprincipale.ui \
     popup.ui
 
-QT += webkit
+QT += \
+    webkit \
+    network
 
 RESOURCES += \
     ressources.qrc
