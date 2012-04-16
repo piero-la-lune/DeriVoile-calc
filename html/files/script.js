@@ -211,7 +211,7 @@ clone.find("#results").show();
 	};
 
 	$.getManche = function(txt) {
-		return '<td class="tps"><input type="text" value="" class="h" size="2" placeholder="h" /><br /><input type="text" value="" class="min" size="3" placeholder="'+txt+'" /></br><input type="text" value="" class="s" size="2" placeholder="s" /></td>';
+		return '<td class="tps"><input type="text" value="" class="h" size="2" placeholder="h" /><br /><input type="text" value="" class="min" size="3" placeholder="'+txt+'" /><br /><input type="text" value="" class="s" size="2" placeholder="s" /></td>';
 	};
 
 	$.addEquipage = function() {
