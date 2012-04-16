@@ -97,6 +97,9 @@ input, select {
 	font: normal 1em Arial, sans-serif;
 	max-width: 100%;
 }
+select {
+	vertical-align: middle;
+}
 input, textarea {
 	border: none;
 	border-bottom: 1px dashed #C9D7F1;
@@ -331,6 +334,12 @@ td {
 
 .tps input {
 	text-align: center;
+}
+.tps .min {
+	width: 34px;
+}
+.tps .h, .tps .s {
+	width: 26px;
 }
 .tps { word-break:keep-all; }
 .rating {
