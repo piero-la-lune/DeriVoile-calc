@@ -34,6 +34,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 	var selects = new Array();
 	var select = 'deriveurs';
 	var placeholder = 'min';
+	var ambigus = ['36', '62', '23', '72', '37'];
 
 	var nbManche = 1;
 	var nbEquipage = 0;
@@ -211,7 +212,7 @@ clone.find("#results").show();
 	};
 
 	$.getManche = function(txt) {
-		return '<td class="tps"><input type="text" value="" class="h" size="2" placeholder="h" /><br /><input type="text" value="" class="min" size="3" placeholder="'+txt+'" /><br /><input type="text" value="" class="s" size="2" placeholder="s" /></td>';
+		return '<td class="tps"><input type="text" value="" class="h" size="2" placeholder="h" pattern="[0-9]*" /><br /><input type="text" value="" class="min" size="3" placeholder="'+txt+'" pattern="[0-9]*" /><br /><input type="text" value="" class="s" size="2" placeholder="s" pattern="[0-9]*" /></td>';
 	};
 
 	$.addEquipage = function() {
@@ -374,9 +375,9 @@ $("#calculer").click(function() {
 });
 
 $("tbody .tps input").live('keyup', function() {
-	if ($(this).val().length >= 2 && !isNaN($(this).val())) {
-		if ($(this).index() < 2) {
-			$(this).next().focus();
+	if ($(this).val().length >= 2 && !isNaN($(this).val()) && $.inArray($(this).val(), ambigus) < 0) {
+		if ($(this).index() < 4) {
+			$(this).next().next().focus();
 		}
 		else if ($(this).parents("tr").index() < nbEquipage-1) {
 			$(this).parents("tr").next().find("td").eq($(this).parent().index()).find("input").eq(0).focus();

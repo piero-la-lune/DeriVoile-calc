@@ -335,12 +335,7 @@ td {
 
 .tps input {
 	text-align: center;
-}
-.tps .min {
 	width: 34px;
-}
-.tps .h, .tps .s {
-	width: 26px;
 }
 .tps { word-break:keep-all; }
 .rating {

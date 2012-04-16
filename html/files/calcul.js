@@ -38,6 +38,7 @@ function Calcul() {
 	this.nbEquipage = nbEquipage;
 	this.nomRegate = '';
 	this.abrs = ['DNC', 'DNS', 'OCS', 'BFD', 'DNF', 'RAF', 'DSQ'];
+	this.abrs2 = ['362', '367', '627', '233', '363', '723', '377'];
 
 
 
@@ -115,6 +116,26 @@ this.equipages[index]['pointsRetires'] = new Array();
 for (i=0; i<this.nbManche; i++) {
 	if (index == 0) { this.manches[i] = new Array(); }
 	this.manches[i][index] = new Array;
+	
+	var a1 = $.inArray(tr.find(".h").eq(i).val(), this.abrs2);
+	var a2 = $.inArray(tr.find(".min").eq(i).val(), this.abrs2);
+	var a3 = $.inArray(tr.find(".s").eq(i).val(), this.abrs2);
+	if (a1 >= 0) {
+		tr.find(".h").eq(i).val('');
+		tr.find(".min").eq(i).val(this.abrs[a1]);
+		tr.find(".s").eq(i).val('');
+	}
+	else if (a2 >= 0) {
+		tr.find(".h").eq(i).val('');
+		tr.find(".min").eq(i).val(this.abrs[a2]);
+		tr.find(".s").eq(i).val('');
+	}
+	else if (a3 >= 0) {
+		tr.find(".h").eq(i).val('');
+		tr.find(".min").eq(i).val(this.abrs[a3]);
+		tr.find(".s").eq(i).val('');
+	}
+
 	var h = parseInt(tr.find(".h").eq(i).val())*60*60;
 	if (isNaN(h)) { h = 0; }
 	var m = parseInt(tr.find(".min").eq(i).val())*60;
