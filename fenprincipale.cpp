@@ -195,6 +195,7 @@ bool FenPrincipale::ouvrirClassement(QString fileName) {
 		return false;
 	}
 	QTextStream flux(&file);
+	flux.setCodec("UTF-8");
 	QString contenu = flux.readAll();
 	file.close();
 	classement = fileName;
@@ -244,6 +245,7 @@ bool FenPrincipale::enregistrer(QString donnees) {
 		return false;
 	}
 	QTextStream flux(&file);
+	flux.setCodec("UTF-8");
 	flux << donnees;
 	file.close();
 	classement = fileName;
@@ -330,6 +332,7 @@ bool FenPrincipale::exporterHTML(QString html) {
 		return false;
 	}
 	QTextStream flux(&file);
+	flux.setCodec("UTF-8");
 	flux << html;
 	file.close();
 	statusBar()->showMessage("Le classement a été exporté en HTML.", 3000);
