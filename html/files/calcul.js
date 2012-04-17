@@ -144,8 +144,11 @@ for (i=0; i<this.nbManche; i++) {
 	if (isNaN(s)) { s = 0; }
 	var tot = h+m+s;
 	var h = parseInt($("#etape2 table tfoot .h").eq(i).val())*60*60;
+	if (isNaN(h)) {  h = 0; }
 	var m = parseInt($("#etape2 table tfoot .min").eq(i).val())*60;
+	if (isNaN(m)) {  m = 0; }
 	var s = parseInt($("#etape2 table tfoot .s").eq(i).val());
+	if (isNaN(s)) {  s = 0; }
 	var heure = h+m+s;
 	var tps = tot-heure;
 	if (tps < 0) {
