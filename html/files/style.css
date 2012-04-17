@@ -72,8 +72,8 @@ h2, h3 { text-align: center; }
 h2 {
 	font-size: 1.8em;
 	font-weight: bold;
-	margin-bottom: 30px;
-	padding-bottom: 0;
+	margin: 20px 0 30px 0;
+	padding: 0;
 }
 h3 {
 	font-size: 1.2em;
@@ -266,6 +266,9 @@ td {
 }
 .navEtapes span {
 	font-weight: bold;
+	display: inline-block;
+	margin-bottom: 5px;
+	padding: 10px 6px 6px 6px;
 }
 
 .btCalculer {
@@ -337,7 +340,7 @@ td {
 	text-align: center;
 	width: 34px;
 }
-.tps { word-break:keep-all; }
+.tps { word-break: keep-all; }
 .rating {
 	display: none;
 	width: 50px;
@@ -417,4 +420,13 @@ td {
 @media screen and (max-width: 480px) {
 	#etape2 table .nom { width: 170px; }
 	#etape2 table select { width: 200px; }
+}
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------------ IE ---------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+html.bg.lte8 {
+	background-repeat: repeat;
 }
