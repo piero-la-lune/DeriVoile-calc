@@ -27,6 +27,7 @@
         <file alias="calcul.js">html/files/calcul.js</file>
         <file alias="html5.js">html/files/html5.js</file>
         <file alias="favicon.ico">html/files/favicon.ico</file>
+        <file alias="json.js">html/files/json.js</file>
     </qresource>
     <qresource prefix="/html/files/fonts">
         <file alias="fontomas.eot">html/files/fonts/fontomas.eot</file>
