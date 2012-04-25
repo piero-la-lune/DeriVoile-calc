@@ -1,6 +1,6 @@
 # DériVoile calc' (http://calc.derivoile.fr)
 
-![Capture d’écran](img/screenshot.png)
+![](/img/screenshot.png)
 
 
 ## Français
@@ -33,7 +33,6 @@ You find that my english is really bad ? I need you to improve my translations !
 
 ### Presentation
 
-![Screenshot](http://uploads.derivoile.fr/1_ulm79)
 
 DériVoile calc' allows you to easily produce regattas results. The main goal is to provide an alternative to FReg (the official software of the French Sailing Federation), because FReg is far too complexe to use for basics regattas, and even requires a training course to understand how it works. That's why DériVoile calc' was created, trying to answer to the need of some clubs witch were not able to easily produce the the results of their friendly regattas.
 
