@@ -1,6 +1,6 @@
 # DériVoile calc' (http://calc.derivoile.fr)
 
-![](/img/screenshot.png)
+![](http://github.com/piero-la-lune/DeriVoile-calc/raw/master/img/screenshot.png)
 
 
 ## Français
