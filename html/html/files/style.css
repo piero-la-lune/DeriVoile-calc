@@ -1,0 +1,456 @@
+/*
+
+###################    DériVoile calc' - Français    ###################
+
+Version : @v
+Date : @date
+Licence : dans le fichier « COPYING »
+Site web : http://calc.derivoile.fr
+
+Copyright © 2011-2012 Pierre Monchalin, http://derivoile.fr
+Pensez à me laisser un petit mot si vous distribuez une copie !
+
+DériVoile calc' est un logiciel libre : vous pouvez le redistribuer ou
+le modifier selon les termes de la GNU General Public Licence tels que
+publiés par la Free Software Foundation : à votre choix, soit la
+version 3 de la licence, soit une version ultérieure quelle qu'elle
+soit.
+
+DériVoile calc' est distribué dans l'espoir qu'il sera utile, mais SANS
+AUCUNE GARANTIE ; sans même la garantie implicite de QUALITÉ MARCHANDE
+ou D'ADÉQUATION À UNE UTILISATION PARTICULIÈRE. Pour plus de détails,
+reportez-vous à la GNU General Public License.
+
+Vous devez avoir reçu une copie de la GNU General Public License avec
+DériVoile calc'. Si ce n'est pas le cas, consultez
+<http://www.gnu.org/licenses/>
+
+###################    DériVoile calc' - English    ###################
+
+Version : @v
+Date : @date
+Licence : see file “COPYING”
+Web site : http://calc.derivoile.fr
+
+Copyright © 2011-2012 Pierre Monchalin, http://derivoile.fr
+Remember to leave me a note if you distribute a copy!
+
+DériVoile calc' is free software: you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+DériVoile calc' is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with DériVoile calc'. If not, see
+<http://www.gnu.org/licenses/>
+
+*/
+
+
+@font-face {
+	font-family: 'fontomasRegular';
+	src: url('./fonts/fontomas.eot');
+	src: url('./fonts/fontomas.eot?#iefix') format('embedded-opentype'),
+		url('./fonts/fontomas.woff') format('woff'),
+		url('./fonts/fontomas.ttf') format('truetype'),
+		url('./fonts/fontomas.svg#fontomasRegular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*-------------------------------------------------- DEFAUT ---------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+
+html.bg {
+        background: url('./background.jpg') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+}
+
+body {
+	font: normal 1em Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	overflow-y: scroll;
+	background-color: transparent;
+	-webkit-text-size-adjust: 100%;
+}
+body.withoutheader {
+	padding-top: 20px;
+}
+
+
+h2, h3 { text-align: center; }
+h2 {
+	font-size: 1.8em;
+	font-weight: bold;
+	margin: 20px 0 30px 0;
+	padding: 0;
+}
+h3 {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+p {
+	margin: 15px 0;
+	padding: 0;
+}
+
+
+a {
+	color: #005FA3;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+
+input, select {
+	font: normal 1em Arial, sans-serif;
+	max-width: 100%;
+}
+select {
+	vertical-align: middle;
+}
+input, textarea {
+	border: none;
+	border-bottom: 1px dashed #C9D7F1;
+	padding: 0;
+	margin: 2px;
+	vertical-align: middle;
+	background: transparent;
+}
+label {
+	vertical-align: middle;
+}
+.button {
+	border: 1px solid #C9D7F1;
+	background-color: #D9E4F8;
+	color: #005FA3;
+	padding: 5px;
+}
+.button:hover {
+	border-color: #a5c5ff;
+}
+
+
+
+table {
+	font: normal 1em Arial, sans-serif;
+	margin: 0 auto;
+	border-collapse: collapse;
+	color: #005FA3;
+	background-color: #ffffff;
+}
+thead td {
+	background-color: #D9E4F8;
+	font-weight: bold;
+}
+td {
+	border: 1px solid #C9D7F1;
+	text-align: center;
+	padding: 5px; 
+}
+
+.restricted thead { display: none; }
+.restricted tr { 
+	display: block;
+	padding: 4px;
+	margin: 8px;
+	border: 1px solid #C9D7F1;
+}
+.restricted td {
+	display: block;
+	border: none;
+	padding: 4px;
+	text-align: left;
+}
+.restricted td:before{ 
+	content: attr(data-label)": "; 
+	font-style: italic;
+}
+
+#resultsSmall tr td:first-child {
+	background-color: #D9E4F8;
+	font-weight: bold;
+}
+#resultsSmall td {
+	text-align: left;
+}
+
+.divAstuce {
+	padding: 10px;
+	margin: 20px;
+	display: inline-block;
+	max-width: 500px;
+	border: 1px solid #C9D7F1;
+	background: #eaf0fc;
+}
+.divAstuce span {
+	color: #005FA3;
+}
+.divAstuce p { margin: 0; padding: 0; }
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------- POPUP --------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+#popup {
+	background-color: #4C4C4C;
+	color: #CCCCCC;
+	text-align: justify;
+	overflow-y: auto;
+	padding: 20px;
+}
+
+#popup table {
+	color: #CCCCCC;
+}
+#popup table td {
+	border-color: #000000;
+}
+#popup table thead td {
+	background-color: #5F5F5F;
+}
+
+#popup h1 {
+	text-align: center;
+	margin: 0 0 40px 0;
+}
+
+#popup a { color: #ffffff; }
+
+#popup .reponse { display: none; text-align: left; }
+#popup .question {
+	color: #ffffff;
+	cursor: pointer;
+	padding-left: 10px;
+	margin-top: 20px;
+}
+#popup .question:hover {
+	text-decoration: underline;
+}
+
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------- NAVIGATION ------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+
+.navEtapes {
+	text-align: center;
+}
+.navEtapes p { margin: 0; }
+.navEtapes a {
+	display: inline-block;
+	margin: 0 15px;
+	margin-bottom: 5px;
+	padding: 10px 6px 6px 6px;
+	background-color: #4C4C4C;
+	border: 1px solid #000000;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	color: #CCCCCC;
+}
+.navEtapes a:hover {
+	background-color: #2D2D2D;
+	color: #ffffff;
+	text-decoration: none;
+}
+.navEtapes a.selected {
+	background-color: #2D2D2D;
+	color: #ffffff;
+	font-weight: bold;
+	border-bottom-left-radius: 0;
+	-moz-border-radius-bottomleft: 0;
+	-webkit-border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+	-moz-border-radius-bottomright: 0;
+	-webkit-border-bottom-right-radius: 0;
+	border-bottom: 6px solid #2D2D2D;
+	margin-bottom: 0px;
+}
+.navEtapes span {
+	font-weight: bold;
+	display: inline-block;
+	margin-bottom: 5px;
+	padding: 10px 6px 6px 6px;
+}
+
+.btCalculer {
+	margin: 0 20px 20px 20px;
+}
+#calculer {
+	display: block;
+	padding: 12px 12px 8px 12px;
+	text-align: center;
+	background-color: #2D2D2D;
+	border: 1px solid #000000;
+	border-top: none;
+	border-bottom-left-radius: 6px;
+	-moz-border-radius-bottomleft: 6px;
+	-webkit-border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	-moz-border-radius-bottomright: 6px;
+	-webkit-border-bottom-right-radius: 6px;
+	color: #CCCCCC;
+	font-weight: bold;
+}
+#calculer:hover {
+	color: #ffffff;
+	background-color: #4C4C4C;
+	text-decoration: none;
+}
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------- FORMULAIRE ------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+#etapes {
+	padding: 0 10px;
+	margin: 0 20px;
+	background: #ffffff;
+	border: 1px solid #2D2D2D;
+	border-top-left-radius: 6px;
+	-moz-border-radius-topleft: 6px;
+	-webkit-border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	-moz-border-radius-topright: 6px;
+	-webkit-border-top-right-radius: 6px;
+	max-width: 100%;
+}
+
+#etape0 {
+	text-align: center;
+}
+
+#etape2 ol {
+	text-align: left;
+}
+#etape2 div {
+	text-align: center;
+}
+#etape4 {
+	overflow: visible;
+}
+
+
+.probleme {
+	background-color: #ffd5d5;
+}
+
+
+.tps input {
+	text-align: center;
+	width: 34px;
+}
+.tps { word-break: keep-all; }
+.rating {
+	display: none;
+	width: 50px;
+}
+.tpBateau {
+	display: block;
+}
+#etape2 table .nom { width: 220px; }
+#etape2 table select { width: 250px; }
+#etape2 table tbody td { text-align: left; }
+#etape2 table .tps { text-align: center; }
+
+
+#addEquipage, #addManche {
+	margin: 2px 8px;
+}
+
+.removeManche, .removeEquipage {
+	font-family: 'fontomasRegular';
+	font-size: 20px;
+	color: #ff8080;
+	vertical-align: middle;
+/*	margin-left: 6px;*/
+	font-weight: normal;
+}
+.removeManche:hover, .removeEquipage:hover {
+	color: red;
+	text-decoration: none;
+}
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------- RÉSULTATS -------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+#etape4, #manches {
+	text-align: center;
+}
+
+
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------- IMPRESSION ------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+@media print {
+	html.bg { background: none; }
+	header, .btCalculer, #calculer, .navEtapes, .navEtapes a, .navEtapes span, #resultsSmall { display: none; }
+	#results { display: block; }
+	#etapes { border: none; margin: 0; }
+	a { color: #000000; }
+	table, td {
+ 		border-color: #C0C0C0;
+		color: #000000; 
+	}
+	thead td {
+		background-color: #E0E0E0;
+	}
+}
+
+
+@media screen and (max-width: 600px) {
+	.navEtapes span {
+		display: none;
+	}
+	.navEtapes a {
+		margin-left: 4px;
+		margin-right: 4px;
+	}
+	#etapes, .btCalculer {
+		margin-left: 8px;
+		margin-right: 8px;
+	}
+}
+@media screen and (max-width: 480px) {
+	#etape2 table .nom { width: 170px; }
+	#etape2 table select { width: 200px; }
+}
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------------ IE ---------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+html.bg.lte8 {
+	background-repeat: repeat;
+}

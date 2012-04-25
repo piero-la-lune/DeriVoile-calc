@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+<!--
+
+###################    DériVoile calc' - Français    ###################
+
+Version : @v
+Date : @date
+Licence : dans le fichier « COPYING »
+Site web : http://calc.derivoile.fr
+
+Copyright © 2011-2012 Pierre Monchalin, http://derivoile.fr
+Pensez à me laisser un petit mot si vous distribuez une copie !
+
+DériVoile calc' est un logiciel libre : vous pouvez le redistribuer ou
+le modifier selon les termes de la GNU General Public Licence tels que
+publiés par la Free Software Foundation : à votre choix, soit la
+version 3 de la licence, soit une version ultérieure quelle qu'elle
+soit.
+
+DériVoile calc' est distribué dans l'espoir qu'il sera utile, mais SANS
+AUCUNE GARANTIE ; sans même la garantie implicite de QUALITÉ MARCHANDE
+ou D'ADÉQUATION À UNE UTILISATION PARTICULIÈRE. Pour plus de détails,
+reportez-vous à la GNU General Public License.
+
+Vous devez avoir reçu une copie de la GNU General Public License avec
+DériVoile calc'. Si ce n'est pas le cas, consultez
+<http://www.gnu.org/licenses/>
+
+###################    DériVoile calc' - English    ###################
+
+Version : @v
+Date : @date
+Licence : see file “COPYING”
+Web site : http://calc.derivoile.fr
+
+Copyright © 2011-2012 Pierre Monchalin, http://derivoile.fr
+Remember to leave me a note if you distribute a copy!
+
+DériVoile calc' is free software: you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+DériVoile calc' is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with DériVoile calc'. If not, see
+<http://www.gnu.org/licenses/>
+
+-->
+
+
+		<title>DériVoile calc' - Aide</title>
+		<link rel="stylesheet" type="text/css" media="all" href="./files/style.css" />
+		<script type="text/javascript" src="./files/jquery.js"></script>
+		<script type="text/javascript" src="./files/script.js" charset="utf-8"></script>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	</head>
+	<body id="popup">
+
+		<h1>Questions fréquentes</h1>
+
+<p class="question">Est-ce que je dois obligatoirement donner un nom à la régate ?</p>
+<div class="reponse">
+<p>Non. Ce calculateur a pour but d'être le plus simple possible. Vous n'êtes donc pas obligés de rentrer le nom de la régate. Par contre, il faut obligatoirement donner un nom à tous les équipages.</p>
+</div>
+
+<p class="question">Comment choisir le « Type de classement » ?</em></p>
+<div class="reponse">
+<p>Vous avez deux possibilités :</p>
+<ul>
+	<li>le « Classement scratch » correspond à un classement établi avec les places des bateaux dans chaque manche, et non avec leur temps. On utilise donc généralement ce type de classement quand tous les bateaux qui courent sont identiques.</li>
+	<li>le « Classement en temps compensés » permet de rétablir l'équilibre entre des bateaux différents, en utilisant les temps (multipliés par un coefficient qui change pour chaque type de bateau) pour déterminer les places des bateaux à chaque manche. Les temps de course sont diminués pour les bateaux les plus lents, et augmentés pour les plus rapides : ainsi, on peut comparer tous ces nouveaux temps sans qu'aucun bateau ne soit désavantagé.</li>
+</ul>
+</div>
+
+<p class="question">Puis-je mélanger des dériveurs et des catamarans dans un même classement ?</em></p>
+<div class="reponse">
+<p>Non. Les coefficients utilisés par DériVoile calc' (et fournis par la Fédération Française de Voile) ne sont pas compatibles entre dériveurs et catamarans. C'est pour cela que vous devez choisir l'un ou l'autre dès la première étape.</p>
+</div>
+
+<p class="question">Que faut-il mettre comme « Nom de l'équipage » ?</em></p>
+<div class="reponse">
+<p>Ce champ doit contenir quelque chose qui identifie un équipage en particulier : cela peut être le nom ou le prénom d'un membre de l'équipage, ou bien encore le numéro du bateau.</p>
+</div>
+
+<p class="question">Comment choisir le « Type de bateau » ?</em></p>
+<div class="reponse">
+<p>Le type de bateau correspond au modèle du bateau de l'équipage. C'est une information essentielle, puisqu'elle permet de rajuster les temps des bateaux en fonction de leur vitesse normale. Tous les dériveurs et multicoques existants sont normalement présents (attention : il faut choisir entre dériveurs et multicoques à l'étape 1). Si le bateau recherché n'apparait pas dans la liste, vous pouvez rentrer à la main son coefficient, en choisissant l'option « Rentrer un coefficient ».</p>
+<p><i>Remarque :</i> le choix du type de bateau ne peut s'effectuer que lorsque le classement est en temps compensés (voir à l'étape 1 pour changer le type de classement).</p>
+</div>
+
+<p class="question">Comment rentrer les temps / les places d'arrivée des bateaux ?</em></p>
+<div class="reponse">
+<p>Si vous avez choisi un <b>classement en temps compensés</b>, vous disposez pour chaque manche de trois cases (heures:minutes:secondes). Il y a deux possibilités :</p>
+<ul>
+	<li>soit vous avez noté l'heure d'arrivée du bateau : il suffit alors de rentrer cette heure pour chaque équipage, puis d'indiquer en bas du tableau l'heure de départ de la manche ;</li>
+	<li>soit vous avez chronométré le temps de course de chaque bateau : il faut alors rentrer le temps de course de chaque bateau dans les cases, et laisser telle quelle la dernière ligne du tableau.</li>
+</ul>
+<p>Par exemple, si un bateau a finit la manche en 1h 36min 52s, il suffit de mettre « 1 » dans la première case, « 36 » dans la deuxième, et « 52 » dans la troisième. Si le bateau avait fini en 42min 41s, vous auriez pu mettre un « 0 » dans la première case ou bien la laisser vide.</p>
+<p>Si vous avez choisi un <b>classement scratch</b>, vous disposez pour chaque manche d'une unique case : il suffit d'y indiquer la place d'arrivée du bateau correspondant. Par exemple, si le bateau a fini quatrième à cette manche, il suffit de mettre « 4 » dans la case correspondante !</p>
+</p>
+</div>
+
+<p class="question">Que faut-il rentrer comme temps quand un bateau n'a pas participé ou bien n'a pas finit la course ?</em></p>
+<div class="reponse">
+<p>Il suffit de laisser totalement vides les cases correspondantes à la manche en question. Le bateau sera classé comme « DNF » à cette manche.</p>
+<p>Si vous le souhaitez, vous avez aussi la possibilité spécifier une abréviation particulière à la place du temps ou de la place d'arrivée d'un bateau (voir la partie A11. de l'Annexe A des Règles de Course à la Voile 2009-2012 pour la liste des abréviations officielles). Cependant, seules ces sept abréviations seront prises en compte : DNC, DNS, OCS, BFD, DNF, RAF, DSQ (ainsi que leur correspondant sur un clavier de téléphone : 362, 367, 627, 233, 363, 723, 377). Le bateau concerné recevra alors en points le nombre d'équipages inscrits plus 1 point à cette manche, comme spécifié dans les Règles de Course)</p>
+</div>
+
+<p class="question">J'ai ajouté un équipage mais il n'a pas fait la régate. Est-ce que je peux le supprimer de la liste ?</em></p>
+<div class="reponse">
+<p>Oui. Il suffit de cliquer sur le signe <span style="cursor:pointer; margin:0" class="removeManche">w</span> qui se situe à côté du nom de l'équipage que vous voulez supprimer.</p>
+</div>
+
+<p class="question">J'ai ajouté une manche mais je voudrais maintenant la supprimer : est-ce possible ?</em></p>
+<div class="reponse">
+<p>Oui. Il suffit de cliquer sur le signe <span style="cursor:pointer; margin:0" class="removeManche">w</span> qui se situe à côté du numéro de la manche à supprimer.</p>
+</div>
+
+<p class="question">Que signifie le « nombre de plus mauvaises manches à retirer » ?</p>
+<div class="reponse">
+<p>Si votre régate contient suffisament de manches courues, vous pouvez décider de retirer, pour chaque équipage, sa (ou ses) plus mauvaise(s) place(s) dans son nombre total de points. Par exemple, si vous décidez de retirer une manche, un équipage qui aurait fini 1<sup>er</sup>, 5<sup>ème</sup>, 3<sup>ème</sup> et 4<sup>ème</sup> se retrouve avec 8 points (1+3+4) au lieu de 13 points (1+5+3+4).</p>
+</div>
+
+<p class="question">Les résultats sont incohérents : que faire ?</em></p>
+<div class="reponse">
+<p>Vous venez peut-être de trouver un « bug » : la meilleure solution est d'enregistrer le classement et de me le faire parvenir, afin que je puisse reproduire le problème et le résoudre.</p>
+<p>Adresse de contact : calc@derivoile.fr ou via le formulaire de contact disponible sur http://derivoile.</p>
+</div>
+
+<p class="question">Un message me dit que ma version de DériVoile calc' n'est plus à jour : que dois-je faire ? </em></p>
+<div class="reponse">
+<p>Si ce message apparait, il vous est fortement conseillé de faire une mise à jour : il est possible que la nouvelle version de DériVoile calc' corrige d'importants « bugs ». Pour télécharger la dernière version de DériVoile calc', rendez-vous à cette adresse : http://calc.derivoile.fr. Une fois téléchargée, désinstallez l'ancienne version et remplacez-la par la nouvelle que vous venez de télécharger.</p>
+<p><i>Note :</i> la version en ligne de DériVoile calc' est toujours à jour.</p>
+</div>
+
+	</body>
+</html>

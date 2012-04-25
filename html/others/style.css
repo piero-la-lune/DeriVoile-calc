@@ -1,0 +1,193 @@
+/*
+
+###################    DériVoile calc' - Français    ###################
+
+Version : @v
+Date : @date
+Licence : dans le fichier « COPYING »
+Site web : http://calc.derivoile.fr
+
+Copyright © 2011-2012 Pierre Monchalin, http://derivoile.fr
+Pensez à me laisser un petit mot si vous distribuez une copie !
+
+DériVoile calc' est un logiciel libre : vous pouvez le redistribuer ou
+le modifier selon les termes de la GNU General Public Licence tels que
+publiés par la Free Software Foundation : à votre choix, soit la
+version 3 de la licence, soit une version ultérieure quelle qu'elle
+soit.
+
+DériVoile calc' est distribué dans l'espoir qu'il sera utile, mais SANS
+AUCUNE GARANTIE ; sans même la garantie implicite de QUALITÉ MARCHANDE
+ou D'ADÉQUATION À UNE UTILISATION PARTICULIÈRE. Pour plus de détails,
+reportez-vous à la GNU General Public License.
+
+Vous devez avoir reçu une copie de la GNU General Public License avec
+DériVoile calc'. Si ce n'est pas le cas, consultez
+<http://www.gnu.org/licenses/>
+
+###################    DériVoile calc' - English    ###################
+
+Version : @v
+Date : @date
+Licence : see file “COPYING”
+Web site : http://calc.derivoile.fr
+
+Copyright © 2011-2012 Pierre Monchalin, http://derivoile.fr
+Remember to leave me a note if you distribute a copy!
+
+DériVoile calc' is free software: you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+DériVoile calc' is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with DériVoile calc'. If not, see
+<http://www.gnu.org/licenses/>
+
+*/
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*------------------------------------------------- TOP/BOTTOM ------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+header {
+	background-color: #2D2D2D;
+	border-bottom: 1px solid #000000;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+header h1 {
+	display: inline-block;
+	padding: 10px 20px;
+	margin: 0;
+	color: #ffffff;
+	font-weight: bold;
+	font-size: 1em;
+}
+header h1 span {
+	font-weight: normal;
+}
+
+
+/*-------------------------------------------------------------------------------------------------------------*/
+/*---------------------------------------------------- MENU ---------------------------------------------------*/
+/*-------------------------------------------------------------------------------------------------------------*/
+
+nav {
+	float: left;
+}
+
+nav ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+nav li {
+	float: left;
+}
+
+nav a {
+	display: block;
+	padding: 10px 20px;
+	color: #CCCCCC;
+	font-weight: bold;
+	white-space: nowrap;
+	cursor: default;
+}
+nav a:hover, nav .mSelected {
+	background-color: #4C4C4C;
+	text-decoration: none;
+	color: #ffffff;
+}
+
+nav div {
+	position: absolute;
+	margin: 0 0 0 20px;
+	background-color: #4C4C4C;
+	border-left: 3px solid #000000;
+	display: none;
+	text-align: left;
+}
+nav div a {
+	display: block;
+	font-weight: normal;
+	padding: 6px 10px 6px 6px;
+	line-height: 22px;
+}
+nav div a:hover {
+	background-color: #5F5F5F;
+}
+nav .icone {
+	font-family: 'fontomasRegular';
+	font-size: 22px;
+	vertical-align: middle;
+	display: inline-block;
+	width: 28px;
+}
+nav .separateur {
+	border-top: 1px solid #000000;
+}
+
+nav a.disabled .texte { font-style: italic; }
+nav a.disabled:hover { color: #cccccc; background-color: transparent; }
+
+
+.dialog {
+	padding: 0 10px;
+	margin: 20px;
+	background: #ffffff;
+	border: 1px solid #2D2D2D;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+
+#d1 {
+	text-align: center;
+}
+#d1 .centre {
+	display: inline-block;
+	padding: 10px;
+	margin: 20px;
+	background: #ffffff;
+	border: 1px solid #2D2D2D;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+#d1 span {
+	display: inline-block;
+	vertical-align: middle;
+}
+#progressbar {
+	display: inline-block;
+	vertical-align: middle;
+	height: 24px;
+	width: 200px;
+	max-width: 100%;
+	background-color: #D9E4F8;
+	border: 1px solid #C9D7F1;
+}
+#progressbar div {
+	display: block;
+	height: 100%;
+	background-color: #C9D7F1;
+}
+
+@media screen and (max-width: 600px) {
+	.dialog, #d1 {
+		margin-left: 8px;
+		margin-right: 8px;
+	}
+	nav a {
+		white-space: normal;
+	}
+}
