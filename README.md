@@ -9,7 +9,7 @@
 
 DériVoile calc' vous permet de produire très facilement des résultats de régates. Il a pour objectif de fournir une alternative à FReg, le logiciel officiel de la Fédération Française de Voile, en partant d'un constat très simple : FReg est bien trop complexe à utiliser pour de petites régates et nécessite une formation préalable pour être capable de s'en servir. C'est donc pour répondre à la demande de certains clubs (qui se trouvaient dans l'incapacité de produire facilement les résultats de leurs régates amicales) qu'a été créé DériVoile calc'.
 
-Pour plus d'informations, rendez-vous sur [la page du projet](http://calc.derivoile.fr)
+Pour plus d'informations, rendez-vous sur [la page du projet](http://calc.derivoile.fr).
 
 ### Compilation des sources
 
@@ -22,7 +22,7 @@ La méthode est sensiblement la même sur tous les systèmes d'exploitation :
 
 ### Contact
 
-Si vous trouvez des bugs, ou bien si avez des suggestions d'améliorations, n'hésitez pas à [me contacter](http://derivoile.fr/accueil-contact).
+Si vous trouvez des bugs, ou bien si vous avez des idées d'améliorations, n'hésitez pas à [me contacter](http://derivoile.fr/accueil-contact).
 
 
 
