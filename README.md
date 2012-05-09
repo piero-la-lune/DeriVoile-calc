@@ -22,7 +22,7 @@ La méthode est sensiblement la même sur tous les systèmes d'exploitation :
 
 ### Contact
 
-Si vous trouvez des bugs, ou bien si vous avez des idées d'améliorations, n'hésitez pas à [me contacter](http://derivoile.fr/accueil-contact).
+Si vous trouvez des bugs, ou bien si vous avez des idées d'améliorations, n'hésitez pas à [me contacter](http://derivoile.fr/accueil-contact.html).
 
 
 
@@ -49,4 +49,4 @@ The procedure is quite the same for all operating systems:
 
 ### Contact
 
-If you find bugs, or if you have improvement suggestions, please [contact me](http://derivoile.fr/accueil-contact).
+If you find bugs, or if you have improvement suggestions, please [contact me](http://derivoile.fr/accueil-contact.html).
