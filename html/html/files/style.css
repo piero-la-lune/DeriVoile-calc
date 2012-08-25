@@ -132,6 +132,7 @@ input, textarea {
 	margin: 2px;
 	vertical-align: middle;
 	background: transparent;
+	-webkit-appearance: none;
 }
 label {
 	vertical-align: middle;

@@ -98,7 +98,7 @@ FenPrincipale::~FenPrincipale() {
 void FenPrincipale::updater(QNetworkReply *reply) {
 	QByteArray rep = reply->readAll();
 	QString reponse = rep;
-	if (reponse != version) {
+	if (reponse != "" && reponse != version) {
 		QMessageBox::information(this, "Nouvelle version disponible", "<p>Une nouvelle version (v"+reponse+") de DeriVoile calc' est disponible !</p><p>Vous devriez faire la mise à jour, car d'importants bugs ont peut-être été corrigés : <a href='http://calc.derivoile.fr'>http://calc.derivoile.fr</a></p>");
 	}
 }

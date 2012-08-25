@@ -59,7 +59,6 @@ along with DériVoile calc'. If not, see
 	var selects = new Array();
 	var select = 'deriveurs';
 	var placeholder = 'min';
-	var ambigus = ['36', '62', '23', '72', '37'];
 
 	var nbManche = 1;
 	var nbEquipage = 0;
@@ -205,7 +204,7 @@ clone.find("#results").show();
 			ouverture5 = function(i) {
 		var e = donnees['equipages'][i];
 		tr.find(".nom").val((e['nom'] === undefined) ? '' : e['nom']);
-		tr.find(".bateau").val((e['bateau'] === undefined) ? '' : e['bateau']);
+		tr.find("select").val((e['bateau'] === undefined) ? '' : e['bateau']);
 		tr.find(".rating").val((e['rating'] === undefined) ? '' : e['rating']);
 		for (var j=0; j<nbManche; j++) {
 			tr.find(".h").eq(j).val((e['manches'][j]['h'] === undefined) ? '' : e['manches'][j]['h']);
@@ -400,7 +399,7 @@ $("#calculer").click(function() {
 });
 
 $("tbody .tps input").live('keyup', function() {
-	if ($(this).val().length >= 2 && !isNaN($(this).val()) && $.inArray($(this).val(), ambigus) < 0) {
+	if ($(this).val().length >= 2 && !isNaN($(this).val())) {
 		if ($(this).index() < 4) {
 			$(this).next().next().focus();
 		}
