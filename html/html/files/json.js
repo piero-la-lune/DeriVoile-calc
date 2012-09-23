@@ -1,6 +1,5 @@
 /*
     http://www.JSON.org/json2.js
-    25/08/2012
 
     Public Domain.
 
