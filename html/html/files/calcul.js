@@ -72,7 +72,7 @@ function Calcul() {
 FenPrincipale.progression(1);
 $("#etape2 td").removeClass('probleme');
 
-this.manchesRetirees = parseInt($("#manchesRetirees").val());
+this.manchesRetirees = parseInt($("#manchesRetirees").val(), 10);
 if (isNaN(this.manchesRetirees) || this.manchesRetirees >= this.nbManche) { this.manchesRetirees = 0; }
 this.nomRegate = $("#nomRegate").val();
 
@@ -159,19 +159,18 @@ for (i=0; i<this.nbManche; i++) {
 		tr.find(".min").eq(i).val(this.abrs[a3]);
 		tr.find(".s").eq(i).val('');
 	}
-
-	var h = parseInt(tr.find(".h").eq(i).val())*60*60;
+	var h = parseInt(tr.find(".h").eq(i).val(), 10)*60*60;
 	if (isNaN(h)) { h = 0; }
-	var m = parseInt(tr.find(".min").eq(i).val())*60;
+	var m = parseInt(tr.find(".min").eq(i).val(), 10)*60;
 	if (isNaN(m)) { m = 0; }
-	var s = parseInt(tr.find(".s").eq(i).val());
+	var s = parseInt(tr.find(".s").eq(i).val(), 10);
 	if (isNaN(s)) { s = 0; }
 	var tot = h+m+s;
-	var h = parseInt($("#etape2 table tfoot .h").eq(i).val())*60*60;
+	var h = parseInt($("#etape2 table tfoot .h").eq(i).val(), 10)*60*60;
 	if (isNaN(h)) {  h = 0; }
-	var m = parseInt($("#etape2 table tfoot .min").eq(i).val())*60;
+	var m = parseInt($("#etape2 table tfoot .min").eq(i).val(), 10)*60;
 	if (isNaN(m)) {  m = 0; }
-	var s = parseInt($("#etape2 table tfoot .s").eq(i).val());
+	var s = parseInt($("#etape2 table tfoot .s").eq(i).val(), 10);
 	if (isNaN(s)) {  s = 0; }
 	var heure = h+m+s;
 	var tps = tot-heure;
