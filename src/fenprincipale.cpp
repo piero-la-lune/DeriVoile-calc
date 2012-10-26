@@ -2,8 +2,8 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v6-2
-Date : 2012-09-23
+Version : v6-3
+Date : 2012-10-26
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
 
@@ -27,8 +27,8 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v6-2
-Date : 2012-09-23
+Version : v6-3
+Date : 2012-10-26
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
 
@@ -57,7 +57,7 @@ along with DériVoile calc'. If not, see
 
 FenPrincipale::FenPrincipale(QWidget *parent) : QMainWindow(parent), ui(new Ui::FenPrincipale) {
 
-	version = "v6-2";
+	version = "v6-3";
 
 	ui->setupUi(this);
 	showMaximized();
