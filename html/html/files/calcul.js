@@ -116,6 +116,7 @@ else if (type == 'autre') {
 	var reg = new RegExp("([,]+)", "g");
 	var coef = parseFloat(tr.find(".rating").val().replace(reg, "."));
 	if (isNaN(coef)) { coef = 1; }
+	type = "coef : "+coef.toString().replace(/\./, ",");
 }
 else {
 	var coef = parseFloat(this.ratings[type]);
