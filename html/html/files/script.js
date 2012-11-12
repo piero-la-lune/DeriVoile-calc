@@ -339,12 +339,12 @@ $(document).ready(function() {
 	$("#ratingsDeriveurs tbody tr").each(function() {
 		var code = $(this).children().eq(0).html();
 		selects['deriveurs'] += '<option value="'+code+'">'+code+' ('+$(this).children().eq(1).html()+')</option>';
-		ratings[code] = $(this).children().eq(4).html();
+		ratings[code] = $(this).children().eq(2).html();
 	});
 	$("#ratingsMulticoques tbody tr").each(function() {
-		var code = $(this).children().eq(0).html();
-		selects['multicoques'] += '<option value="'+code+'">'+code+'</option>';
-		ratings[code] = 1/$(this).children().eq(1).html();
+		var code = $(this).children().eq(1).html();
+		selects['multicoques'] += '<option value="'+code+'">'+$(this).children().eq(0).html()+' ('+code+')</option>';
+		ratings[code] = $(this).children().eq(2).html();
 	});
 	$.addEquipage();
 
