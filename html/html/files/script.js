@@ -54,9 +54,10 @@ along with DériVoile calc'. If not, see
 
 	var version = "v6-3";
 
-	var ratings = new Array();
-	var recents = new Array();
-	var selects = new Array();
+	var ratings = {'deriveurs': {}, 'multicoques': {}};
+	var oldratings = {'deriveurs': {}, 'multicoques': {}};
+	var recents = new Object();
+	var selects = new Object();
 	var select = 'deriveurs';
 	var placeholder = 'min';
 
@@ -154,7 +155,7 @@ clone.find("#results").show();
 			FenPrincipale.ouvrir('Erreur lors de la lecture du classement : vérifiez que le fichier est valide...');
 			return false;
 		}
-		else if (donnees['erreur'] !== undefined) {
+		else if ('erreur' in donnees) {
 			FenPrincipale.ouvrir(donnees['erreur']);
 			return false;
 		}
@@ -169,23 +170,61 @@ clone.find("#results").show();
 		$("#etape2 table tfoot td:gt(0)").remove();
 		$("#showManche option:gt(0)").remove();
 			// Récupération des données principales
-		$("#nomRegate").val((donnees['nomRegate'] === undefined) ? '' : donnees['nomRegate']);
-		$("#typeBateaux").val((donnees['bateaux'] === undefined) ? 'deriveurs' : donnees['bateaux']).change();
-		$("#typeClassement").val((donnees['classement'] === undefined) ? 'temps' : donnees['classement']).change();
-		$("#manchesRetirees").val((donnees['manchesRetirees'] === undefined) ? '0' : donnees['manchesRetirees']);
+		if ('nomRegate' in donnees) {
+			$("#nomRegate").val(donnees['nomRegate']);
+		}
+		else {
+			$("#nomRegate").val('');
+		}
+		if ('bateaux' in donnees && donnees['bateaux'] in ratings) {
+			$("#typeBateaux").val(donnees['bateaux']).change();
+		}
+		else {
+			$("#typeBateaux").val('deriveurs');
+		}
+		if ('classement' in donnees
+			&& (donnees['classement'] == 'temps' || donnees['classement'] == 'autre'))
+		{
+			$("#typeClassement").val(donnees['classement']).change();
+		}
+		else {
+			$("#typeClassement").val('temps');
+		}
+		if ('manchesRetirees' in donnees) {
+			$("#manchesRetirees").val(donnees['manchesRetirees']);
+		}
+		else {
+			$("#manchesRetirees").val('0');
+		}
 		FenPrincipale.progression(4);
 		nbManche = 0;
-		nb = (donnees['nbManches'] === undefined) ? 0 : donnees['nbManches']; // car nbManche est augmenté dans $.addManche
-		nbEquipage = (donnees['nbEquipages'] === undefined) ? 0 : donnees['nbEquipages'];
+		nbEquipage = 0;
+		if ('nbManches' in donnees) {
+			// car nbManche est augmenté dans $.addManche
+			nb = parseInt(donnees['nbManches']);
+			if (isNaN(nb)) { nb = 0; }
+		}
+		if ('nbEquipages' in donnees) {
+			nbEquipage =  parseInt(donnees['nbEquipages']);
+			if (isNaN(nbEquipage)) { nbEquipage = 0; }
+		}
 		setTimeout(function() { ouverture3(0); }, 0);
 			};
 
 			// Ajout du bon nombre de manches
 			ouverture3 = function(i) {
 		$.addManche();
-		if (donnees['manches'][i]['h'] !== undefined) { $("#etape2 table tfoot .h").eq(i).val(donnees['manches'][i]['h']); }
-		if (donnees['manches'][i]['min'] !== undefined) { $("#etape2 table tfoot .min").eq(i).val(donnees['manches'][i]['min']); }
-		if (donnees['manches'][i]['s'] !== undefined) { $("#etape2 table tfoot .s").eq(i).val(donnees['manches'][i]['s']); }
+		if (i in donnees['manches']) {
+			if ('h' in donnees['manches'][i]) {
+				$("#etape2 table tfoot .h").eq(i).val(donnees['manches'][i]['h']);
+			}
+			if ('min' in donnees['manches'][i]) {
+				$("#etape2 table tfoot .min").eq(i).val(donnees['manches'][i]['min']);
+			}
+			if ('s' in donnees['manches'][i]) {
+				$("#etape2 table tfoot .s").eq(i).val(donnees['manches'][i]['s']);
+			}
+		}
 		FenPrincipale.progression(parseInt((i+1)*16/nb)+4);
 		if (++i < nb) { setTimeout(function() { ouverture3(i); }, 0); }
 		else { setTimeout(function() { ouverture4(); }, 0); }
@@ -202,14 +241,39 @@ clone.find("#results").show();
 
 			// Entrée des informations sur les équipages
 			ouverture5 = function(i) {
-		var e = donnees['equipages'][i];
-		tr.find(".nom").val((e['nom'] === undefined) ? '' : e['nom']);
-		tr.find("select").val((e['bateau'] === undefined) ? '' : e['bateau']);
-		tr.find(".rating").val((e['rating'] === undefined) ? '' : e['rating']);
-		for (var j=0; j<nbManche; j++) {
-			tr.find(".h").eq(j).val((e['manches'][j]['h'] === undefined) ? '' : e['manches'][j]['h']);
-			tr.find(".min").eq(j).val((e['manches'][j]['min'] === undefined) ? '' : e['manches'][j]['min']);
-			tr.find(".s").eq(j).val((e['manches'][j]['s'] === undefined) ? '' : e['manches'][j]['s']);
+		if (i in donnees['equipages']) {
+			var e = donnees['equipages'][i];
+			if ('nom' in e) {
+				tr.find(".nom").val(e['nom']);
+			}
+			if ('bateau' in e) {
+				if (e['bateau'] in ratings[select]) {
+					tr.find("select").val(e['bateau']).change();
+				}
+				else if (e['bateau'] == 'autre') {
+					tr.find("select").val('autre');
+					if ('rating' in e) {
+						tr.find(".rating").val(e['rating']);
+					}
+				}
+				else if (e['bateau'] in oldratings[select]) {
+					// Parce qu'avant on n'utilisait pas les abréviations pour les multicoques
+					tr.find("select").val(oldratings[select][e['bateau']]).change();
+				}
+			}
+			for (var j=0; j<nbManche; j++) {
+				if (j in e['manches']) {
+					if ('h' in e['manches'][j]) {
+						tr.find(".h").eq(j).val(e['manches'][j]['h']);
+					}
+					if ('min' in e['manches'][j]) {
+						tr.find(".min").eq(j).val(e['manches'][j]['min']);
+					}
+					if ('s' in e['manches'][j]) {
+						tr.find(".s").eq(j).val(e['manches'][j]['s']);
+					}
+				}
+			}
 		}
 		tr = tr.next();
 		FenPrincipale.progression(parseInt((i+1)*78/nbEquipage)+20);
@@ -229,7 +293,7 @@ clone.find("#results").show();
 	};
 
 	$.getEquipage = function() {
-		var ligne = '<tr><td><input type="text" value="" class="nom" placeholder="Nom de l\'équipage" /><a href="#" title="Supprimer cet équipage" class="removeEquipage">w</a><span class="tpBateau">'+$.getSelect()+'<input type="text" value="1,000" class="rating" /></span></td>';
+		var ligne = '<tr><td><input type="text" value="" class="nom" placeholder="Nom de l\'équipage" /><a href="#" title="Supprimer cet équipage" class="removeEquipage">w</a><span class="tpBateau">'+$.getSelect()+'<input type="text" placeholder="Code" class="rating" /></span></td>';
 		for (i=0; i<nbManche; i++) { ligne += $.getManche(placeholder); }
 		ligne += '</tr>';
 		return ligne;
@@ -299,10 +363,9 @@ clone.find("#results").show();
 	};
 
 	$.getSelect = function() {
-		var selection = '<select><option value="default" selected="selected">Type de bateau :</option>';
-		if (recents['default'] !== undefined) { rct = recents['default']; } else { rct = ''; }
+		var selection = '<select><option value="default" selected="selected">Choisir (ou tapper code →)</option><option value="autre">Rentrer un coefficient :</option>';
+		if ('default' in recents) { rct = recents['default']; } else { rct = ''; }
 		selection += '<optgroup label="Récents :">'+rct+'</optgroup>';
-		selection += '<optgroup label="Autres :"><option value="autre">Rentrer un coefficient :</option></optgroup>';
 		selection += '<optgroup label="Tous :">'+selects[select]+'</optgroup>';
 		return selection;
 	};
@@ -337,14 +400,20 @@ $(document).ready(function() {
 	etapeActuelle = $("#etape0");
 
 	$("#ratingsDeriveurs tbody tr").each(function() {
-		var code = $(this).children().eq(0).html();
-		selects['deriveurs'] += '<option value="'+code+'">'+code+' ('+$(this).children().eq(1).html()+')</option>';
-		ratings[code] = $(this).children().eq(2).html();
+		var code = $(this).children().eq(0).text();
+		var nom = $(this).children().eq(1).text();
+		var coef = $(this).children().eq(2).text();
+		selects['deriveurs'] += '<option value="'+code+'">'+nom+'</option>';
+		ratings['deriveurs'][code] = coef;
+		oldratings['deriveurs'][nom] = code;
 	});
 	$("#ratingsMulticoques tbody tr").each(function() {
-		var code = $(this).children().eq(1).html();
-		selects['multicoques'] += '<option value="'+code+'">'+$(this).children().eq(0).html()+' ('+code+')</option>';
-		ratings[code] = $(this).children().eq(2).html();
+		var code = $(this).children().eq(0).text();
+		var nom = $(this).children().eq(1).text();
+		var coef = $(this).children().eq(2).text();
+		selects['multicoques'] += '<option value="'+code+'">'+nom+'</option>';
+		ratings['multicoques'][code] = coef;
+		oldratings['multicoques'][nom] = code;
 	});
 	$.addEquipage();
 
@@ -413,18 +482,28 @@ $("tbody .tps input").live('keyup', function() {
 });
 
 $("#etape2 table select").live('change', function() {
-	if (recents[$(this).val()] === undefined && $(this).val() != 'default' && $(this).val() != 'autre') {
+	if (!($(this).val() in recents) && $(this).val() != 'default' && $(this).val() != 'autre') {
 		var txt = '<option value="'+$(this).val()+'">'+$(this).find(':selected').text()+'</option>';
 		$("#etape2 select").each(function() { $(this).find("optgroup:eq(0)").prepend(txt); });
 		$(this).find("optgroup:eq(0) option:eq(0)").attr("selected","selected");
 		recents[$(this).val()] = true;
 		recents['default'] += txt;
 	}
-	if ($(this).val() == 'autre') {
-		$(this).parent().find(".rating").show();
+	if ($(this).val() != 'default' && $(this).val() != 'autre') {
+		$(this).closest("td").find(".rating").val($(this).val());
+	}
+});
+$(".rating").live('keyup', function() {
+	var sel = $(this).closest("td").find("select");
+	var val = $(this).val();
+	if (val in ratings[select]) {
+		sel.val(val).change(); // pour mettre à jours les bateaux récents.
+	}
+	else if (val.match(/[0-9](\.|,)[0-9]*$/) != null) {
+		sel.val('autre');
 	}
 	else {
-		$(this).parent().find(".rating").hide();
+		sel.val('default');
 	}
 });
 
@@ -459,13 +538,15 @@ $("#typeClassement").change(function() {
 	$("#showManche").val('all').change();
 });
 $("#typeBateaux").change(function() {
-	select = $(this).val();
-	recents = new Array();
-	$("#etape2 table select").remove();
-	$("#etape2 table tbody tr").each(function() {
-		$(this).find(".tpBateau").prepend($.getSelect());
-		$(this).find(".rating").hide();
-	});
+	if ($(this).val() in ratings) {
+		select = $(this).val();
+		recents = new Array();
+		$("#etape2 table select").remove();
+		$("#etape2 table tbody tr").each(function() {
+			$(this).find(".tpBateau").prepend($.getSelect());
+			$(this).find(".rating").val('');
+		});
+	}
 });
 $("#showManche").change(function() {
 	if ($(this).val() == 'all') {

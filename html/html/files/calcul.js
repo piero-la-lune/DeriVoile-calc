@@ -54,7 +54,7 @@ along with DériVoile calc'. If not, see
 
 function Calcul() {
 	var obj = this;
-	this.ratings = ratings;
+	this.ratings = ratings[select];
 	this.manches = new Array();
 	this.equipages = new Array();
 	this.manchesRetirees = 0;
@@ -110,16 +110,22 @@ for (i=0; i<l; i++) {
 var type = tr.find("select").val();
 var typeClassement = $("#typeClassement").val();
 if (typeClassement != 'temps') {
-	coef = 1;
+	var coef = 1;
+	var aff = '';
 }
 else if (type == 'autre') {
 	var reg = new RegExp("([,]+)", "g");
 	var coef = parseFloat(tr.find(".rating").val().replace(reg, "."));
 	if (isNaN(coef)) { coef = 1; }
-	type = "coef : "+coef.toString().replace(/\./, ",");
+	var aff = "coef : "+coef.toString().replace(/\./, ",");
+}
+else if (type in this.ratings) {
+	var coef = parseFloat(this.ratings[type]);
+	var aff = type;
 }
 else {
-	var coef = parseFloat(this.ratings[type]);
+	var coef = 1;
+	var aff = '?';
 }
 if (isNaN(coef)) {
 	FenPrincipale.calculM('Vous devez renseigner tous les types de bateau.');
@@ -130,7 +136,7 @@ if (isNaN(coef)) {
 
 this.equipages[index] = new Array();
 this.equipages[index]['nom'] = nom;
-this.equipages[index]['type'] = type;
+this.equipages[index]['type'] = aff;
 this.equipages[index]['coef'] = coef;
 this.equipages[index]['points'] = 0;
 this.equipages[index]['pointsTries'] = new Array();

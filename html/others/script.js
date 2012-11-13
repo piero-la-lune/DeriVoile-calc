@@ -100,7 +100,8 @@ var FenPrincipale = {
 		$(".divMain").hide();
 		this.addProgressBar("Calcul du classement :");
 		var c = new Calcul();
-		c.initialisation(nbManche, nbEquipage, ratings);
+		/*c.initialisation(nbManche, nbEquipage, ratings);*/
+		c.initialisation();
 	},
 
 	calculM: function(message) {

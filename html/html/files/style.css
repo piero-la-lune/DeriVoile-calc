@@ -361,22 +361,27 @@ td {
 }
 
 
-.tps input {
-	text-align: center;
-	width: 34px;
-}
-.tps { word-break: keep-all; }
-.rating {
-	display: none;
-	width: 50px;
+.nom {
+	width: 220px;
 }
 .tpBateau {
 	display: block;
 }
-#etape2 table .nom { width: 220px; }
-#etape2 table select { width: 250px; }
+.tpBateau select {
+	width: 190px;
+	font-size: 0.8em;
+}
+.rating {
+	width: 50px;
+}
+.tps {
+	text-align: center;
+}
+.tps input {
+	text-align: center;
+	width: 34px;
+}
 #etape2 table tbody td { text-align: left; }
-#etape2 table .tps { text-align: center; }
 
 
 #addEquipage, #addManche {
