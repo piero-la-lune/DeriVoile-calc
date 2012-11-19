@@ -472,11 +472,21 @@ $("tbody .tps input").live('keyup', function() {
 		if ($(this).index() < 4) {
 			$(this).next().next().focus();
 		}
-		else if ($(this).parents("tr").index() < nbEquipage-1) {
-			$(this).parents("tr").next().find("td").eq($(this).parent().index()).find("input").eq(0).focus();
+		else if ($(this).closest("tr").index() < nbEquipage-1) {
+			$(this).closest("tr").next().find("td").eq($(this).parent().index()).find("input").eq(0).focus();
 		}
 		else {
-			$(this).parents("tbody").find("tr").eq(0).find("td").eq($(this).parent().index()+1).find("input").eq(0).focus();
+			$(this).closest("tbody").find("tr").eq(0).find("td").eq($(this).parent().index()+1).find("input").eq(0).focus();
+		}
+	}
+});
+$("tfoot .tps input").live('keyup', function() {
+	if ($(this).val().length >= 2 && !isNaN($(this).val())) {
+		if ($(this).index() < 4) {
+			$(this).next().next().focus();
+		}
+		else {
+			$(this).closest("tr").find("td").eq($(this).parent().index()+1).find("input").eq(0).focus();
 		}
 	}
 });
