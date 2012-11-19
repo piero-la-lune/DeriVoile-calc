@@ -215,7 +215,7 @@ bool FenPrincipale::ouvrirClassement(QString fileName) {
 	QString contenu = flux.readAll();
 	file.close();
 	classement = fileName;
-	pageWebFrame->evaluateJavaScript("$.ouvrir('"+contenu+"');");
+	pageWebFrame->evaluateJavaScript("$.ouvrir('"+contenu.replace("'", "\\'")+"');");
 	return true;
 }
 
