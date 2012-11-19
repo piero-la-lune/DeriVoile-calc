@@ -183,7 +183,7 @@ clone.find("#results").show();
 			$("#typeBateaux").val('deriveurs');
 		}
 		if ('classement' in donnees
-			&& (donnees['classement'] == 'temps' || donnees['classement'] == 'autre'))
+			&& (donnees['classement'] == 'temps' || donnees['classement'] == 'scratch'))
 		{
 			$("#typeClassement").val(donnees['classement']).change();
 		}
