@@ -2,8 +2,8 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v6-4
-Date : 2012-11-19
+Version : v6-5
+Date : 2013-06-19
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
 
@@ -27,8 +27,8 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v6-4
-Date : 2012-11-19
+Version : v6-5
+Date : 2013-06-19
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
 
