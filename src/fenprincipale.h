@@ -55,73 +55,147 @@ along with DériVoile calc'. If not, see
 #define FENPRINCIPALE_H
 
 #include <QMainWindow>
-#include <QtWebKit>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QTextStream>
-#include <QFile>
-#include <QFileDialog>
-#include <QIODevice>
 #include <QString>
-#include <QVariantList>
+#include <QActionGroup>
+#include <QSettings>
+#include <QSplashScreen>
+#include <QtNetwork>
+#include <QtWebKit>
+#include <QWebView>
+#include <QWebFrame>
+#include <QWebInspector>
+#include <QProgressBar>
+#include <QLabel>
+#include <QMessageBox>
+#include <QProgressDialog>
+#include <QFileDialog>
 #include <QPrinter>
 #include <QPrintDialog>
-#include <QLabel>
-#include <QProgressBar>
-#include <QToolBar>
 
 namespace Ui {
-    class FenPrincipale;
-}
+	class FenPrincipale;
+};
 
 class FenPrincipale : public QMainWindow {
 	Q_OBJECT
 
-public:
-	explicit FenPrincipale(QWidget *parent = 0);
-	~FenPrincipale();
-	QString version;
+	public:
+		explicit FenPrincipale(
+			QSettings *preferences, QSplashScreen *splash, QWidget *parent = 0
+		);
+		~FenPrincipale();
+		static int const EXIT_CODE_REBOOT;
+		static QString const VERSION;
+		bool confirm(QString title, QString text, QString icon);
+		void msg(QString title, QString text, QString icon);
+		void restart();
+		bool load_ratings(QString filename);
+		void update_ratings_js();
 
-private:
-	Ui::FenPrincipale *ui;
-	QWebView *pageWeb;
-	QWebFrame *pageWebFrame;
-	QString classement;
-	QProgressBar *progres;
-	QLabel *texteProgres;
-	int etapeActuelle;
-	bool hasModif;
+	private:
+		Ui::FenPrincipale *ui;
+		QString filename;
+		bool hasModif;
+		int etapeActuelle;
+		QSettings *preferences;
+		QSplashScreen *splash;
+		int splashDone;
+		QByteArray ratings;
+		QString file_ratings;
+		QString version_ratings;
+		QWebView *webView;
+		QWebFrame *webFrame;
+		QProgressBar *progress;
+		QLabel *progressText;
+		QProgressDialog *progressDialog;
+		QWebInspector *inspector;
+		QMainWindow *fenRatings;
+		QMainWindow *fenAide;
+		QString data;
+		void set_titre();
+		void addProgressBar(QString text);
+		void removeProgressBar();
+		bool confirm_close();
+			// Classement.cpp
+		void ouvrir(QString name);
+		void ouvrir_failed(bool msg);
+		void load_recents();
+		void enregistrer(QString name);
+		void enregistrer_failed(bool msg);
+		QString get_printed_html(QString html);
+			// MAJ.cpp
+		QNetworkReply *download(QString url, const char *slot);
+		bool check_reply(QNetworkReply *reply);
+		void update_deri();
+		void update_ratings();
+		void download_ratings();
 
-private slots:
-	void attachObject();
-	void chargementTermine(bool ok);
-	void addProgressBar(QString texte);
-	void removeProgressBar();
-	void setTitre();
-	bool ouvrirClassement(QString fileName);
-	void on_actionNouveau_triggered();
-	bool on_actionOuvrir_triggered();
-	void on_actionEnregistrer_triggered();
-	void on_actionEnregistrer_sous_triggered();
-	void on_actionAide_triggered();
-	void on_actionConsulter_les_ratings_triggered();
-	void on_actionExtraits_des_R_gles_de_Course_triggered();
-	void on_action_propos_triggered();
-	void on_actionImprimer_triggered();
-	void on_actionExporter_triggered();
-	void on_actionExporter_en_HTML_triggered();
-	void closeEvent(QCloseEvent *event);
-	void updater(QNetworkReply *reply);
+	public slots:
+		void modif();
+		void set_etape(int nb);
+		void calculer();
+		void calculer_callback(QString msg);
+		void progression(int nb);
+		QString get_ratings();
+		QString get_data();
+			// Classement.cpp
+		void ouvrir_callback(bool ok);
+		void enregistrer_callback(QString data);
+		void pdf_callback(QString html);
+		void html_callback(QString html);
 
-public slots:
-	void calculer();
-	void calculM(QString message);
-	void progression(int nb);
-	bool enregistrer(QString donnees);
-	void ouvrir(QString message);
-	bool exporterHTML(QString html);
-	void setEtape(int nb);
-	void modif();
+	private slots:
+		void attach_javascript();
+		void load_finished(bool ok);
+		void on_francais_triggered();
+		void on_english_triggered();
+		void on_ratings_triggered();
+		void on_aide_triggered();
+		void on_site_web_triggered();
+		void on_propos_triggered();
+		void closeEvent(QCloseEvent *event);
+			// Classement.cpp
+		void on_nouveau_triggered();
+		void on_ouvrir_triggered();
+		void on_recent1_triggered();
+		void on_recent2_triggered();
+		void on_recent3_triggered();
+		void on_recent4_triggered();
+		void on_recent5_triggered();
+		void on_recents_clean_triggered();
+		void on_enregistrer_triggered();
+		void on_enregistrer_sous_triggered();
+		void on_pdf_triggered();
+		void on_html_triggered();
+		void on_quitter_triggered();
+			// MAJ.cpp
+				// Menu
+		void on_maj_deri_triggered();
+		void on_maj_deri_auto_triggered();
+		void on_maj_deri_manu_triggered();
+		void on_maj_ratings_triggered();
+		void on_maj_ratings_auto_triggered();
+		void on_maj_ratings_manu_triggered();
+				// Network
+		void maj_deri_done(QNetworkReply *reply);
+		void update_deri_done(QNetworkReply *reply);
+		void maj_ratings_done(QNetworkReply *reply);
+		void update_ratings_done(QNetworkReply *reply);
+		void download_progress(qint64, qint64);
+		void download_ratings_done(QNetworkReply *reply);
+		void download_canceled();
+
 };
+
+
+/*class pageRatings : public QWebPage {
+	Q_OBJECT
+
+	public slots:
+		bool shouldInterruptJavaScript() {
+			QApplication::processEvents();
+			return false;
+		}
+};*/
 
 #endif // FENPRINCIPALE_H

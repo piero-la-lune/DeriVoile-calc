@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+<!--
+
+###################    DériVoile calc' - Français    ###################
+
+Version : v6-5
+Date : 2013-06-19
+Licence : dans le fichier « COPYING »
+Site web : http://calc.derivoile.fr
+
+Copyright © 2011-2012 Pierre Monchalin, http://derivoile.fr
+Pensez à me laisser un petit mot si vous distribuez une copie !
+
+DériVoile calc' est un logiciel libre : vous pouvez le redistribuer ou
+le modifier selon les termes de la GNU General Public Licence tels que
+publiés par la Free Software Foundation : à votre choix, soit la
+version 3 de la licence, soit une version ultérieure quelle qu'elle
+soit.
+
+DériVoile calc' est distribué dans l'espoir qu'il sera utile, mais SANS
+AUCUNE GARANTIE ; sans même la garantie implicite de QUALITÉ MARCHANDE
+ou D'ADÉQUATION À UNE UTILISATION PARTICULIÈRE. Pour plus de détails,
+reportez-vous à la GNU General Public License.
+
+Vous devez avoir reçu une copie de la GNU General Public License avec
+DériVoile calc'. Si ce n'est pas le cas, consultez
+<http://www.gnu.org/licenses/>
+
+###################    DériVoile calc' - English    ###################
+
+Version : v6-5
+Date : 2013-06-19
+Licence : see file “COPYING”
+Web site : http://calc.derivoile.fr
+
+Copyright © 2011-2012 Pierre Monchalin, http://derivoile.fr
+Remember to leave me a note if you distribute a copy!
+
+DériVoile calc' is free software: you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+DériVoile calc' is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with DériVoile calc'. If not, see
+<http://www.gnu.org/licenses/>
+
+-->
+
+
+		<title>Étape 1</title>
+		<link rel="stylesheet" type="text/css" media="all" href="./style.css" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	</head>
+
+	<body>
+
+		<h1>Étape 1</h1>
+
+		<section>
+
+			<p>La première étape a pour but de récupérer les informations générales de la régate.</p>
+
+			<h2>Nom de la régate</h2>
+
+			<p>Vous pouvez donner un nom à la régate, bien que cela soit facultatif. Ce nom apparaîtra dans l'entête du classement final.</p>
+
+			<h2>Classement scratch</h2>
+
+			<p>Un <i>classement scratch</i> (ou encore <i>classement en temps réel</i>) est un classement qui ne tient pas compte du temps que mettent les concurrents à terminer le parcours, mais uniquement de leur place d'arrivée.</p>
+
+			<p>C'est donc un classement particulièrement adapté lorsque tous les bateaux en compétition sont identiques, puisqu'il suffit de noter l'ordre d'arrivée des équipages.</p>
+
+			<h2>Classement en temps compensé</h2>
+
+			<p>Dès que des bateaux différents participent à la régate, il vaut mieux utiliser un <i>classement en temps compensé</i>, bien que cela demande de chronométrer le temps de chaque équipage. Ce temps est ensuite automatiquement ajusté par DériVoile calc' en fonction du bateau (système de ratings), de manière à rétablir l'équilibre entre les bateaux les plus rapides et les plus lents.</p>
+
+			<h3>Ratings utilisés</h3>
+
+			<p>DériVoile calc' propose plusieurs systèmes de ratings, de manière à couvrir tous les possibilités :</p>
+			<ul>
+				<li>Les ratings de la Fédération Français de Voile sont à utiliser en priorité. Cependant, ils ne permettent pas de rassembler dériveurs et multicoques dans un même classement.</li>
+				<li>Les ratings de la Royal Yachting Association (ou <i>Portsmouth Numbers</i>, Angleterre) permettent eux de mélanger dériveurs et multicoques. Cependant, peu de dériveurs et multicoques sont disponibles, et aucun habitable.</li>
+				<li>Les ratings de DériVoile calc' sont une extrapolation des Portsmouth Numbers de la RYA à tous les bateaux. Ils permettent de rassembler dans un même classement tous les types de bateaux, mais ne sont absolument pas officiels !</li>
+			</ul>
+			<p>Pour plus d'information, consultez la <a href="./ratings.html">page sur les ratings</a>.</p>
+
+			<h3>Types de bateaux</h3>
+
+			<p>Choisir les types de bateaux participant à la régate permet de réduire la liste de choix lors de la sélection du bateau de chaque équipage.</p>
+			<p>Attention, certaines combinaisons ne sont pas possibles, cela dépend des ratings utilisés (cf. partie précédente).</p>
+
+		</section>
+
+	</body>
+</html>

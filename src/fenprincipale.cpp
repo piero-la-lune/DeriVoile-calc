@@ -51,43 +51,133 @@ along with DériVoile calc'. If not, see
 
 */
 
-#include "popup.h"
-#include "fenprincipale.h"
-#include "ui_fenprincipale.h"
+#include "FenPrincipale.h"
+#include "ui_FenPrincipale.h"
 
-FenPrincipale::FenPrincipale(QWidget *parent) : QMainWindow(parent), ui(new Ui::FenPrincipale) {
+#include "FenAide.h"
+#include "FenPropos.h"
+#include "FenRatings.h"
 
-	version = "v6-5";
+int const FenPrincipale::EXIT_CODE_REBOOT = -123456789;
+QString const FenPrincipale::VERSION = "v6-5";
+
+FenPrincipale::FenPrincipale(
+	QSettings *preferences, QSplashScreen *splash, QWidget *parent) :
+	QMainWindow(parent),
+	ui(new Ui::FenPrincipale)
+{
+
+	this->preferences = preferences;
+	this->splash = splash;
+
+	this->filename = QString("");
+	this->hasModif = false;
+	this->etapeActuelle = 1;
+	this->splashDone = 1;
 
 	ui->setupUi(this);
-	showMaximized();
+	QActionGroup *group_langue = new QActionGroup(this);
+	group_langue->addAction(ui->francais);
+	group_langue->addAction(ui->english);
+	if (preferences->value("language", "FR").toString() == "EN") {
+		ui->english->setChecked(true);
+	}
+	QActionGroup *group_maj_ratings = new QActionGroup(this);
+	group_maj_ratings->addAction(ui->maj_ratings_auto);
+	group_maj_ratings->addAction(ui->maj_ratings_manu);
+	if (preferences->value("auto_maj_ratings", true).toBool() == false) {
+		ui->maj_ratings_manu->setChecked(true);
+	}
+	QActionGroup *group_maj_deri = new QActionGroup(this);
+	group_maj_deri->addAction(ui->maj_deri_auto);
+	group_maj_deri->addAction(ui->maj_deri_manu);
+	if (preferences->value("auto_maj_deri", true).toBool() == false) {
+		ui->maj_deri_manu->setChecked(true);
+	}
 
-	classement = QString("");
-	hasModif = false;
+	this->load_recents();
 
-	pageWeb = new QWebView;
-	pageWebFrame = pageWeb->page()->mainFrame();
+	QFontDatabase::addApplicationFont(":/fonts/SourceSansPro-Regular.ttf");
+	QFontDatabase::addApplicationFont(":/fonts/SourceSansPro-Black.ttf");
+/*	QFont font("Source Sans Pro", 10);
+	QApplication::setFont(font);*/
 
-	attachObject();
-	connect(pageWeb, SIGNAL(loadFinished(bool)), this, SLOT(chargementTermine(bool)));
-	connect(pageWebFrame, SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(attachObject()));
+	splash->showMessage(
+		tr("Chargement des ratings..."),
+		Qt::AlignHCenter | Qt::AlignBottom
+	);
 
-	pageWeb->load(QUrl("qrc:/html/index.html"));
-	pageWeb->setContextMenuPolicy(Qt::NoContextMenu);
-	setCentralWidget(pageWeb);
+	if (!load_ratings(
+		preferences->value("ratings", ":/ratings.json").toString()
+	)) {
+		load_ratings(":/ratings.json");
+	}
 
-	progres = new QProgressBar;
-	progres->setMaximumWidth(150);
-	texteProgres = new QLabel("");
-	statusBar()->addPermanentWidget(texteProgres);
-	statusBar()->addPermanentWidget(progres);
-	this->setTitre();
+	webView = new QWebView;
+/*	webView->settings()->setAttribute(QWebSettings::WebAttribute::DeveloperExtrasEnabled, true);
+	inspector = new QWebInspector;
+	inspector->setPage(webView->page());
+	inspector->setFixedSize(800, 600);
+	inspector->setVisible(true);*/
+	webFrame = webView->page()->mainFrame();
 
-	statusBar()->showMessage("DériVoile calc' est un programme proposé par DériVoile (http://derivoile.fr). © 2011-2012 Pierre Monchalin");
+	attach_javascript();
+	connect(
+		webView,
+		SIGNAL(loadFinished(bool)),
+		this,
+		SLOT(load_finished(bool))
+	);
+	connect(
+		webFrame,
+		SIGNAL(javaScriptWindowObjectCleared()),
+		this,
+		SLOT(attach_javascript())
+	);
 
-	QNetworkAccessManager *manager = new QNetworkAccessManager(this);
-	connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(updater(QNetworkReply*)));
-	manager->get(QNetworkRequest(QUrl("http://calc.derivoile.fr/common/version.txt")));
+	splash->showMessage(
+		tr("Chargement..."),
+		Qt::AlignHCenter | Qt::AlignBottom
+	);
+
+	webView->load(QUrl("qrc:/html/DeriVoile-calc.html"));
+	webView->setContextMenuPolicy(Qt::NoContextMenu);
+	setCentralWidget(webView);
+
+	this->progressText = new QLabel("");
+	statusBar()->addPermanentWidget(progressText);
+	this->progress = new QProgressBar;
+	this->progress->setMaximumWidth(150);
+	statusBar()->addPermanentWidget(progress);
+
+	set_titre();
+	statusBar()->showMessage(
+		tr("DériVoile calc' est un programme proposé par DériVoile (http://derivoile.fr). © 2011-2013 Pierre Monchalin")
+	);
+	
+	if (preferences->value("auto_maj_ratings", true).toBool()) {
+		splash->showMessage(
+			tr("Recherche de mises à jour..."),
+			Qt::AlignHCenter | Qt::AlignBottom
+		);
+		qApp->processEvents();
+		this->splashDone++;
+		update_ratings();
+	}
+	if (preferences->value("auto_maj_deri", true).toBool()) {
+		splash->showMessage(
+			tr("Recherche de mises à jour..."),
+			Qt::AlignHCenter | Qt::AlignBottom
+		);
+		qApp->processEvents();
+		this->splashDone++;
+		update_deri();
+	}
+
+	while (this->splashDone > 0) { qApp->processEvents(); }
+
+	splash->hide();
+	this->showMaximized();
 
 }
 
@@ -95,262 +185,198 @@ FenPrincipale::~FenPrincipale() {
 	delete ui;
 }
 
-void FenPrincipale::updater(QNetworkReply *reply) {
-	QByteArray rep = reply->readAll();
-	QString reponse = rep;
-	if (reponse != "" && reponse != version) {
-		QMessageBox::information(this, "Nouvelle version disponible", "<p>Une nouvelle version ("+reponse+") de DeriVoile calc' est disponible !</p><p>Vous devriez faire la mise à jour, car d'importants bugs ont peut-être été corrigés : <a href='http://calc.derivoile.fr'>http://calc.derivoile.fr</a></p>");
-	}
-}
-
-void FenPrincipale::attachObject() { pageWebFrame->addToJavaScriptWindowObject("FenPrincipale", this); }
-
-void FenPrincipale::chargementTermine(bool ok) {
-	QStringList args = QCoreApplication::arguments();
-	if (args.count() > 1 && classement.isEmpty()) { // si c'est réellement l'ouverture de l'application
-		this->addProgressBar("Ouverture du classement :");
-		this->ouvrirClassement(args.at(1));
-	}
-}
-
-void FenPrincipale::addProgressBar(QString texte) {
-	texteProgres->setText(texte);
-}
-
-void FenPrincipale::removeProgressBar() {
-	texteProgres->setText("");
-	progres->reset();
-}
-
-void FenPrincipale::progression(int nb) {
-	progres->setValue(nb);
-	QApplication::processEvents();
-}
-
-void FenPrincipale::modif() {
-	hasModif = true;
-}
-
-void FenPrincipale::setEtape(int nb) {
-	etapeActuelle = nb;
-	if (nb == 4) {
-		ui->actionExporter->setEnabled(true);
-		ui->actionExporter_en_HTML->setEnabled(true);
-		ui->actionImprimer->setEnabled(true);
+void FenPrincipale::set_titre() {
+	if (this->filename == "") {
+		this->setWindowTitle(tr("Nouveau classement – DériVoile calc'"));
 	}
 	else {
-		ui->actionExporter->setEnabled(false);
-		ui->actionExporter_en_HTML->setEnabled(false);
-		ui->actionImprimer->setEnabled(false);
-	}
-}
-
-void FenPrincipale::setTitre() {
-	if (classement == "") {
-		this->setWindowTitle("Nouveau classement – DériVoile calc'");
-	}
-	else {
-		QFileInfo infos(classement);
+		QFileInfo infos(filename);
 		this->setWindowTitle(QString(infos.fileName())+" – DériVoile calc'");
 	}
 }
 
-void FenPrincipale::calculer() {
-	this->addProgressBar("Calcul du classement :");
-	QApplication::processEvents();
-	pageWebFrame->evaluateJavaScript("var c = new Calcul(); c.initialisation();");
-	QApplication::processEvents();
+void FenPrincipale::modif() {
+	this->hasModif = true;
 }
 
-void FenPrincipale::calculM(QString message) {
-	if (!message.isEmpty()) {
-		QMessageBox::warning(this, "Erreur", message);
-	}
-	this->removeProgressBar();
-}
-
-void FenPrincipale::on_actionNouveau_triggered() {
-	if (!hasModif || QMessageBox::warning(this, "Fermeture de ce classement", "Certaines données n'ont pas été enregistrées et vont être perdues.\nVoulez-vous vraiment continuer ?", QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
-		pageWeb->reload();
-		hasModif = false;
-		classement = "";
-		this->setTitre();
-		ui->actionExporter->setEnabled(false);
-		ui->actionExporter_en_HTML->setEnabled(false);
-		ui->actionImprimer->setEnabled(false);
-	}
-}
-
-bool FenPrincipale::on_actionOuvrir_triggered() {
-	if (hasModif && QMessageBox::warning(this, "Fermeture de ce classement", "Certaines données n'ont pas été enregistrées et vont être perdues.\nVoulez-vous vraiment continuer ?", QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes) {
-		return false;
-	}
-	this->addProgressBar("Ouverture du classement :");
-	QString fileName = QFileDialog::getOpenFileName(this, "Ouvrir un classement", "", "Classement (*.race *.txt);;Tous les fichiers (*.*)");
-	if (fileName.isEmpty()) {
-		this->removeProgressBar();
-		statusBar()->showMessage("L'ouverture du classement a échouée.", 3000);
-		return false;
-	}
-	this->ouvrirClassement(fileName);
-	return true;
-}
-
-bool FenPrincipale::ouvrirClassement(QString fileName) {
-	if (!fileName.contains(".race") && !fileName.contains(".txt") && QMessageBox::warning(this, "Attention !", "Ce fichier ne semble pas être un classement créé par DériVoile calc'.\nVoulez-vous vraiment essayer d'ouvrir ce fichier ?", QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes) {
-		this->removeProgressBar();
-		statusBar()->showMessage("L'ouverture du classement a échouée.", 3000);
-		return false;
-	}
-	QFile file(fileName);
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		QMessageBox::critical(this, "Erreur", "Impossible d'ouvrir le classement. Vérifiez que le fichier est accessible en lecture.");
-		file.close();
-		this->removeProgressBar();
-		statusBar()->showMessage("L'ouverture du classement a échouée.", 3000);
-		return false;
-	}
-	QTextStream flux(&file);
-	flux.setCodec("UTF-8");
-	QString contenu = flux.readAll();
-	file.close();
-	classement = fileName;
-	pageWebFrame->evaluateJavaScript("$.ouvrir('"+contenu.replace("'", "\\'")+"');");
-	return true;
-}
-
-void FenPrincipale::ouvrir(QString message) {
-	if (!message.isEmpty()) {
-		QMessageBox::warning(this, "Erreur", message);
-		classement = QString("");
-		statusBar()->showMessage("L'ouverture du classement a échouée.", 3000);
+void FenPrincipale::set_etape(int nb) {
+	etapeActuelle = nb;
+	if (etapeActuelle == 4) {
+		ui->pdf->setEnabled(true);
+		ui->html->setEnabled(true);
 	}
 	else {
-		statusBar()->showMessage("Le classement est prêt à être modifié.", 3000);
-		hasModif = false;
-		this->setTitre();
+		ui->pdf->setEnabled(false);
+		ui->html->setEnabled(false);
+	}
+}
+
+void FenPrincipale::calculer() {
+	this->addProgressBar(tr("Calcul du classement :"));
+	this->webView->setVisible(false);
+	qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
+	this->webFrame->evaluateJavaScript("var c = new Calcul(); c.initialisation();");
+	qApp->processEvents();
+}
+
+void FenPrincipale::calculer_callback(QString msg) {
+	qApp->restoreOverrideCursor();
+	if (!msg.isEmpty()) {
+		this->msg(tr("Erreur"), msg, "x");
 	}
 	this->removeProgressBar();
+	this->webView->setVisible(true);
 }
 
-void FenPrincipale::on_actionEnregistrer_triggered() {
-	statusBar()->showMessage("Enregistrement du classement en cours...");
-	pageWebFrame->evaluateJavaScript("$.enregistrer();");
+void FenPrincipale::addProgressBar(QString text) {
+	this->progressText->setText(text);
+	this->progress->reset();
 }
 
-void FenPrincipale::on_actionEnregistrer_sous_triggered() {
-	statusBar()->showMessage("Enregistrement du classement en cours...");
-	classement = QString("");
-	pageWebFrame->evaluateJavaScript("$.enregistrer();");
+void FenPrincipale::removeProgressBar() {
+	this->progressText->setText("");
+	this->progress->reset();
 }
 
-bool FenPrincipale::enregistrer(QString donnees) {
-	QString fileName = classement;
-	if (fileName.isEmpty()) {
-		fileName = QFileDialog::getSaveFileName(this, "Enregistrer le classement", "", "Classement (*.race *.txt);;Tous les fichiers (*.*)");
-	}
-	if (fileName.isEmpty()) {
-		statusBar()->showMessage("L'enregistrement du classement a échoué.", 3000);
-		return false;
-	}
-	QFile file(fileName);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		QMessageBox::critical(this, "Erreur", "Impossible d'enregistrer le classement. Vérifiez que le fichier est accessible en écriture.");
-		file.close();
-		statusBar()->showMessage("L'enregistrement du classement a échoué.", 3000);
-		return false;
-	}
-	QTextStream flux(&file);
-	flux.setCodec("UTF-8");
-	flux << donnees;
-	file.close();
-	classement = fileName;
-	hasModif = false;
-	this->setTitre();
-	statusBar()->showMessage("Le classement a été enregistré.", 3000);
+void FenPrincipale::progression(int nb) {
+	this->progress->setValue(nb);
+	qApp->processEvents();
+}
+
+QString FenPrincipale::get_data() {
+	// On ne veut pas passer les données directement, pour ne pas avoir à
+	// échapper les ' ou ".
+	return this->data;
+}
+
+bool FenPrincipale::load_ratings(QString filename) {
+	QFile file_ratings(filename);
+		// Check if the file exists
+	if (!file_ratings.exists()) { return false; }
+		// Read the file
+	file_ratings.open(QIODevice::ReadOnly);
+	QByteArray ratings = file_ratings.readAll();
+	file_ratings.close();
+		// Check the json structure
+	QJsonDocument doc_ratings = QJsonDocument::fromJson(ratings);
+	if (doc_ratings.isNull()) { return false; }
+	this->ratings = ratings;
+	this->file_ratings = filename;
+	this->version_ratings = doc_ratings.object().value("version").toString();
+	preferences->setValue("ratings", filename);
 	return true;
+}
+
+QString FenPrincipale::get_ratings() {
+	return QString::fromUtf8(this->ratings);
+}
+
+void FenPrincipale::update_ratings_js() {
+	this->webFrame->evaluateJavaScript("$.update_ratings();");
+}
+
+void FenPrincipale::attach_javascript() {
+	this->webFrame->addToJavaScriptWindowObject("FenPrincipale", this);
+}
+
+void FenPrincipale::load_finished(bool ok) {
+	if (ok) {
+		QStringList args = QCoreApplication::arguments();
+		if (args.count() > 1
+			&& filename.isEmpty()
+		) {
+			this->addProgressBar(tr("Ouverture du classement :"));
+			this->ouvrir(args.at(1));
+		}
+	}
+	this->splashDone--;
+}
+
+bool FenPrincipale::confirm(QString title, QString text, QString icon) {
+	QMessageBox msgBox;
+	msgBox.setWindowTitle(title);
+	msgBox.setText(text);
+	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+	msgBox.setButtonText(QMessageBox::Yes, tr("Oui"));
+	msgBox.setButtonText(QMessageBox::Cancel, tr("Annuler"));
+	msgBox.setDefaultButton(QMessageBox::Cancel);
+	if (icon == "!") {
+		msgBox.setIcon(QMessageBox::Warning);
+	}
+	else {
+		msgBox.setIcon(QMessageBox::Question);
+	}
+	return (msgBox.exec() == QMessageBox::Yes);
+}
+void FenPrincipale::msg(QString title, QString text, QString icon) {
+	QMessageBox msgBox;
+	msgBox.setWindowTitle(title);
+	msgBox.setText(text);
+	msgBox.setStandardButtons(QMessageBox::Ok);
+	msgBox.setButtonText(QMessageBox::Ok, tr("OK"));
+	msgBox.setDefaultButton(QMessageBox::Ok);
+	if (icon == "i") {
+		msgBox.setIcon(QMessageBox::Information);
+	}
+	else {
+		msgBox.setIcon(QMessageBox::Critical);
+	}
+	msgBox.exec();
+}
+
+void FenPrincipale::on_francais_triggered() {
+	preferences->setValue("language", "FR");
+	this->restart();
+}
+void FenPrincipale::on_english_triggered() {
+	preferences->setValue("language", "EN");
+	this->restart();
+}
+
+void FenPrincipale::on_ratings_triggered() {
+	fenRatings = new FenRatings(this, this->file_ratings, this);
+	fenRatings->show();
+}
+
+void FenPrincipale::on_aide_triggered() {
+	fenAide = new FenAide(this);
+	fenAide->show();
+}
+void FenPrincipale::on_site_web_triggered() {
+	QDesktopServices::openUrl(QUrl("http://calc.derivoile.fr"));
+}
+void FenPrincipale::on_propos_triggered() {
+    FenPropos window(this);
+    window.exec();
+}
+
+bool FenPrincipale::confirm_close() {
+	return !this->hasModif || this->confirm(
+		tr("Fermeture du classement"),
+		tr("Certaines données n'ont pas été enregistrées et vont être perdues.\nVoulez-vous vraiment continuer ?"),
+		"!");
+}
+
+void FenPrincipale::restart() {
+	if (this->confirm(
+			tr("Redémarrage nécéssaire"),
+			tr("L'application doit être redémarrée pour que les changements s'appliquent.\nVoulez-vous continuer ?"),
+			"!")
+	) {
+		if (this->confirm_close()) {
+			qApp->exit(FenPrincipale::EXIT_CODE_REBOOT);
+		}
+	}
 }
 
 void FenPrincipale::closeEvent(QCloseEvent * event) {
-	if (hasModif && QMessageBox::warning(this, "Fermeture de ce classement", "Certaines données n'ont pas été enregistrées et vont être perdues.\nVoulez-vous vraiment continuer ?", QMessageBox::Yes | QMessageBox::No) != QMessageBox::Yes) {
+	if (!this->confirm_close()) {
 		event->ignore();
 	}
 }
 
-void FenPrincipale::on_actionAide_triggered() {
-	popup *aide = new popup("qrc:/html/aide.html", "Aide – DériVoile calc'", this);
-	aide->exec();
-}
 
-void FenPrincipale::on_actionConsulter_les_ratings_triggered() {
-	popup *ratings = new popup("qrc:/html/ratings.html", "Consulter les ratings – DériVoile calc'", this);
-	ratings->exec();
-}
 
-void FenPrincipale::on_actionExtraits_des_R_gles_de_Course_triggered() {
-	popup *regles = new popup("qrc:/html/regles.html", "Extraits des Règles de Course – DériVoile calc'", this);
-	regles->exec();
-}
 
-void FenPrincipale::on_action_propos_triggered() {
-	popup *apropos = new popup("qrc:/html/apropos.html", "À propos – DériVoile calc'", this);
-	apropos->exec();
-}
-
-void FenPrincipale::on_actionImprimer_triggered() {
-	if (etapeActuelle != 4) { QMessageBox::warning(this, "Action impossible", "Cliquez d'abord sur « Classement »."); }
-	else {
-		QPrinter printer;
-		printer.setPageSize(QPrinter::A4);
-		QPrintDialog printDialog(&printer, this);
-		if (printDialog.exec() == QDialog::Accepted) {
-			pageWeb->print(&printer);
-			statusBar()->showMessage("Le classement a été imprimé.", 3000);
-		}
-	}
-}
-
-void FenPrincipale::on_actionExporter_triggered() {
-	if (etapeActuelle != 4) { QMessageBox::warning(this, "Action impossible", "Cliquez d'abord sur « Classement »."); }
-	else {
-		QPrinter printer;
-		printer.setPageSize(QPrinter::A4);
-		printer.setOutputFormat(QPrinter::PdfFormat);
-
-		QString fileName = QFileDialog::getSaveFileName(this, "Exporter en PDF...", "", "Fichier PDF (*.pdf)");
-
-		if (!fileName.isEmpty()) {
-			printer.setOutputFileName(fileName);
-			pageWeb->print(&printer);
-			statusBar()->showMessage("Le classement a été exporté en PDF.", 3000);
-		}
-	}
-}
-
-void FenPrincipale::on_actionExporter_en_HTML_triggered() {
-	if (etapeActuelle != 4) { QMessageBox::warning(this, "Action impossible", "Cliquez d'abord sur « Classement »."); }
-	else {
-		pageWebFrame->evaluateJavaScript("$.exporterHTML();");
-	}
-}
-
-bool FenPrincipale::exporterHTML(QString html) {
-	QString fileName = QFileDialog::getSaveFileName(this, "Exporter en HTML...", "", "Fichier HTML (*.html)");
-	if (fileName.isEmpty()) {
-		statusBar()->showMessage("L'export a échoué.", 3000);
-		return false;
-	}
-	QFile file(fileName);
-	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		QMessageBox::critical(this, "Erreur", "Impossible d'exporter le classement. Vérifiez que le fichier est accessible en écriture.");
-		file.close();
-		statusBar()->showMessage("L'export a échoué.", 3000);
-		return false;
-	}
-	QTextStream flux(&file);
-	flux.setCodec("UTF-8");
-	flux << html;
-	file.close();
-	statusBar()->showMessage("Le classement a été exporté en HTML.", 3000);
-	return true;
-}
+#include "MAJ.cpp"
+#include "Classement.cpp"

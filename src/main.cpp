@@ -51,28 +51,43 @@ along with DériVoile calc'. If not, see
 
 */
 
+#include "FenPrincipale.h"
+
 #include <QApplication>
-#include <QtGui>
+#include <QSettings>
 #include <QTranslator>
-#include <QLocale>
-#include <QLibraryInfo>
 #include <QSplashScreen>
-#include <QPixmap>
-#include "fenprincipale.h"
 
 int main(int argc, char* argv[]) {
+
 	QApplication app(argc, argv);
 
-	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+	int exit_code = FenPrincipale::EXIT_CODE_REBOOT;
+	while (exit_code == FenPrincipale::EXIT_CODE_REBOOT) {
 
-	QString locale = QLocale::system().name().section('_', 0, 0);
-	QTranslator translator;
-	translator.load(QString("qt_") + locale, QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-	app.installTranslator(&translator);
+		QSplashScreen splash(QPixmap(":/img/splash.png"));
+		splash.showMessage(
+			"Chargement des préférences...",
+			Qt::AlignHCenter | Qt::AlignBottom
+		);
+		qApp->processEvents();
+		splash.show();
+		qApp->processEvents();
 
-	// Ouverture de la fenêtre principale du navigateur
-	FenPrincipale principale;
-	principale.show();
+		QSettings preferences(
+			QDir::currentPath() + "/preferences.ini",
+			QSettings::IniFormat
+		);
 
-	return app.exec();
+		QTranslator translator;
+		translator.load(preferences.value("language", "FR").toString(), ":/translations");
+		app.installTranslator(&translator);
+
+		FenPrincipale window(&preferences, &splash);
+
+		exit_code = app.exec();
+
+	}
+
+    return exit_code;
 }

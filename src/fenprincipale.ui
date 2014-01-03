@@ -16,16 +16,11 @@
     <height>600</height>
    </rect>
   </property>
-  <property name="font">
-   <font>
-    <pointsize>9</pointsize>
-   </font>
-  </property>
   <property name="windowTitle">
    <string notr="true">DériVoile calc'</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="ressources.qrc">
+   <iconset resource="resources.qrc">
     <normaloff>:/icones/icone.png</normaloff>:/icones/icone.png</iconset>
   </property>
   <property name="autoFillBackground">
@@ -48,29 +43,76 @@
     <property name="title">
      <string>Classement</string>
     </property>
-    <addaction name="actionNouveau"/>
-    <addaction name="actionOuvrir"/>
+    <widget class="QMenu" name="menuClassement_r_cents">
+     <property name="title">
+      <string>Classement récents</string>
+     </property>
+     <addaction name="recent1"/>
+     <addaction name="recent2"/>
+     <addaction name="recent3"/>
+     <addaction name="recent4"/>
+     <addaction name="recent5"/>
+     <addaction name="separator"/>
+     <addaction name="recents_clean"/>
+    </widget>
+    <addaction name="nouveau"/>
+    <addaction name="ouvrir"/>
+    <addaction name="menuClassement_r_cents"/>
     <addaction name="separator"/>
-    <addaction name="actionEnregistrer"/>
-    <addaction name="actionEnregistrer_sous"/>
+    <addaction name="enregistrer"/>
+    <addaction name="enregistrer_sous"/>
     <addaction name="separator"/>
-    <addaction name="actionExporter"/>
-    <addaction name="actionExporter_en_HTML"/>
-    <addaction name="actionImprimer"/>
+    <addaction name="pdf"/>
+    <addaction name="html"/>
+    <addaction name="separator"/>
+    <addaction name="quitter"/>
    </widget>
-   <widget class="QMenu" name="menu_propos">
+   <widget class="QMenu" name="menuAide">
     <property name="title">
-     <string>À propos</string>
+     <string>Aide</string>
     </property>
-    <addaction name="actionAide"/>
+    <addaction name="aide"/>
+    <addaction name="site_web"/>
+    <addaction name="propos"/>
+   </widget>
+   <widget class="QMenu" name="menuPreferences">
+    <property name="title">
+     <string>Préférences</string>
+    </property>
+    <widget class="QMenu" name="menuMajRatings">
+     <property name="title">
+      <string>Mise à jour des ratings</string>
+     </property>
+     <addaction name="maj_ratings_auto"/>
+     <addaction name="maj_ratings_manu"/>
+     <addaction name="separator"/>
+     <addaction name="maj_ratings"/>
+    </widget>
+    <widget class="QMenu" name="menuMajDeri">
+     <property name="title">
+      <string>Mise à jour de Dérivoile calc'</string>
+     </property>
+     <addaction name="maj_deri_auto"/>
+     <addaction name="maj_deri_manu"/>
+     <addaction name="separator"/>
+     <addaction name="maj_deri"/>
+    </widget>
+    <widget class="QMenu" name="menuLangue">
+     <property name="title">
+      <string>Langue</string>
+     </property>
+     <addaction name="francais"/>
+     <addaction name="english"/>
+    </widget>
+    <addaction name="ratings"/>
+    <addaction name="menuLangue"/>
     <addaction name="separator"/>
-    <addaction name="actionConsulter_les_ratings"/>
-    <addaction name="actionExtraits_des_R_gles_de_Course"/>
-    <addaction name="separator"/>
-    <addaction name="action_propos"/>
+    <addaction name="menuMajRatings"/>
+    <addaction name="menuMajDeri"/>
    </widget>
    <addaction name="menuClassement"/>
-   <addaction name="menu_propos"/>
+   <addaction name="menuPreferences"/>
+   <addaction name="menuAide"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -92,21 +134,23 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionNouveau"/>
-   <addaction name="actionOuvrir"/>
-   <addaction name="actionEnregistrer"/>
+   <addaction name="nouveau"/>
+   <addaction name="ouvrir"/>
+   <addaction name="enregistrer"/>
    <addaction name="separator"/>
-   <addaction name="actionExporter_en_HTML"/>
-   <addaction name="actionExporter"/>
-   <addaction name="actionImprimer"/>
+   <addaction name="pdf"/>
+   <addaction name="html"/>
   </widget>
-  <action name="actionNouveau">
+  <action name="nouveau">
    <property name="icon">
-    <iconset resource="ressources.qrc">
+    <iconset resource="resources.qrc">
      <normaloff>:/icones/document-new.png</normaloff>:/icones/document-new.png</iconset>
    </property>
    <property name="text">
     <string>Nouveau</string>
+   </property>
+   <property name="toolTip">
+    <string>Créer un nouveau classement.</string>
    </property>
    <property name="statusTip">
     <string>Créer un nouveau classement.</string>
@@ -115,148 +159,321 @@
     <string>Ctrl+N</string>
    </property>
   </action>
-  <action name="actionOuvrir">
+  <action name="ouvrir">
    <property name="icon">
-    <iconset resource="ressources.qrc">
+    <iconset resource="resources.qrc">
      <normaloff>:/icones/document-open.png</normaloff>:/icones/document-open.png</iconset>
    </property>
    <property name="text">
     <string>Ouvrir</string>
    </property>
+   <property name="toolTip">
+    <string>Ouvrir un classement existant.</string>
+   </property>
    <property name="statusTip">
-    <string>Ouvrir un classement existant (*.race).</string>
+    <string>Ouvrir un classement existant.</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="actionEnregistrer">
+  <action name="enregistrer">
    <property name="icon">
-    <iconset resource="ressources.qrc">
+    <iconset resource="resources.qrc">
      <normaloff>:/icones/document-save.png</normaloff>:/icones/document-save.png</iconset>
    </property>
    <property name="text">
     <string>Enregistrer</string>
    </property>
+   <property name="toolTip">
+    <string>Enregistrer ce classement.</string>
+   </property>
    <property name="statusTip">
-    <string>Enregistrer ce classement (*.race).</string>
+    <string>Enregistrer ce classement.</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="actionExporter">
+  <action name="pdf">
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="ressources.qrc">
+    <iconset resource="resources.qrc">
      <normaloff>:/icones/application-pdf.png</normaloff>:/icones/application-pdf.png</iconset>
    </property>
    <property name="text">
     <string>Exporter en PDF...</string>
    </property>
    <property name="iconText">
-    <string>PDF</string>
+    <string>Exporter en PDF...</string>
+   </property>
+   <property name="toolTip">
+    <string>Exporter ce classement au format PDF.</string>
    </property>
    <property name="statusTip">
     <string>Exporter ce classement au format PDF.</string>
    </property>
   </action>
-  <action name="actionImprimer">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
+  <action name="aide">
    <property name="icon">
-    <iconset resource="ressources.qrc">
-     <normaloff>:/icones/document-print.png</normaloff>:/icones/document-print.png</iconset>
-   </property>
-   <property name="text">
-    <string>Imprimer</string>
-   </property>
-   <property name="statusTip">
-    <string>Imprimer ce classement.</string>
-   </property>
-   <property name="font">
-    <font/>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+P</string>
-   </property>
-  </action>
-  <action name="actionAide">
-   <property name="icon">
-    <iconset resource="ressources.qrc">
+    <iconset resource="resources.qrc">
      <normaloff>:/icones/help-contents.png</normaloff>:/icones/help-contents.png</iconset>
    </property>
    <property name="text">
     <string>Aide</string>
    </property>
+   <property name="toolTip">
+    <string>Consulter l'aide au fonctionnement de Dérivoile calc'.</string>
+   </property>
    <property name="statusTip">
-    <string>Questions fréquentes.</string>
+    <string>Consulter l'aide au fonctionnement de Dérivoile calc'.</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
    </property>
   </action>
-  <action name="actionConsulter_les_ratings">
+  <action name="propos">
    <property name="text">
-    <string>Consulter les ratings</string>
+    <string>À propos de DériVoile calc'...</string>
    </property>
-  </action>
-  <action name="actionExtraits_des_R_gles_de_Course">
-   <property name="text">
-    <string>Extraits des Régles de Course</string>
+   <property name="iconText">
+    <string>À propos de DériVoile calc'...</string>
    </property>
-  </action>
-  <action name="action_propos">
-   <property name="icon">
-    <iconset resource="ressources.qrc">
-     <normaloff>:/icones/help-about.png</normaloff>:/icones/help-about.png</iconset>
-   </property>
-   <property name="text">
-    <string>À propos...</string>
+   <property name="toolTip">
+    <string>À propos de DériVoile calc'...</string>
    </property>
    <property name="statusTip">
     <string>À propos de DériVoile calc'...</string>
    </property>
   </action>
-  <action name="actionEnregistrer_sous">
+  <action name="enregistrer_sous">
    <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="ressources.qrc">
+    <iconset resource="resources.qrc">
      <normaloff>:/icones/document-save-as.png</normaloff>:/icones/document-save-as.png</iconset>
    </property>
    <property name="text">
     <string>Enregistrer sous...</string>
    </property>
+   <property name="iconText">
+    <string>Enregistrer sous...</string>
+   </property>
+   <property name="toolTip">
+    <string>Enregistrer ce classement sous un autre nom.</string>
+   </property>
    <property name="statusTip">
-    <string>Enregistrer ce classement dans un nouveau fichier (*.race).</string>
+    <string>Enregistrer ce classement sous un autre nom.</string>
    </property>
   </action>
-  <action name="actionExporter_en_HTML">
+  <action name="html">
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset resource="ressources.qrc">
+    <iconset resource="resources.qrc">
      <normaloff>:/icones/text-html.png</normaloff>:/icones/text-html.png</iconset>
    </property>
    <property name="text">
     <string>Exporter en HTML...</string>
    </property>
    <property name="iconText">
-    <string>HTML</string>
+    <string>Exporter en HTML...</string>
+   </property>
+   <property name="toolTip">
+    <string>Exporter ce classement au format HTML.</string>
    </property>
    <property name="statusTip">
     <string>Exporter ce classement au format HTML.</string>
    </property>
   </action>
+  <action name="ratings">
+   <property name="text">
+    <string>Ratings utilisés...</string>
+   </property>
+   <property name="iconText">
+    <string>Ratings utilisés...</string>
+   </property>
+   <property name="toolTip">
+    <string>Changer le fichier de référence des ratings .</string>
+   </property>
+   <property name="statusTip">
+    <string>Changer le fichier de référence des ratings .</string>
+   </property>
+  </action>
+  <action name="maj_ratings_auto">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Automatique</string>
+   </property>
+   <property name="toolTip">
+    <string>Rechercher automatiquement les nouvelles mises à jour.</string>
+   </property>
+   <property name="statusTip">
+    <string>Rechercher automatiquement les nouvelles mises à jour.</string>
+   </property>
+  </action>
+  <action name="maj_ratings_manu">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Manuelle</string>
+   </property>
+   <property name="toolTip">
+    <string>Ne pas rechercher automatiquement les nouvelles mises à jour.</string>
+   </property>
+   <property name="statusTip">
+    <string>Ne pas rechercher automatiquement les nouvelles mises à jour.</string>
+   </property>
+  </action>
+  <action name="maj_ratings">
+   <property name="text">
+    <string>Rechercher une mise à jour...</string>
+   </property>
+   <property name="iconText">
+    <string>Rechercher une mise à jour...</string>
+   </property>
+   <property name="toolTip">
+    <string>Rechercher une mise à jour...</string>
+   </property>
+   <property name="statusTip">
+    <string>Rechercher une mise à jour...</string>
+   </property>
+  </action>
+  <action name="maj_deri_auto">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Automatique</string>
+   </property>
+   <property name="toolTip">
+    <string>Rechercher automatiquement les nouvelles mises à jour.</string>
+   </property>
+   <property name="statusTip">
+    <string>Rechercher automatiquement les nouvelles mises à jour.</string>
+   </property>
+  </action>
+  <action name="maj_deri_manu">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Manuelle</string>
+   </property>
+   <property name="toolTip">
+    <string>Ne pas rechercher automatiquement les nouvelles mises à jour.</string>
+   </property>
+   <property name="statusTip">
+    <string>Ne pas rechercher automatiquement les nouvelles mises à jour.</string>
+   </property>
+  </action>
+  <action name="maj_deri">
+   <property name="text">
+    <string>Rechercher une mise à jour...</string>
+   </property>
+   <property name="iconText">
+    <string>Rechercher une mise à jour...</string>
+   </property>
+   <property name="toolTip">
+    <string>Rechercher une mise à jour...</string>
+   </property>
+   <property name="statusTip">
+    <string>Rechercher une mise à jour...</string>
+   </property>
+  </action>
+  <action name="francais">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Français</string>
+   </property>
+  </action>
+  <action name="english">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>English</string>
+   </property>
+  </action>
+  <action name="quitter">
+   <property name="text">
+    <string>Quitter</string>
+   </property>
+   <property name="toolTip">
+    <string>Quitter DériVoile calc'</string>
+   </property>
+   <property name="statusTip">
+    <string>Quitter DériVoile calc'</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="recent1">
+   <property name="text">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="recent2">
+   <property name="text">
+    <string>2</string>
+   </property>
+  </action>
+  <action name="recent3">
+   <property name="text">
+    <string>3</string>
+   </property>
+  </action>
+  <action name="recent4">
+   <property name="text">
+    <string>4</string>
+   </property>
+  </action>
+  <action name="recent5">
+   <property name="text">
+    <string>5</string>
+   </property>
+  </action>
+  <action name="recents_clean">
+   <property name="text">
+    <string>Effacer cette liste</string>
+   </property>
+   <property name="statusTip">
+    <string>Effacer cette liste</string>
+   </property>
+  </action>
+  <action name="site_web">
+   <property name="text">
+    <string>Site web (calc.derivoile.fr)</string>
+   </property>
+   <property name="toolTip">
+    <string>Accèder au site web de DériVoile calc'...</string>
+   </property>
+   <property name="statusTip">
+    <string>Accèder au site web de DériVoile calc'...</string>
+   </property>
+  </action>
  </widget>
  <resources>
-  <include location="ressources.qrc"/>
+  <include location="resources.qrc"/>
  </resources>
  <connections/>
 </ui>

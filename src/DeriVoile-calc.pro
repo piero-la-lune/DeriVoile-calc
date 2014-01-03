@@ -1,19 +1,14 @@
-SOURCES += \
-    main.cpp \
-    fenprincipale.cpp \
-    popup.cpp
+QT += widgets webkitwidgets network webkit
 
-HEADERS += \
-    fenprincipale.h \
-    popup.h
+SOURCES += main.cpp FenPrincipale.cpp MAJ.cpp Classement.cpp FenPropos.cpp FenAide.cpp \
+    FenRatings.cpp
 
-FORMS += \
-    fenprincipale.ui \
-    popup.ui
+HEADERS += FenPrincipale.h FenPropos.h FenAide.h \
+    FenRatings.h
 
-QT += \
-    webkit \
-    network
+FORMS += FenPrincipale.ui FenPropos.ui FenAide.ui \
+    FenRatings.ui
 
-RESOURCES += \
-    ressources.qrc
+RESOURCES += resources.qrc
+
+TRANSLATIONS += translations/EN.ts

@@ -1,0 +1,47 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="ratings.json">../html/inc/ratings.json</file>
+    </qresource>
+    <qresource prefix="/img">
+        <file alias="splash.png">../img/splash.png</file>
+        <file alias="DeriVoile-calc.png">../img/DeriVoile-calc.png</file>
+    </qresource>
+    <qresource prefix="/icones">
+        <file alias="icone.png">../img/icone.png</file>
+        <file alias="text-html.png">../img/text-html.png</file>
+        <file alias="document-save-as.png">../img/document-save-as.png</file>
+        <file alias="help-contents.png">../img/help-contents.png</file>
+        <file alias="application-pdf.png">../img/application-pdf.png</file>
+        <file alias="document-save.png">../img/document-save.png</file>
+        <file alias="document-open.png">../img/document-open.png</file>
+        <file alias="document-new.png">../img/document-new.png</file>
+    </qresource>
+    <qresource prefix="/translations">
+        <file alias="EN.qm">translations/EN.qm</file>
+    </qresource>
+    <qresource prefix="/doc">
+        <file alias="aide.html">../doc/aide.html</file>
+        <file alias="debut.html">../doc/debut.html</file>
+        <file alias="etapes.html">../doc/etapes.html</file>
+        <file alias="etape1.html">../doc/etape1.html</file>
+        <file alias="etape2.html">../doc/etape2.html</file>
+        <file alias="style.css">../doc/style.css</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file alias="SourceSansPro-Regular.ttf">../fonts/SourceSansPro-Regular.ttf</file>
+        <file alias="SourceSansPro-Black.ttf">../fonts/SourceSansPro-Black.ttf</file>
+    </qresource>
+    <qresource prefix="/html">
+        <file alias="DeriVoile-calc.html">../html/DeriVoile-calc.html</file>
+        <file alias="Ratings-editor.html">../html/Ratings-editor.html</file>
+        <file alias="test.html">../html/test.html</file>
+    </qresource>
+    <qresource prefix="/html/inc">
+        <file alias="background.jpg">../html/inc/background.jpg</file>
+        <file alias="minified.js">../html/inc/minified-web-src.noie.js</file>
+        <file alias="script.js">../html/inc/script.js</file>
+        <file alias="calcul.js">../html/inc/calcul.js</file>
+        <file alias="style.css">../html/inc/style.css</file>
+        <file alias="editor.js">../html/inc/editor.js</file>
+    </qresource>
+</RCC>
