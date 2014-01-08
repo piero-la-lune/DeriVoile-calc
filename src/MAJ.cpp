@@ -239,7 +239,7 @@ void FenPrincipale::download_ratings_done(QNetworkReply *reply) {
 			);
 		}
 		else {
-			this->update_ratings_js();
+			/*this->update_ratings_js();*/
 			this->msg(
 				tr("Terminé"),
 				tr("Les ratings sont maintenant à jour."),

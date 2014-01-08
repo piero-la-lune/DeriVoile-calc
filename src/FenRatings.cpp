@@ -313,7 +313,7 @@ void FenRatings::on_save_clicked() {
 			);
 		}
 		else {
-			this->fenPrincipale->update_ratings_js();
+			/*this->fenPrincipale->update_ratings_js();*/
 		}
 	}
 	this->close();

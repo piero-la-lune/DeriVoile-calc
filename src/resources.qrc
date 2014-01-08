@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file alias="ratings.json">../html/inc/ratings.json</file>
+        <file alias="style.css">./style.css</file>
     </qresource>
     <qresource prefix="/img">
         <file alias="splash.png">../img/splash.png</file>
@@ -15,6 +16,15 @@
         <file alias="document-save.png">../img/document-save.png</file>
         <file alias="document-open.png">../img/document-open.png</file>
         <file alias="document-new.png">../img/document-new.png</file>
+        <file alias="step1.png">../img/psd/options.png</file>
+        <file alias="step2.png">../img/psd/equipages.png</file>
+        <file alias="step3.png">../img/psd/manches.png</file>
+        <file alias="step4.png">../img/psd/reglages.png</file>
+        <file alias="up.png">../img/psd/up.png</file>
+        <file alias="down.png">../img/psd/down.png</file>
+        <file alias="up-small.png">../img/psd/up-small.png</file>
+        <file alias="down-small.png">../img/psd/down-small.png</file>
+        <file alias="close.png">../img/psd/close.png</file>
     </qresource>
     <qresource prefix="/translations">
         <file alias="EN.qm">translations/EN.qm</file>

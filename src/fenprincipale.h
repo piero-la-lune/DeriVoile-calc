@@ -71,9 +71,35 @@ along with DériVoile calc'. If not, see
 #include <QFileDialog>
 #include <QPrinter>
 #include <QPrintDialog>
+#include <QTableWidget>
+#include <QCompleter>
 
 namespace Ui {
 	class FenPrincipale;
+};
+
+struct Bateau {
+	QString serie;
+	int rating;
+	int coef;
+	int rya;
+};
+struct Manche {
+	int h;
+	int min;
+	int s;
+	QString abr;
+};
+struct Equipage {
+	QString nom;
+	QString bateau;
+	QString rating;
+	QMap<int, Manche> manches;
+};
+struct TpsWdg {
+	QLineEdit *h;
+	QLineEdit *min;
+	QLineEdit *s;
 };
 
 class FenPrincipale : public QMainWindow {
@@ -91,6 +117,19 @@ class FenPrincipale : public QMainWindow {
 		void restart();
 		bool load_ratings(QString filename);
 		void update_ratings_js();
+			// Régate
+		static QString const CLMT_TEMPS;
+		static QString const CLMT_SCRATCH;
+		static QString const RT_FFV;
+		static QString const RT_RYA;
+		static QString const RT_DERI;
+		static QString const BT_MUL;
+		static QString const BT_DER;
+		static QString const BT_QUI;
+		static QString const BT_HAB;
+		static QString const BT_MUL_DER_QUI;
+		static QString const BT_DER_QUI_HAB;
+		static QString const BT_ALL;
 
 	private:
 		Ui::FenPrincipale *ui;
@@ -116,6 +155,42 @@ class FenPrincipale : public QMainWindow {
 		void addProgressBar(QString text);
 		void removeProgressBar();
 		bool confirm_close();
+			// Régate
+		QString nomRegate;
+		QString typeClmt;
+		QString typeRt;
+		QString typeBt;
+		int manchesRetirees;
+		int manchesRetireesMin;
+		int nbManches;
+		int nbEquipages;
+		QMap<int, Equipage> equipages;
+			// Step1.cpp
+		void reset_step1();
+		void goto_step1();
+		int clmt_textToInt(QString text);
+		QString clmt_intToText(int nb);
+		int rt_textToInt(QString text);
+		QString rt_intToText(int nb);
+		int bt_textToInt(QString text);
+		QString bt_intToText(int nb);
+			// Step2.cpp
+		QCompleter *completer;
+		QMap<QString, Bateau> bateaux;
+		QMap<QString, QString> bateauxInv;
+		bool stopPropagation;
+		void reset_step2();
+		void goto_step2();
+		void update_completer();
+		QList<QString> add_bateaux(QJsonArray bateaux);
+			// Step3.cpp
+		void reset_step3();
+		void goto_step3();
+		void add_manche_inputs(int row, int col);
+		QMap<int, QMap<int, TpsWdg>> tpsWdgs;
+			// Step4.cpp
+		void reset_step4();
+		void goto_step4();
 			// Classement.cpp
 		void ouvrir(QString name);
 		void ouvrir_failed(bool msg);
@@ -154,6 +229,30 @@ class FenPrincipale : public QMainWindow {
 		void on_site_web_triggered();
 		void on_propos_triggered();
 		void closeEvent(QCloseEvent *event);
+			// Step1.cpp
+		void on_typeClassement_currentIndexChanged(int nb);
+		void on_typeRatings_currentIndexChanged(int nb);
+		void on_typeBateauxFfv_currentIndexChanged(int nb);
+		void on_typeBateauxRya_currentIndexChanged(int nb);
+		void on_typeBateauxDeri_currentIndexChanged(int nb);
+		void on_btnStep1_clicked();
+			// Step2.cpp
+		void on_btnStep2_clicked();
+		void on_addEquipage_clicked();
+		void type_complete(QString type);
+		void code_complete(QString code);
+		void nom_changed(QString text);
+		void code_changed(QString text);
+		void type_changed(QString text);
+		void deleteEquipage();
+			// Step3.cpp
+		void on_btnStep3_clicked();
+		void on_addManche_clicked();
+		void h_changed(QString text);
+		void min_changed(QString tex);
+		void s_changed(QString text);
+			// Step4.cpp
+		void on_btnStep4_clicked();
 			// Classement.cpp
 		void on_nouveau_triggered();
 		void on_ouvrir_triggered();

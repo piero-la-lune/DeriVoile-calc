@@ -83,6 +83,11 @@ int main(int argc, char* argv[]) {
 		translator.load(preferences.value("language", "FR").toString(), ":/translations");
 		app.installTranslator(&translator);
 
+		QFile style("C:\\Users\\pierre\\Documents\\Programmation\\DeriVoile-calc\\DeriVoile-calc\\src\\style.css");
+		style.open(QIODevice::ReadOnly);
+		qApp->setStyleSheet(style.readAll());
+		style.close();
+
 		FenPrincipale window(&preferences, &splash);
 
 		exit_code = app.exec();

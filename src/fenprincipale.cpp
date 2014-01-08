@@ -61,6 +61,19 @@ along with DériVoile calc'. If not, see
 int const FenPrincipale::EXIT_CODE_REBOOT = -123456789;
 QString const FenPrincipale::VERSION = "v6-5";
 
+QString const FenPrincipale::CLMT_TEMPS = "temps";
+QString const FenPrincipale::CLMT_SCRATCH = "scratch";
+QString const FenPrincipale::RT_FFV = "ffv";
+QString const FenPrincipale::RT_RYA = "rya";
+QString const FenPrincipale::RT_DERI = "deri";
+QString const FenPrincipale::BT_MUL = "multicoques";
+QString const FenPrincipale::BT_DER = "deriveurs";
+QString const FenPrincipale::BT_QUI = "quillards";
+QString const FenPrincipale::BT_HAB = "habitables";
+QString const FenPrincipale::BT_MUL_DER_QUI = "deriveurs_multicoques";
+QString const FenPrincipale::BT_DER_QUI_HAB = "deriveurs_habitables";
+QString const FenPrincipale::BT_ALL = "tous";
+
 FenPrincipale::FenPrincipale(
 	QSettings *preferences, QSplashScreen *splash, QWidget *parent) :
 	QMainWindow(parent),
@@ -73,7 +86,8 @@ FenPrincipale::FenPrincipale(
 	this->filename = QString("");
 	this->hasModif = false;
 	this->etapeActuelle = 1;
-	this->splashDone = 1;
+	/*this->splashDone = 1;*/
+	this->splashDone = 0;
 
 	ui->setupUi(this);
 	QActionGroup *group_langue = new QActionGroup(this);
@@ -99,8 +113,8 @@ FenPrincipale::FenPrincipale(
 
 	QFontDatabase::addApplicationFont(":/fonts/SourceSansPro-Regular.ttf");
 	QFontDatabase::addApplicationFont(":/fonts/SourceSansPro-Black.ttf");
-/*	QFont font("Source Sans Pro", 10);
-	QApplication::setFont(font);*/
+	QFont font("Source Sans Pro", 10);
+	QApplication::setFont(font);
 
 	splash->showMessage(
 		tr("Chargement des ratings..."),
@@ -113,13 +127,13 @@ FenPrincipale::FenPrincipale(
 		load_ratings(":/ratings.json");
 	}
 
-	webView = new QWebView;
+	/*webView = new QWebView;*/
 /*	webView->settings()->setAttribute(QWebSettings::WebAttribute::DeveloperExtrasEnabled, true);
 	inspector = new QWebInspector;
 	inspector->setPage(webView->page());
 	inspector->setFixedSize(800, 600);
 	inspector->setVisible(true);*/
-	webFrame = webView->page()->mainFrame();
+	/*webFrame = webView->page()->mainFrame();
 
 	attach_javascript();
 	connect(
@@ -133,16 +147,16 @@ FenPrincipale::FenPrincipale(
 		SIGNAL(javaScriptWindowObjectCleared()),
 		this,
 		SLOT(attach_javascript())
-	);
+	);*/
 
 	splash->showMessage(
 		tr("Chargement..."),
 		Qt::AlignHCenter | Qt::AlignBottom
 	);
 
-	webView->load(QUrl("qrc:/html/DeriVoile-calc.html"));
+/*	webView->load(QUrl("qrc:/html/DeriVoile-calc.html"));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
-	setCentralWidget(webView);
+	setCentralWidget(webView);*/
 
 	this->progressText = new QLabel("");
 	statusBar()->addPermanentWidget(progressText);
@@ -173,6 +187,26 @@ FenPrincipale::FenPrincipale(
 		this->splashDone++;
 		update_deri();
 	}
+
+	// Initialisation
+	
+	this->nomRegate = "";
+	this->typeClmt = CLMT_TEMPS;
+	this->typeRt = RT_RYA;
+	this->typeBt = BT_DER;
+	this->manchesRetirees = 0;
+	this->manchesRetireesMin = 0;
+
+	this->nbManches = 0;
+	this->nbEquipages = 0;
+
+	this->reset_step1();
+	this->reset_step2();
+	this->reset_step3();
+	this->reset_step4();
+	this->goto_step1();
+
+	ui->toolBar->hide();
 
 	while (this->splashDone > 0) { qApp->processEvents(); }
 
@@ -215,7 +249,7 @@ void FenPrincipale::calculer() {
 	this->addProgressBar(tr("Calcul du classement :"));
 	this->webView->setVisible(false);
 	qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
-	this->webFrame->evaluateJavaScript("var c = new Calcul(); c.initialisation();");
+	/*this->webFrame->evaluateJavaScript("var c = new Calcul(); c.initialisation();");*/
 	qApp->processEvents();
 }
 
@@ -380,3 +414,7 @@ void FenPrincipale::closeEvent(QCloseEvent * event) {
 
 #include "MAJ.cpp"
 #include "Classement.cpp"
+#include "Step1.cpp"
+#include "Step2.cpp"
+#include "Step3.cpp"
+#include "Step4.cpp"

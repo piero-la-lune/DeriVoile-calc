@@ -1,0 +1,220 @@
+QPushButton {
+	background: qlineargradient(y1:0, y2:1, stop:0 #f8f8f8, stop:1 #eee);
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	padding: 4px;
+	font-size: 14px;
+	color: #333;
+}
+QPushButton:hover {
+	border-color: #aaa;
+}
+QLineEdit {
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	padding: 4px;
+	font-size: 14px;
+	color: #333;
+}
+QLineEdit:focus {
+	border-color:#aaa;
+}
+QComboBox {
+	background: qlineargradient(y1:0, y2:1, stop:0 #f8f8f8, stop:1 #eee);
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	padding: 4px;
+	font-size: 14px;
+	color: #333;
+}
+QComboBox:hover {
+	border-color: #aaa;
+}
+QComboBox:on {
+	border-color: #aaa;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+QComboBox::drop-down {
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	background: transparent;
+	border-left: 1px solid #ddd;
+	width: 24px;
+}
+QComboBox::down-arrow {
+	image: url(":/icones/down.png");
+}
+QSpinBox {
+	background: qlineargradient(y1:0, y2:1, stop:0 #f8f8f8, stop:1 #eee);
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	padding: 4px;
+	font-size: 14px;
+	color: #333;
+}
+QSpinBox::up-button {
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	background: transparent;
+	border-left: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	width: 18px;
+}
+QSpinBox::down-button {
+	subcontrol-origin: padding;
+	subcontrol-position: bottom right;
+	background: transparent;
+	border-left: 1px solid #ddd;
+	width: 18px;
+}
+QSpinBox::up-arrow {
+	image: url(":/icones/up-small.png");
+}
+QSpinBox::down-arrow {
+	image: url(":/icones/down-small.png");
+}
+QLabel {
+	padding: 4px 0;
+	font-size: 14px;
+	color: #333;
+}
+
+QTableWidget {
+	border: none;
+	border-radius: 2px;
+}
+QTableWidget QHeaderView {
+	background: #eee;
+}
+QTableWidget QHeaderView:section {
+	border: solid #ddd;
+	font-size: 14px;
+	color: #333;
+	padding: 6px;
+}
+QTableWidget QHeaderView:section:horizontal {
+	background: qlineargradient(y1:0, y2:1, stop:0 #f8f8f8, stop:1 #eee);
+	border-width: 1px 1px 1px 0;
+}
+QTableWidget QHeaderView:section:vertical {
+	background: qlineargradient(y1:0, y2:1, stop:0 #f8f8f8, stop:1 #eee);
+	border-width: 0px 1px 1px 1px;
+}
+QTableWidget QHeaderView:section:first {
+	border-width: 1px 1px 1px 1px;
+}
+QTableWidget QHeaderView:section:hover {
+	background: #ddd;
+}
+QTableWidget QTableCornerButton::section {
+	background: #eee;
+	border: none;
+}
+
+/* ######################### Steps ######################### */
+
+#steps {
+	background: #1c8daf;
+}
+
+#btnStep1, #btnStep2, #btnStep3, #btnStep4 {
+	background: #1c8daf;
+	color: #fff;
+	font-size: 12px;
+	border: none;
+	padding: 60px 8px 8px 8px;
+	background-repeat: no-repeat;
+	background-position: top center;
+	border-radius: 6px;
+	margin: 6px 6px 0 6px;
+}
+#btnStep1 {
+	background-image: url(':/icones/step1.png');
+}
+#btnStep2 {
+	background-image: url(':/icones/step2.png');
+}
+#btnStep3 {
+	background-image: url(':/icones/step3.png');
+}
+#btnStep4 {
+	background-image: url(':/icones/step4.png');
+	margin-bottom: 6px;
+}
+#btnStep1:flat, #btnStep2:flat, #btnStep3:flat, #btnStep4:flat {
+	background-color: #4db3d2;
+}
+#btnStep1:hover, #btnStep2:hover, #btnStep3:hover, #btnStep4:hover {
+	background-color: #4db3d2;
+}
+
+#main {
+	background: #eee;
+	border: none;
+	padding: 12px;
+}
+#mainWidget, #step1, #step4 {
+	background: #eee;
+}
+
+/* ######################### Menu ######################### */
+
+#menubar {
+	background: #eee;
+	border-bottom: 1px solid #aaa;
+	padding: 4px 0 4px 6px;
+}
+#menubar::item {
+	margin-right: 12px;
+    padding: 1px 4px;
+	background: transparent;
+	border-radius: 2px;
+	border: 1px solid transparent;
+	color: #333;
+}
+#menubar::item:selected {
+	border-color: #aaa;
+}
+#menubar::item:pressed {
+	background: #ddd;
+}
+
+/* ######################### 1ère étape ######################### */
+
+#step1 QLineEdit, #step1 QComboBox {
+	min-width: 200px;
+	max-width: 400px;
+}
+
+/* ######################### 2ème étape ######################### */
+
+#addEquipage {
+	max-width: 200px;
+}
+
+#equipages QLineEdit {
+	border: none;
+}
+
+#equipages QPushButton {
+	margin: 4px;
+}
+
+/* ######################### 4ème étape ######################### */
+
+#addManche {
+	max-width: 200px;
+}
+
+#manches QLineEdit {
+	border: none;
+	padding: 4px 2px;
+	text-align: center;
+}
+
+#manches QLabel {
+	padding: 0;
+	margin: -2px 0 0 0;
+}

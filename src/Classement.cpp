@@ -86,7 +86,7 @@ void FenPrincipale::ouvrir(QString name) {
 		QTextStream flux(&file);
 		flux.setCodec("UTF-8");
 		this->data = flux.readAll();
-		this->webFrame->evaluateJavaScript("$.ouvrir();");
+		/*this->webFrame->evaluateJavaScript("$.ouvrir();");*/
 		this->filename = name;
 	}
 	file.close();
@@ -257,7 +257,7 @@ void FenPrincipale::enregistrer(QString name) {
 	}
 	else {
 		this->data = name;
-		webFrame->evaluateJavaScript("$.enregistrer();");
+		/*webFrame->evaluateJavaScript("$.enregistrer();");*/
 	}
 }
 
@@ -294,7 +294,7 @@ void FenPrincipale::enregistrer_failed(bool msg) {
 
 void FenPrincipale::on_pdf_triggered() {
 	if (this->etapeActuelle == 4) {
-		this->webFrame->evaluateJavaScript("$.pdf();");
+		/*this->webFrame->evaluateJavaScript("$.pdf();");*/
 	}
 }
 void FenPrincipale::pdf_callback(QString html) {
@@ -321,7 +321,7 @@ void FenPrincipale::pdf_callback(QString html) {
 }
 void FenPrincipale::on_html_triggered() {
 	if (this->etapeActuelle == 4) {
-		this->webFrame->evaluateJavaScript("$.html();");
+		/*this->webFrame->evaluateJavaScript("$.html();");*/
 	}
 }
 void FenPrincipale::html_callback(QString html) {
