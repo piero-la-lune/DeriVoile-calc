@@ -192,13 +192,13 @@ FenPrincipale::FenPrincipale(
 	
 	this->nomRegate = "";
 	this->typeClmt = CLMT_TEMPS;
-	this->typeRt = RT_RYA;
+	this->typeRt = RT_FFV;
 	this->typeBt = BT_DER;
 	this->manchesRetirees = 0;
 	this->manchesRetireesMin = 0;
-
 	this->nbManches = 0;
 	this->nbEquipages = 0;
+	this->equipages.clear();
 
 	this->reset_step1();
 	this->reset_step2();
@@ -357,6 +357,21 @@ void FenPrincipale::msg(QString title, QString text, QString icon) {
 	}
 	msgBox.exec();
 }
+int FenPrincipale::getInt(QString title, QString text, int value, int min, int max) {
+	QInputDialog msgBox;
+	msgBox.setInputMode(QInputDialog::IntInput);
+	msgBox.setWindowTitle(title);
+	msgBox.setLabelText(text);
+	msgBox.setIntRange(min, max);
+	msgBox.setIntValue(value);
+	msgBox.setCancelButtonText(tr("Annuler"));
+	msgBox.setOkButtonText(tr("Continuer"));
+	bool ok = (msgBox.exec() == QDialog::Accepted);
+	if (ok) {
+		return msgBox.intValue();
+	}
+	return -1;
+}
 
 void FenPrincipale::on_francais_triggered() {
 	preferences->setValue("language", "FR");
@@ -418,3 +433,4 @@ void FenPrincipale::closeEvent(QCloseEvent * event) {
 #include "Step2.cpp"
 #include "Step3.cpp"
 #include "Step4.cpp"
+#include "Step5.cpp"

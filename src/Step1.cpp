@@ -67,12 +67,17 @@ void FenPrincipale::goto_step1() {
 	ui->btnStep2->setFlat(false);
 	ui->btnStep3->setFlat(false);
 	ui->btnStep4->setFlat(false);
+	ui->btnStep5->setFlat(false);
 	ui->step1->setVisible(true);
 	ui->step2->setVisible(false);
 	ui->step3->setVisible(false);
 	ui->step4->setVisible(false);
+	ui->step5->setVisible(false);
 }
 
+void FenPrincipale::on_nomRegate_textChanged(QString text) {
+	this->nomRegate = text;
+}
 
 void FenPrincipale::on_typeClassement_currentIndexChanged(int nb) {
 	this->typeClmt = this->clmt_intToText(nb);

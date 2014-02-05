@@ -61,12 +61,22 @@ void FenPrincipale::goto_step4() {
 	ui->btnStep2->setFlat(false);
 	ui->btnStep3->setFlat(false);
 	ui->btnStep4->setFlat(true);
+	ui->btnStep5->setFlat(false);
 	ui->step1->setVisible(false);
 	ui->step2->setVisible(false);
 	ui->step3->setVisible(false);
 	ui->step4->setVisible(true);
+	ui->step5->setVisible(false);
 }
 
 void FenPrincipale::on_btnStep4_clicked() {
 	this->goto_step4();
+}
+
+void FenPrincipale::on_manchesRetirees_valueChanged(int val) {
+	this->manchesRetirees = val;
+}
+
+void FenPrincipale::on_manchesRetireesMin_valueChanged(int val) {
+	this->manchesRetireesMin = val;
 }

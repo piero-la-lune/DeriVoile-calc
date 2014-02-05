@@ -2,11 +2,18 @@ QPushButton {
 	background: qlineargradient(y1:0, y2:1, stop:0 #f8f8f8, stop:1 #eee);
 	border: 1px solid #ddd;
 	border-radius: 2px;
-	padding: 4px;
+	padding: 4px 8px;
 	font-size: 14px;
 	color: #333;
 }
 QPushButton:hover {
+	background: #e4e4e4;
+}
+QPushButton:disabled {
+	background: #eee;
+	color: #888;
+}
+QPushButton:default {
 	border-color: #aaa;
 }
 QLineEdit {
@@ -84,9 +91,15 @@ QLabel {
 QTableWidget {
 	border: none;
 	border-radius: 2px;
+	background: #eee;
+	gridline-color: #ddd;
+	outline: 0;
+}
+QTableWidget::item {
+	background: #fff;
 }
 QTableWidget QHeaderView {
-	background: #eee;
+	background: transparent;
 }
 QTableWidget QHeaderView:section {
 	border: solid #ddd;
@@ -108,8 +121,11 @@ QTableWidget QHeaderView:section:first {
 QTableWidget QHeaderView:section:hover {
 	background: #ddd;
 }
+QTableWidget QHeaderView:section[selected=true] {
+	background: #ddd;
+}
 QTableWidget QTableCornerButton::section {
-	background: #eee;
+	background: transparent;
 	border: none;
 }
 
@@ -119,7 +135,7 @@ QTableWidget QTableCornerButton::section {
 	background: #1c8daf;
 }
 
-#btnStep1, #btnStep2, #btnStep3, #btnStep4 {
+#btnStep1, #btnStep2, #btnStep3, #btnStep4, #btnStep5 {
 	background: #1c8daf;
 	color: #fff;
 	font-size: 12px;
@@ -141,12 +157,15 @@ QTableWidget QTableCornerButton::section {
 }
 #btnStep4 {
 	background-image: url(':/icones/step4.png');
+}
+#btnStep5 {
+	background-image: url(':/icones/step5.png');
 	margin-bottom: 6px;
 }
-#btnStep1:flat, #btnStep2:flat, #btnStep3:flat, #btnStep4:flat {
+#btnStep1:flat, #btnStep2:flat, #btnStep3:flat, #btnStep4:flat, #btnStep5:flat {
 	background-color: #4db3d2;
 }
-#btnStep1:hover, #btnStep2:hover, #btnStep3:hover, #btnStep4:hover {
+#btnStep1:hover, #btnStep2:hover, #btnStep3:hover, #btnStep4:hover, #btnStep5:hover {
 	background-color: #4db3d2;
 }
 
@@ -202,9 +221,9 @@ QTableWidget QTableCornerButton::section {
 	margin: 4px;
 }
 
-/* ######################### 4ème étape ######################### */
+/* ######################### 3ème étape ######################### */
 
-#addManche {
+#addManche, #rmManche {
 	max-width: 200px;
 }
 
@@ -212,9 +231,28 @@ QTableWidget QTableCornerButton::section {
 	border: none;
 	padding: 4px 2px;
 	text-align: center;
+	max-width: 30px;
 }
 
 #manches QLabel {
 	padding: 0;
 	margin: -2px 0 0 0;
+}
+
+#manches QLabel[type="header"] {
+	background: qlineargradient(y1:0, y2:1, stop:0 #f8f8f8, stop:1 #eee);
+	padding: 2px 4px;
+	margin: 0;
+}
+#manches QLabel[top=true] {
+	border-top: 1px solid #ddd;
+}
+#manches QLabel[left=true] {
+	border-left: 1px solid #ddd;
+}
+#manches QLabel[selected=true] {
+	background: #ddd;
+}
+#manches QLabel:focus {
+	background: #ddd;
 }

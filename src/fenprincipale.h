@@ -73,6 +73,68 @@ along with DériVoile calc'. If not, see
 #include <QPrintDialog>
 #include <QTableWidget>
 #include <QCompleter>
+#include <QLineEdit>
+#include <QInputDialog>
+#include <QHBoxLayout>
+
+class MyLineEdit : public QLineEdit {
+	Q_OBJECT
+	
+	public:
+		MyLineEdit(QWidget *parent = 0): QLineEdit(parent) {};
+		~MyLineEdit() {};
+
+	signals:
+		void focussed(bool hasFocus);
+		void keyPressed(QKeyEvent *e);
+
+	protected:
+		virtual void focusInEvent(QFocusEvent *e) {
+			QLineEdit::focusInEvent(e);
+			emit(focussed(true));
+		};
+		virtual void focusOutEvent(QFocusEvent *e) {
+			QLineEdit::focusOutEvent(e);
+			emit(focussed(false));
+		};
+		virtual void keyPressEvent(QKeyEvent *e) {
+			QLineEdit::keyPressEvent(e);
+			emit(keyPressed(e));
+		}
+};
+class MyLabel : public QLabel {
+	Q_OBJECT
+	
+	public:
+		MyLabel(QWidget *parent = 0): QLabel(parent) {};
+		MyLabel(QString text, QWidget *parent = 0): QLabel(text, parent) {};
+		~MyLabel() {};
+
+	signals:
+		void focussed(bool hasFocus);
+
+	protected:
+		virtual void focusInEvent(QFocusEvent *e) {
+			QLabel::focusInEvent(e);
+			emit(focussed(true));
+		};
+		virtual void focusOutEvent(QFocusEvent *e) {
+			QLabel::focusOutEvent(e);
+			emit(focussed(false));
+		};
+};
+template <typename T, typename U>
+class MyMap : public QMap<T,U> {
+	public:
+		MyMap(): QMap() {};
+		~MyMap() {};
+		void rm(int nb) {
+			for (int i = nb+1; i < this->count(); ++i) {
+				this->insert(i-1, this->value(i));
+			}
+			this->remove(this->count()-1);
+		}
+};
 
 namespace Ui {
 	class FenPrincipale;
@@ -94,12 +156,12 @@ struct Equipage {
 	QString nom;
 	QString bateau;
 	QString rating;
-	QMap<int, Manche> manches;
+	MyMap<int, Manche> manches;
 };
 struct TpsWdg {
-	QLineEdit *h;
-	QLineEdit *min;
-	QLineEdit *s;
+	MyLineEdit *h;
+	MyLineEdit *min;
+	MyLineEdit *s;
 };
 
 class FenPrincipale : public QMainWindow {
@@ -114,6 +176,7 @@ class FenPrincipale : public QMainWindow {
 		static QString const VERSION;
 		bool confirm(QString title, QString text, QString icon);
 		void msg(QString title, QString text, QString icon);
+		int getInt(QString title, QString text, int value, int min, int max);
 		void restart();
 		bool load_ratings(QString filename);
 		void update_ratings_js();
@@ -164,7 +227,7 @@ class FenPrincipale : public QMainWindow {
 		int manchesRetireesMin;
 		int nbManches;
 		int nbEquipages;
-		QMap<int, Equipage> equipages;
+		MyMap<int, Equipage> equipages;
 			// Step1.cpp
 		void reset_step1();
 		void goto_step1();
@@ -184,13 +247,18 @@ class FenPrincipale : public QMainWindow {
 		void update_completer();
 		QList<QString> add_bateaux(QJsonArray bateaux);
 			// Step3.cpp
+		MyMap<int, MyMap<int, TpsWdg>> tpsWdgs;
+		int currentManche;
+		QTimer *rmMancheTimer;
 		void reset_step3();
 		void goto_step3();
 		void add_manche_inputs(int row, int col);
-		QMap<int, QMap<int, TpsWdg>> tpsWdgs;
 			// Step4.cpp
 		void reset_step4();
 		void goto_step4();
+			// Step5.cpp
+		void reset_step5();
+		void goto_step5();
 			// Classement.cpp
 		void ouvrir(QString name);
 		void ouvrir_failed(bool msg);
@@ -230,6 +298,7 @@ class FenPrincipale : public QMainWindow {
 		void on_propos_triggered();
 		void closeEvent(QCloseEvent *event);
 			// Step1.cpp
+		void on_nomRegate_textChanged(QString text);
 		void on_typeClassement_currentIndexChanged(int nb);
 		void on_typeRatings_currentIndexChanged(int nb);
 		void on_typeBateauxFfv_currentIndexChanged(int nb);
@@ -248,11 +317,22 @@ class FenPrincipale : public QMainWindow {
 			// Step3.cpp
 		void on_btnStep3_clicked();
 		void on_addManche_clicked();
+		void on_rmManche_pressed();
+		void manche_focussed(bool hasFocus);
 		void h_changed(QString text);
 		void min_changed(QString tex);
 		void s_changed(QString text);
+		void h_pressed(QKeyEvent *ev);
+		void min_pressed(QKeyEvent *ev);
+		void s_pressed(QKeyEvent *ev);
+		void tps_focussed(bool hasFocus);
+		void disable_rmManche();
 			// Step4.cpp
 		void on_btnStep4_clicked();
+		void on_manchesRetirees_valueChanged(int val);
+		void on_manchesRetireesMin_valueChanged(int val);
+			// Step5.cpp
+		void on_btnStep5_clicked();
 			// Classement.cpp
 		void on_nouveau_triggered();
 		void on_ouvrir_triggered();

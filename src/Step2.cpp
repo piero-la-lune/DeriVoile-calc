@@ -64,10 +64,12 @@ void FenPrincipale::goto_step2() {
 	ui->btnStep2->setFlat(true);
 	ui->btnStep3->setFlat(false);
 	ui->btnStep4->setFlat(false);
+	ui->btnStep5->setFlat(false);
 	ui->step1->setVisible(false);
 	ui->step2->setVisible(true);
 	ui->step3->setVisible(false);
 	ui->step4->setVisible(false);
+	ui->step5->setVisible(false);
 }
 
 QList<QString> FenPrincipale::add_bateaux(QJsonArray bateaux) {
@@ -105,10 +107,8 @@ QList<QString> FenPrincipale::add_bateaux(QJsonArray bateaux) {
 }
 
 void FenPrincipale::update_completer() {
-	QMap<QString, Bateau> bateaux;
-	this->bateaux = bateaux;
-	QMap<QString, QString> bateauxInv;
-	this->bateauxInv = bateauxInv;
+	this->bateaux.clear();
+	this->bateauxInv.clear();
 	QList<QString> list;
 	QJsonDocument doc = QJsonDocument::fromJson(this->ratings);
 	if (this->typeBt == BT_MUL || this->typeBt == BT_MUL_DER_QUI
@@ -130,7 +130,7 @@ void FenPrincipale::update_completer() {
 	this->completer = new QCompleter(list, this);
 	this->completer->setCaseSensitivity(Qt::CaseInsensitive);
 	this->completer->setFilterMode(Qt::MatchContains);
-	for (int i = 0; i < ui->equipages->rowCount(); ++i) {
+	for (int i = 0; i < this->nbEquipages; ++i) {
 		qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 3))->setCompleter(this->completer);
 	}
 }
@@ -165,7 +165,7 @@ void FenPrincipale::on_btnStep2_clicked() {
 }
 
 void FenPrincipale::on_addEquipage_clicked() {
-	/* ajout de la ligne dans "Équipages" */
+		// ajout de la ligne dans "Équipages"
 	QLineEdit *nom = new QLineEdit();
 	QLineEdit *code = new QLineEdit();
 	QLineEdit *type = new QLineEdit();
@@ -187,26 +187,47 @@ void FenPrincipale::on_addEquipage_clicked() {
 	connect(nom, SIGNAL(textChanged(QString)), this, SLOT(nom_changed(QString)));
 	connect(code, SIGNAL(textChanged(QString)), this, SLOT(code_changed(QString)));
 	connect(type, SIGNAL(textChanged(QString)), this, SLOT(type_changed(QString)));
-	/* ajout de la ligne dans "Manches" */
-	ui->manches->insertRow(row);
+		// ajout de la ligne dans "Manches"
+		// cette ligne est la row+1 (car il faut compter le header des manches)
+	ui->manches->insertRow(row+1);
+	QLabel *nom2 = new QLabel();
+	nom2->setProperty("type", "header");
+	nom2->setProperty("left", true);
+	nom2->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+	ui->manches->setCellWidget(row+1, 0, nom2);
 	for (int i = 0; i < this->nbManches; ++i) {
 		this->add_manche_inputs(this->nbEquipages, i);
 	}
 	++this->nbEquipages;
+	QWidget *h;
+	QWidget *min;
+	QWidget *s;
+	for (int i = 0; i < this->nbManches; ++i) {
+		for (int j = 0; j < this->nbEquipages; ++j) {
+			h = ui->manches->cellWidget(j+1, i+1)->layout()->itemAt(0)->widget();
+			min = ui->manches->cellWidget(j+1, i+1)->layout()->itemAt(2)->widget();
+			if (i != 0 || j != 0) {
+				setTabOrder(s, h);
+			}
+			s = ui->manches->cellWidget(j+1, i+1)->layout()->itemAt(4)->widget();
+			setTabOrder(h, min);
+			setTabOrder(min, s);
+		}
+	}
 }
 
 void FenPrincipale::deleteEquipage() {
 	int nb = sender()->property("rowIndex").toInt();
 	ui->equipages->removeRow(nb);
-	ui->manches->removeRow(nb);
+	ui->manches->removeRow(nb+1);
 	for (int i = (nb+1); i < this->nbEquipages; ++i) {
 		ui->equipages->cellWidget(i-1, 0)->setProperty("rowIndex", i-1);
 		ui->equipages->cellWidget(i-1, 2)->setProperty("rowIndex", i-1);
 		ui->equipages->cellWidget(i-1, 3)->setProperty("rowIndex", i-1);
-		this->equipages.insert(i-1, this->equipages.value(i));
-		this->tpsWdgs.insert(i-1, this->tpsWdgs.value(i));
+		for (int j = 0; j < this->nbManches; ++j) {
+			ui->manches->cellWidget(i, j+1)->setProperty("rowIndex", i-1);
+		}
 	}
-	this->equipages.remove(this->nbEquipages-1);
-	this->tpsWdgs.remove(this->nbEquipages-1);
+	this->equipages.rm(nb);
 	--this->nbEquipages;
 }
