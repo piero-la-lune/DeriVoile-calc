@@ -170,6 +170,7 @@ void FenPrincipale::on_addEquipage_clicked() {
 	QLineEdit *code = new QLineEdit();
 	QLineEdit *type = new QLineEdit();
 	QPushButton *del = new QPushButton(QIcon(":/icones/close.png"), "");
+	del->setFocusPolicy(Qt::NoFocus);
 	type->setCompleter(this->completer);
 	int row = this->nbEquipages;
 	ui->equipages->insertRow(row);

@@ -119,10 +119,7 @@ QTableWidget QHeaderView:section:first {
 	border-width: 1px 1px 1px 1px;
 }
 QTableWidget QHeaderView:section:hover {
-	background: #ddd;
-}
-QTableWidget QHeaderView:section[selected=true] {
-	background: #ddd;
+	background: #eaeaea;
 }
 QTableWidget QTableCornerButton::section {
 	background: transparent;
@@ -244,6 +241,9 @@ QTableWidget QTableCornerButton::section {
 	padding: 2px 4px;
 	margin: 0;
 }
+#manches QLabel[type="header"]:hover {
+	background: #eaeaea;
+}
 #manches QLabel[top=true] {
 	border-top: 1px solid #ddd;
 }
@@ -251,6 +251,9 @@ QTableWidget QTableCornerButton::section {
 	border-left: 1px solid #ddd;
 }
 #manches QLabel[selected=true] {
+	background: #ddd;
+}
+#manches QLabel[selected=true]:hover {
 	background: #ddd;
 }
 #manches QLabel:focus {
