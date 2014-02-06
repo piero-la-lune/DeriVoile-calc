@@ -81,12 +81,35 @@ void FenPrincipale::on_nomRegate_textChanged(QString text) {
 
 void FenPrincipale::on_typeClassement_currentIndexChanged(int nb) {
 	this->typeClmt = this->clmt_intToText(nb);
-	ui->pTypeRatings->setVisible(this->typeClmt == CLMT_TEMPS);
-	ui->typeRatings->setVisible(this->typeClmt == CLMT_TEMPS);
-	ui->pTypeBateaux->setVisible(this->typeClmt == CLMT_TEMPS);
-	ui->typeBateauxFfv->setVisible(this->typeClmt == CLMT_TEMPS && this->typeRt == RT_FFV);
-	ui->typeBateauxRya->setVisible(this->typeClmt == CLMT_TEMPS	&& this->typeRt == RT_RYA);
-	ui->typeBateauxDeri->setVisible(this->typeClmt == CLMT_TEMPS && this->typeRt == RT_DERI);
+	// on met à jour les tableaux
+	bool show = this->typeClmt == CLMT_TEMPS;
+	ui->equipages->setColumnHidden(2, !show);
+	ui->equipages->setColumnHidden(3, !show);
+	this->equipages_resize();
+	for (int i = 1; i < ui->manches->rowCount(); ++i) {
+		for (int j = 1; j < ui->manches->columnCount(); ++j) {
+			ui->manches->cellWidget(i, j)->layout()->itemAt(0)
+				->widget()->setVisible(show);
+			ui->manches->cellWidget(i, j)->layout()->itemAt(1)
+				->widget()->setVisible(show);
+			ui->manches->cellWidget(i, j)->layout()->itemAt(3)
+				->widget()->setVisible(show);
+			ui->manches->cellWidget(i, j)->layout()->itemAt(4)
+				->widget()->setVisible(show);
+			QWidget *min = ui->manches->cellWidget(i, j)->layout()->itemAt(2)->widget();
+			min->setProperty("place", !show);
+			min->style()->unpolish(min);
+			min->style()->polish(min);
+			min->update();
+		}
+	}
+	// on met à jour les sélection des types de bateaux
+	ui->pTypeRatings->setVisible(show);
+	ui->typeRatings->setVisible(show);
+	ui->pTypeBateaux->setVisible(show);
+	ui->typeBateauxFfv->setVisible(show && this->typeRt == RT_FFV);
+	ui->typeBateauxRya->setVisible(show	&& this->typeRt == RT_RYA);
+	ui->typeBateauxDeri->setVisible(show && this->typeRt == RT_DERI);
 
 }
 

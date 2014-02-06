@@ -132,19 +132,34 @@ void FenPrincipale::min_changed(QString text) {
 		->parentWidget()->property("rowIndex").toInt();
 	int col = qobject_cast<QWidget*>(sender())
 		->parentWidget()->property("colIndex").toInt();
-	int pos = 0;
-	QIntValidator v(0, 59, this);
-	if (v.validate(text, pos) == QValidator::Acceptable) {
-		this->equipages[row].manches[col].min = text.toInt();
-		this->equipages[row].manches[col].abr = "";
-		if (text.length() == 2) {
-			ui->manches->cellWidget(row+1, col+1)->layout()->itemAt(4)
-				->widget()->setFocus();
+	if (this->typeClmt == CLMT_SCRATCH) {
+		int pos = 0;
+		QIntValidator v(this);
+		v.setBottom(1);
+		if (v.validate(text, pos) == QValidator::Acceptable) {
+			this->equipages[row].manches[col].min = text.toInt();
+			this->equipages[row].manches[col].abr = "";
+		}
+		else {
+			this->equipages[row].manches[col].min = 0;
+			this->equipages[row].manches[col].abr = text;
 		}
 	}
 	else {
-		this->equipages[row].manches[col].min = 0;
-		this->equipages[row].manches[col].abr = text;
+		int pos = 0;
+		QIntValidator v(0, 59, this);
+		if (v.validate(text, pos) == QValidator::Acceptable) {
+			this->equipages[row].manches[col].min = text.toInt();
+			this->equipages[row].manches[col].abr = "";
+			if (text.length() == 2) {
+				ui->manches->cellWidget(row+1, col+1)->layout()->itemAt(4)
+					->widget()->setFocus();
+			}
+		}
+		else {
+			this->equipages[row].manches[col].min = 0;
+			this->equipages[row].manches[col].abr = text;
+		}
 	}
 }
 void FenPrincipale::s_changed(QString text) {
@@ -210,12 +225,28 @@ void FenPrincipale::min_pressed(QKeyEvent *ev) {
 			->widget()->setFocus();
 	}
 	else if (ev->key() == Qt::Key_Left) {
-		ui->manches->cellWidget(row+1, col+1)->layout()->itemAt(0)
-			->widget()->setFocus();
+		if (this->typeClmt == CLMT_SCRATCH) {
+			if (col > 0) {
+				ui->manches->cellWidget(row+1, col)->layout()->itemAt(2)
+					->widget()->setFocus();
+			}
+		}
+		else {
+			ui->manches->cellWidget(row+1, col+1)->layout()->itemAt(0)
+				->widget()->setFocus();
+		}
 	}
 	else if (ev->key() == Qt::Key_Right) {
-		ui->manches->cellWidget(row+1, col+1)->layout()->itemAt(4)
-			->widget()->setFocus();
+		if (this->typeClmt == CLMT_SCRATCH) {
+			if (col < this->nbManches-1) {
+				ui->manches->cellWidget(row+1, col+2)->layout()->itemAt(2)
+					->widget()->setFocus();
+			}
+		}
+		else {
+			ui->manches->cellWidget(row+1, col+1)->layout()->itemAt(4)
+				->widget()->setFocus();
+		}
 	}
 }
 void FenPrincipale::s_pressed(QKeyEvent *ev) {
@@ -323,6 +354,17 @@ void FenPrincipale::add_manche_inputs(int row, int col) {
 	wdg->setProperty("colIndex", col);
 	wdg->setLayout(layout);
 	ui->manches->setCellWidget(row+1, col+1, wdg);
+	// on cache les bons champs si classement scratch
+	if (this->typeClmt == CLMT_SCRATCH) {
+		h->hide();
+		points1->hide();
+		points2->hide();
+		s->hide();
+		min->setProperty("place", true);
+		min->style()->unpolish(min);
+		min->style()->polish(min);
+		min->update();
+	}
 	connect(h, SIGNAL(textChanged(QString)), this, SLOT(h_changed(QString)));
 	connect(min, SIGNAL(textChanged(QString)), this, SLOT(min_changed(QString)));
 	connect(s, SIGNAL(textChanged(QString)), this, SLOT(s_changed(QString)));

@@ -53,10 +53,7 @@ along with DériVoile calc'. If not, see
 
 void FenPrincipale::reset_step2() {
 	this->stopPropagation = false;
-	ui->equipages->setColumnWidth(0, 30);
-	ui->equipages->setColumnWidth(1, 200);
-	ui->equipages->setColumnWidth(2, 60);
-	ui->equipages->setColumnWidth(3, 200);
+	this->equipages_resize();
 	while (ui->equipages->rowCount() > 0) {
 		ui->equipages->removeRow(0);
 	}
@@ -84,6 +81,13 @@ void FenPrincipale::goto_step2() {
 	ui->step3->setVisible(false);
 	ui->step4->setVisible(false);
 	ui->step5->setVisible(false);
+}
+
+void FenPrincipale::equipages_resize() {
+	ui->equipages->setColumnWidth(0, 30);
+	ui->equipages->setColumnWidth(1, 200);
+	ui->equipages->setColumnWidth(2, 60);
+	ui->equipages->setColumnWidth(3, 200);
 }
 
 QList<QString> FenPrincipale::add_bateaux(QJsonArray bateaux) {

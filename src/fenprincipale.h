@@ -244,6 +244,7 @@ class FenPrincipale : public QMainWindow {
 		bool stopPropagation;
 		void reset_step2();
 		void goto_step2();
+		void equipages_resize();
 		void update_completer();
 		QList<QString> add_bateaux(QJsonArray bateaux);
 			// Step3.cpp

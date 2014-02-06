@@ -229,6 +229,11 @@ QTableWidget QTableCornerButton::section {
 	padding: 4px 2px;
 	text-align: center;
 	max-width: 30px;
+	min-width: 0;
+}
+#manches QLineEdit[place=true] {
+	max-width: none;
+	min-width: 80px;
 }
 
 #manches QLabel {
