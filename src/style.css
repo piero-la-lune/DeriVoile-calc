@@ -250,6 +250,10 @@ QTableWidget QTableCornerButton::section {
 #manches QLabel[left=true] {
 	border-left: 1px solid #ddd;
 }
+#manches QLabel[type="coin"] {
+	background: #eee;
+	border: none;
+}
 #manches QLabel[selected=true] {
 	background: #ddd;
 }

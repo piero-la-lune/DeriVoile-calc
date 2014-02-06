@@ -57,6 +57,20 @@ void FenPrincipale::reset_step2() {
 	ui->equipages->setColumnWidth(1, 200);
 	ui->equipages->setColumnWidth(2, 60);
 	ui->equipages->setColumnWidth(3, 200);
+	while (ui->equipages->rowCount() > 0) {
+		ui->equipages->removeRow(0);
+	}
+	int nb = this->nbEquipages;
+	this->nbEquipages = 0; // car on va l'augmenter juste après
+	for (int i = 0; i < nb; ++i) {
+		this->on_addEquipage_clicked();
+		qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 1))
+			->setText(this->equipages[i].nom);
+		qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 2))
+			->setText(this->equipages[i].rating);
+		qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 3))
+			->setText(this->equipages[i].bateau);
+	}
 }
 
 void FenPrincipale::goto_step2() {
@@ -130,7 +144,9 @@ void FenPrincipale::update_completer() {
 	this->completer = new QCompleter(list, this);
 	this->completer->setCaseSensitivity(Qt::CaseInsensitive);
 	this->completer->setFilterMode(Qt::MatchContains);
-	for (int i = 0; i < this->nbEquipages; ++i) {
+	// on n'utilise pas this->nbEquipages car certaines lignes peuvent ne pas
+	// encore avoir été créées (ouverture d'un document)
+	for (int i = 0; i < ui->equipages->rowCount(); ++i) {
 		qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 3))->setCompleter(this->completer);
 	}
 }
@@ -203,7 +219,9 @@ void FenPrincipale::on_addEquipage_clicked() {
 	QWidget *h;
 	QWidget *min;
 	QWidget *s;
-	for (int i = 0; i < this->nbManches; ++i) {
+	// on n'utilise pas this->nbManches car certaines colonnes peuvent ne pas
+	// encore avoir été créées (ouverture d'un document)
+	for (int i = 0; i < ui->manches->columnCount()-1; ++i) {
 		for (int j = 0; j < this->nbEquipages; ++j) {
 			h = ui->manches->cellWidget(j+1, i+1)->layout()->itemAt(0)->widget();
 			min = ui->manches->cellWidget(j+1, i+1)->layout()->itemAt(2)->widget();

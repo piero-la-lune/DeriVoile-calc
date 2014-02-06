@@ -53,12 +53,36 @@ along with DériVoile calc'. If not, see
 
 void FenPrincipale::reset_step3() {
 	QLabel *vide = new QLabel();
-	vide->setProperty("type", "header");
-	vide->setProperty("top", true);
-	vide->setProperty("left", true);
+	vide->setProperty("type", "coin");
 	ui->manches->setCellWidget(0, 0, vide);
 	this->rmMancheTimer = new QTimer();
 	connect(this->rmMancheTimer, SIGNAL(timeout()), this, SLOT(disable_rmManche()));
+	while (ui->manches->columnCount() > 1) {
+		ui->manches->removeColumn(1);
+	}
+	int nb = this->nbManches;
+	this->nbManches = 0; // car on va l'augmenter juste après
+	for (int i = 0; i < nb; ++i) {
+		this->on_addManche_clicked();
+		for (int j = 0; j < this->nbEquipages; ++j) {
+			if (this->equipages[j].manches[i].abr == "") {
+				qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
+					->layout()->itemAt(0)->widget())
+					->setText(QString::number(this->equipages[j].manches[i].h));
+				qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
+					->layout()->itemAt(2)->widget())
+					->setText(QString::number(this->equipages[j].manches[i].min));
+				qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
+					->layout()->itemAt(4)->widget())
+					->setText(QString::number(this->equipages[j].manches[i].s));
+			}
+			else {
+				qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
+					->layout()->itemAt(2)->widget())
+					->setText(this->equipages[j].manches[i].abr);
+			}
+		}
+	}
 }
 
 void FenPrincipale::goto_step3() {

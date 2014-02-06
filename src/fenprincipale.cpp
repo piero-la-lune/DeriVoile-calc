@@ -200,6 +200,22 @@ FenPrincipale::FenPrincipale(
 	this->nbEquipages = 0;
 	this->equipages.clear();
 
+/*	Equipage e;
+	e.nom = "Pierre";
+	e.rating = "LAR";
+	e.bateau = "Laser Radial";
+	Manche m1;
+	m1.h = 1;
+	m1.min = 36;
+	m1.s = 30;
+	e.manches.insert(0, m1);
+	Manche m2;
+	m2.abr = "DNS";
+	e.manches.insert(1, m2);
+	this->equipages.insert(0, e);
+	this->nbEquipages = 1;
+	this->nbManches = 2;*/
+
 	this->reset_step1();
 	this->reset_step2();
 	this->reset_step3();

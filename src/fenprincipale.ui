@@ -72,6 +72,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
          <property name="text">
           <string>Régate</string>
          </property>
@@ -84,6 +87,9 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
          </property>
          <property name="text">
           <string>Équipages</string>
@@ -98,6 +104,9 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
          <property name="text">
           <string>Manches</string>
          </property>
@@ -110,6 +119,9 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
          </property>
          <property name="text">
           <string>Options</string>
@@ -134,6 +146,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="btnStep5">
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
          <property name="text">
           <string>Résultats</string>
          </property>
@@ -437,6 +452,9 @@
            </property>
            <item>
             <widget class="QPushButton" name="addEquipage">
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
              <property name="text">
               <string>Ajouter un équipage</string>
              </property>
@@ -518,6 +536,9 @@
             <layout class="QHBoxLayout" name="horizontalLayout_2">
              <item>
               <widget class="QPushButton" name="addManche">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
                <property name="text">
                 <string>Ajouter une manche</string>
                </property>
@@ -527,6 +548,9 @@
               <widget class="QPushButton" name="rmManche">
                <property name="enabled">
                 <bool>false</bool>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
                </property>
                <property name="text">
                 <string>Supprimer cette manche</string>
