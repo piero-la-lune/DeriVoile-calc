@@ -187,6 +187,7 @@ void FenPrincipale::init() {
 	this->equipages.clear();
 }
 void FenPrincipale::update() {
+	ui->centralwidget->hide();
 	statusBar()->showMessage(
 		tr("DériVoile calc' est un programme proposé par DériVoile (http://derivoile.fr). © 2011-2013 Pierre Monchalin")
 	);
@@ -198,6 +199,7 @@ void FenPrincipale::update() {
 	this->hasModif = false;
 	this->set_titre();
 	this->goto_step1();
+	ui->centralwidget->show();
 	this->removeProgressBar();
 }
 
