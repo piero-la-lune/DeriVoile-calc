@@ -74,6 +74,7 @@ void FenPrincipale::reset_step2() {
 		qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 2))
 			->setText(this->equipages[i].rating);
 	}
+	this->update_nbBateaux();
 }
 
 void FenPrincipale::on_btnStep2_clicked() {
@@ -245,6 +246,8 @@ void FenPrincipale::on_addEquipage_clicked() {
 		}
 	}
 	++this->nbEquipages;
+		// mise à jour du nombre de bateaux
+	this->update_nbBateaux();
 }
 
 void FenPrincipale::deleteEquipage() {
@@ -261,4 +264,17 @@ void FenPrincipale::deleteEquipage() {
 	}
 	this->equipages.rm(nb);
 	--this->nbEquipages;
+	this->update_nbBateaux();
+}
+
+void FenPrincipale::update_nbBateaux() {
+	if (this->nbEquipages == 0) {
+		ui->nbBateaux->setText(tr("Aucun bateau"));
+	}
+	else if (this->nbEquipages == 1) {
+		ui->nbBateaux->setText(tr("Un bateau"));
+	}
+	else {
+		ui->nbBateaux->setText(QString::number(this->nbEquipages)+tr(" bateaux"));
+	}
 }

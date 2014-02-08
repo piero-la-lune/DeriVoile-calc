@@ -451,14 +451,38 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="QPushButton" name="addEquipage">
-             <property name="focusPolicy">
-              <enum>Qt::TabFocus</enum>
-             </property>
-             <property name="text">
-              <string>Ajouter un équipage</string>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_1">
+             <item>
+              <widget class="QPushButton" name="addEquipage">
+               <property name="focusPolicy">
+                <enum>Qt::TabFocus</enum>
+               </property>
+               <property name="text">
+                <string>Ajouter un équipage</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="nbBateaux">
+               <property name="text">
+                <string>Aucun bateau</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </item>
            <item>
             <widget class="QTableWidget" name="equipages">

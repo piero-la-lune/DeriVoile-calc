@@ -250,6 +250,7 @@ class FenPrincipale : public QMainWindow {
 		void leave_step2();
 		void equipages_resize();
 		void update_completer();
+		void update_nbBateaux();
 		QList<QString> add_bateaux(QJsonArray bateaux);
 			// Step3.cpp
 		MyMap<int, MyMap<int, TpsWdg>> tpsWdgs;
