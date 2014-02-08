@@ -2,7 +2,7 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
@@ -27,7 +27,7 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
@@ -60,23 +60,30 @@ void FenPrincipale::reset_step1() {
 	else if (this->typeRt == RT_RYA) { bt = ui->typeBateauxRya; }
 	else { bt = ui->typeBateauxDeri; }
 	bt->setCurrentIndex(this->bt_textToInt(this->typeBt));
+	qApp->processEvents();
+	this->progression(5);
+	qApp->processEvents();
 }
 
+void FenPrincipale::on_btnStep1_clicked() {
+	this->goto_step1();
+}
 void FenPrincipale::goto_step1() {
+	this->leave_step2();
+	this->leave_step3();
+	this->leave_step4();
+	this->leave_step5();
 	ui->btnStep1->setFlat(true);
-	ui->btnStep2->setFlat(false);
-	ui->btnStep3->setFlat(false);
-	ui->btnStep4->setFlat(false);
-	ui->btnStep5->setFlat(false);
 	ui->step1->setVisible(true);
-	ui->step2->setVisible(false);
-	ui->step3->setVisible(false);
-	ui->step4->setVisible(false);
-	ui->step5->setVisible(false);
+}
+void FenPrincipale::leave_step1() {
+	ui->btnStep1->setFlat(false);
+	ui->step1->setVisible(false);
 }
 
 void FenPrincipale::on_nomRegate_textChanged(QString text) {
 	this->nomRegate = text;
+	this->modif();
 }
 
 void FenPrincipale::on_typeClassement_currentIndexChanged(int nb) {
@@ -110,6 +117,7 @@ void FenPrincipale::on_typeClassement_currentIndexChanged(int nb) {
 	ui->typeBateauxFfv->setVisible(show && this->typeRt == RT_FFV);
 	ui->typeBateauxRya->setVisible(show	&& this->typeRt == RT_RYA);
 	ui->typeBateauxDeri->setVisible(show && this->typeRt == RT_DERI);
+	this->modif();
 
 }
 
@@ -129,24 +137,26 @@ void FenPrincipale::on_typeRatings_currentIndexChanged(int nb) {
 	else {
 		ui->typeBateauxDeri->setCurrentIndex(this->bt_textToInt(this->typeBt));
 	}
+	this->modif();
 }
 
 void FenPrincipale::on_typeBateauxFfv_currentIndexChanged(int nb) {
 	this->typeBt = this->bt_intToText(nb);
 	this->update_completer();
+	this->modif();
 }
 void FenPrincipale::on_typeBateauxRya_currentIndexChanged(int nb) {
 	this->typeBt = this->bt_intToText(nb);
 	this->update_completer();
+	this->modif();
 }
 void FenPrincipale::on_typeBateauxDeri_currentIndexChanged(int nb) {
 	this->typeBt = this->bt_intToText(nb);
 	this->update_completer();
+	this->modif();
 }
 
-void FenPrincipale::on_btnStep1_clicked() {
-	this->goto_step1();
-}
+
 
 
 

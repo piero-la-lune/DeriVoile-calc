@@ -2,7 +2,7 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
@@ -27,7 +27,7 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
@@ -54,29 +54,33 @@ along with DériVoile calc'. If not, see
 void FenPrincipale::reset_step4() {
 	ui->manchesRetirees->setValue(this->manchesRetirees);
 	ui->manchesRetireesMin->setValue(this->manchesRetireesMin);
-}
-
-void FenPrincipale::goto_step4() {
-	ui->btnStep1->setFlat(false);
-	ui->btnStep2->setFlat(false);
-	ui->btnStep3->setFlat(false);
-	ui->btnStep4->setFlat(true);
-	ui->btnStep5->setFlat(false);
-	ui->step1->setVisible(false);
-	ui->step2->setVisible(false);
-	ui->step3->setVisible(false);
-	ui->step4->setVisible(true);
-	ui->step5->setVisible(false);
+	qApp->processEvents();
+	this->progression(99);
+	qApp->processEvents();
 }
 
 void FenPrincipale::on_btnStep4_clicked() {
 	this->goto_step4();
 }
+void FenPrincipale::goto_step4() {
+	this->leave_step1();
+	this->leave_step2();
+	this->leave_step3();
+	this->leave_step5();
+	ui->btnStep4->setFlat(true);
+	ui->step4->setVisible(true);
+}
+void FenPrincipale::leave_step4() {
+	ui->btnStep4->setFlat(false);
+	ui->step4->setVisible(false);
+}
 
 void FenPrincipale::on_manchesRetirees_valueChanged(int val) {
 	this->manchesRetirees = val;
+	this->modif();
 }
 
 void FenPrincipale::on_manchesRetireesMin_valueChanged(int val) {
 	this->manchesRetireesMin = val;
+	this->modif();
 }

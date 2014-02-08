@@ -2,7 +2,7 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
@@ -27,7 +27,7 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
@@ -85,7 +85,7 @@ void FenPrincipale::maj_deri_done(QNetworkReply *reply) {
 	this->progress->setMaximum(100);
 	if (check_reply(reply)) {
 		QString version = QString::fromUtf8(reply->readAll().data());
-		if (version != FenPrincipale::VERSION) {
+		if (this->version_greater(version, FenPrincipale::VERSION, true)) {
 			this->msg(
 				tr("Mise à jour disponible"),
 				tr("Une mise à jour de DériVoile calc' est disponible.<br /><br /><a href='http://calc.derivoile.fr/download.html'>Télécharger cette nouvelle version</a>."),
@@ -109,6 +109,15 @@ void FenPrincipale::maj_deri_done(QNetworkReply *reply) {
 	}
 }
 
+bool FenPrincipale::version_greater(QString a, QString b, bool strict) {
+	if (strict) {
+		return (a.mid(1, 1).toInt()*10+a.mid(3, 1).toInt()
+		> b.mid(1, 1).toInt()*10+b.mid(3, 1).toInt());
+	}
+	return (a.mid(1, 1).toInt()*10+a.mid(3, 1).toInt()
+		>= b.mid(1, 1).toInt()*10+b.mid(3, 1).toInt());
+}
+
 void FenPrincipale::update_deri() {
 	this->download(
 		"http://calc.derivoile.fr/maj/version.txt",
@@ -118,7 +127,7 @@ void FenPrincipale::update_deri() {
 void FenPrincipale::update_deri_done(QNetworkReply *reply) {
 	if (check_reply(reply)) {
 		QString version = QString::fromUtf8(reply->readAll().data());
-		if (version != FenPrincipale::VERSION) {
+		if (this->version_greater(version, FenPrincipale::VERSION, true)) {
 			this->msg(
 				tr("Mise à jour disponible"),
 				tr("Une mise à jour de DériVoile calc' est disponible.<br /><br /><a href='http://calc.derivoile.fr/download.html'>Télécharger cette nouvelle version</a>."),

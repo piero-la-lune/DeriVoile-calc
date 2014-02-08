@@ -2,7 +2,7 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
@@ -27,7 +27,7 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
@@ -54,19 +54,24 @@ along with DériVoile calc'. If not, see
 void FenPrincipale::reset_step5() {
 }
 
-void FenPrincipale::goto_step5() {
-	ui->btnStep1->setFlat(false);
-	ui->btnStep2->setFlat(false);
-	ui->btnStep3->setFlat(false);
-	ui->btnStep4->setFlat(false);
-	ui->btnStep5->setFlat(true);
-	ui->step1->setVisible(false);
-	ui->step2->setVisible(false);
-	ui->step3->setVisible(false);
-	ui->step4->setVisible(false);
-	ui->step5->setVisible(true);
-}
-
 void FenPrincipale::on_btnStep5_clicked() {
 	this->goto_step5();
 }
+void FenPrincipale::goto_step5() {
+	this->leave_step1();
+	this->leave_step2();
+	this->leave_step3();
+	this->leave_step4();
+	ui->btnStep5->setFlat(true);
+	ui->step5->setVisible(true);
+}
+void FenPrincipale::leave_step5() {
+	ui->btnStep5->setFlat(false);
+	ui->step5->setVisible(false);
+}
+
+
+
+// this->addProgressBar(tr("Calcul du classement :"));
+// qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
+// qApp->restoreOverrideCursor();

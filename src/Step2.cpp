@@ -2,7 +2,7 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
@@ -27,7 +27,7 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
@@ -57,30 +57,39 @@ void FenPrincipale::reset_step2() {
 	while (ui->equipages->rowCount() > 0) {
 		ui->equipages->removeRow(0);
 	}
+	while (ui->manches->rowCount() > 1) {
+		ui->manches->removeRow(1);
+	}
 	int nb = this->nbEquipages;
 	this->nbEquipages = 0; // car on va l'augmenter juste après
 	for (int i = 0; i < nb; ++i) {
+		qApp->processEvents();
+		this->progress->setValue(5+35*i/nb);
+		qApp->processEvents();
 		this->on_addEquipage_clicked();
 		qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 1))
 			->setText(this->equipages[i].nom);
-		qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 2))
-			->setText(this->equipages[i].rating);
 		qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 3))
 			->setText(this->equipages[i].bateau);
+		qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 2))
+			->setText(this->equipages[i].rating);
 	}
 }
 
+void FenPrincipale::on_btnStep2_clicked() {
+	this->goto_step2();
+}
 void FenPrincipale::goto_step2() {
-	ui->btnStep1->setFlat(false);
+	this->leave_step1();
+	this->leave_step3();
+	this->leave_step4();
+	this->leave_step5();
 	ui->btnStep2->setFlat(true);
-	ui->btnStep3->setFlat(false);
-	ui->btnStep4->setFlat(false);
-	ui->btnStep5->setFlat(false);
-	ui->step1->setVisible(false);
 	ui->step2->setVisible(true);
-	ui->step3->setVisible(false);
-	ui->step4->setVisible(false);
-	ui->step5->setVisible(false);
+}
+void FenPrincipale::leave_step2() {
+	ui->btnStep2->setFlat(false);
+	ui->step2->setVisible(false);
 }
 
 void FenPrincipale::equipages_resize() {
@@ -172,16 +181,15 @@ void FenPrincipale::code_complete(QString code) {
 
 void FenPrincipale::nom_changed(QString text) {
 	this->equipages[sender()->property("rowIndex").toInt()].nom = text;
+	this->modif();
 }
 void FenPrincipale::code_changed(QString text) {
 	this->equipages[sender()->property("rowIndex").toInt()].rating = text;
+	this->modif();
 }
 void FenPrincipale::type_changed(QString text) {
 	this->equipages[sender()->property("rowIndex").toInt()].bateau = text;
-}
-
-void FenPrincipale::on_btnStep2_clicked() {
-	this->goto_step2();
+	this->modif();
 }
 
 void FenPrincipale::on_addEquipage_clicked() {
@@ -216,15 +224,14 @@ void FenPrincipale::on_addEquipage_clicked() {
 	nom2->setProperty("left", true);
 	nom2->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 	ui->manches->setCellWidget(row+1, 0, nom2);
-	for (int i = 0; i < this->nbManches; ++i) {
+	// on n'utilise pas this->nbManches car certaines colonnes peuvent ne pas
+	// encore avoir été créées (ouverture d'un document)
+	for (int i = 0; i < ui->manches->columnCount()-1; ++i) {
 		this->add_manche_inputs(this->nbEquipages, i);
 	}
-	++this->nbEquipages;
 	QWidget *h;
 	QWidget *min;
 	QWidget *s;
-	// on n'utilise pas this->nbManches car certaines colonnes peuvent ne pas
-	// encore avoir été créées (ouverture d'un document)
 	for (int i = 0; i < ui->manches->columnCount()-1; ++i) {
 		for (int j = 0; j < this->nbEquipages; ++j) {
 			h = ui->manches->cellWidget(j+1, i+1)->layout()->itemAt(0)->widget();
@@ -237,6 +244,7 @@ void FenPrincipale::on_addEquipage_clicked() {
 			setTabOrder(min, s);
 		}
 	}
+	++this->nbEquipages;
 }
 
 void FenPrincipale::deleteEquipage() {

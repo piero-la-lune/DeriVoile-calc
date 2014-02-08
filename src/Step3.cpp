@@ -2,7 +2,7 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
@@ -27,7 +27,7 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
@@ -63,18 +63,26 @@ void FenPrincipale::reset_step3() {
 	int nb = this->nbManches;
 	this->nbManches = 0; // car on va l'augmenter juste après
 	for (int i = 0; i < nb; ++i) {
+		this->progression(40+50*i/nb);
 		this->on_addManche_clicked();
 		for (int j = 0; j < this->nbEquipages; ++j) {
-			if (this->equipages[j].manches[i].abr == "") {
-				qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
-					->layout()->itemAt(0)->widget())
-					->setText(QString::number(this->equipages[j].manches[i].h));
-				qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
-					->layout()->itemAt(2)->widget())
-					->setText(QString::number(this->equipages[j].manches[i].min));
-				qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
-					->layout()->itemAt(4)->widget())
-					->setText(QString::number(this->equipages[j].manches[i].s));
+			if (this->equipages[j].manches[i].abr.isEmpty()) {
+				if (this->typeClmt == CLMT_SCRATCH) {
+					qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
+						->layout()->itemAt(2)->widget())
+						->setText(QString::number(this->equipages[j].manches[i].pl));
+				}
+				else {
+					qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
+						->layout()->itemAt(0)->widget())
+						->setText(QString::number(this->equipages[j].manches[i].h));
+					qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
+						->layout()->itemAt(2)->widget())
+						->setText(QString::number(this->equipages[j].manches[i].min));
+					qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
+						->layout()->itemAt(4)->widget())
+						->setText(QString::number(this->equipages[j].manches[i].s));
+				}
 			}
 			else {
 				qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
@@ -85,26 +93,25 @@ void FenPrincipale::reset_step3() {
 	}
 }
 
+void FenPrincipale::on_btnStep3_clicked() {
+	this->goto_step3();
+}
 void FenPrincipale::goto_step3() {
-	ui->btnStep1->setFlat(false);
-	ui->btnStep2->setFlat(false);
+	this->leave_step1();
+	this->leave_step2();
+	this->leave_step4();
+	this->leave_step5();
 	ui->btnStep3->setFlat(true);
-	ui->btnStep4->setFlat(false);
-	ui->btnStep5->setFlat(false);
-	ui->step1->setVisible(false);
-	ui->step2->setVisible(false);
 	ui->step3->setVisible(true);
-	ui->step4->setVisible(false);
-	ui->step5->setVisible(false);
 	for (int i = 0; i < this->nbEquipages; ++i) {
 		qobject_cast<QLabel*>(ui->manches->cellWidget(i+1, 0))
 			->setText(this->equipages[i].nom);
 	}
 	ui->manches->resizeColumnsToContents();
 }
-
-void FenPrincipale::on_btnStep3_clicked() {
-	this->goto_step3();
+void FenPrincipale::leave_step3() {
+	ui->btnStep3->setFlat(false);
+	ui->step3->setVisible(false);
 }
 
 void FenPrincipale::h_changed(QString text) {
@@ -126,6 +133,7 @@ void FenPrincipale::h_changed(QString text) {
 		this->equipages[row].manches[col].h = 0;
 		this->equipages[row].manches[col].abr = text;
 	}
+	this->modif();
 }
 void FenPrincipale::min_changed(QString text) {
 	int row = qobject_cast<QWidget*>(sender())
@@ -137,11 +145,11 @@ void FenPrincipale::min_changed(QString text) {
 		QIntValidator v(this);
 		v.setBottom(1);
 		if (v.validate(text, pos) == QValidator::Acceptable) {
-			this->equipages[row].manches[col].min = text.toInt();
+			this->equipages[row].manches[col].pl = text.toInt();
 			this->equipages[row].manches[col].abr = "";
 		}
 		else {
-			this->equipages[row].manches[col].min = 0;
+			this->equipages[row].manches[col].pl = 0;
 			this->equipages[row].manches[col].abr = text;
 		}
 	}
@@ -161,6 +169,7 @@ void FenPrincipale::min_changed(QString text) {
 			this->equipages[row].manches[col].abr = text;
 		}
 	}
+	this->modif();
 }
 void FenPrincipale::s_changed(QString text) {
 	int row = qobject_cast<QWidget*>(sender())
@@ -187,6 +196,7 @@ void FenPrincipale::s_changed(QString text) {
 		this->equipages[row].manches[col].s = 0;
 		this->equipages[row].manches[col].abr = text;
 	}
+	this->modif();
 }
 
 void FenPrincipale::h_pressed(QKeyEvent *ev) {
@@ -333,16 +343,16 @@ void FenPrincipale::on_addManche_clicked() {
 }
 
 void FenPrincipale::add_manche_inputs(int row, int col) {
-	QWidget *wdg = new QWidget();
-	QHBoxLayout *layout = new QHBoxLayout();
+	QWidget *wdg = new QWidget(this);
+	QHBoxLayout *layout = new QHBoxLayout(wdg);
 	MyLineEdit *h = new MyLineEdit(wdg);
 	MyLineEdit *min = new MyLineEdit(wdg);
 	MyLineEdit *s = new MyLineEdit(wdg);
 	h->setAlignment(Qt::AlignHCenter);
 	min->setAlignment(Qt::AlignHCenter);
 	s->setAlignment(Qt::AlignHCenter);
-	QLabel *points1 = new QLabel(":");
-	QLabel *points2 = new QLabel(":");
+	QLabel *points1 = new QLabel(":", wdg);
+	QLabel *points2 = new QLabel(":", wdg);
 	layout->addWidget(h);
 	layout->addWidget(points1);
 	layout->addWidget(min);

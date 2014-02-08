@@ -2,7 +2,7 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
@@ -27,7 +27,7 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
@@ -53,119 +53,315 @@ along with DériVoile calc'. If not, see
 
 void FenPrincipale::on_nouveau_triggered() {
 	if (this->confirm_close()) {
-		webView->reload();
-		this->hasModif = false;
-		this->filename = "";
-		this->set_titre();
-		this->set_etape(1);
+		this->init();
+		this->update();
 	}
 }
 
 void FenPrincipale::on_ouvrir_triggered() {
 	if (this->confirm_close()) {
-		this->addProgressBar(tr("Ouverture du classement :"));
 		QString name = QFileDialog::getOpenFileName(
 			this,
 			tr("Ouvrir un classement"),
 			"",
 			tr("Classement (*.race ou *.txt);;Tous les fichiers (*.*)")
 		);
-		if (name.isEmpty()) { this->ouvrir_failed(false); }
-		else { this->ouvrir(name); }
+		this->ouvrir(name);
 	}
 }
 
-void FenPrincipale::ouvrir(QString name) {
-	this->webView->setVisible(false);
+bool FenPrincipale::ouvrir(QString name) {
+	if (name.isEmpty()) { return false; }
 	qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
 	QFile file(name);
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		this->ouvrir_failed(true);
-	}
-	else {
-		QTextStream flux(&file);
-		flux.setCodec("UTF-8");
-		this->data = flux.readAll();
-		/*this->webFrame->evaluateJavaScript("$.ouvrir();");*/
-		this->filename = name;
-	}
-	file.close();
-}
-
-void FenPrincipale::ouvrir_callback(bool ok) {
-	if (ok) {
-		this->removeProgressBar();
-		statusBar()->showMessage(
-			tr("Le classement est prêt à être modifié."),
-			3000
-		);
-		this->hasModif = false;
-		this->set_titre();
-		if (this->filename !=
-			this->preferences->value("recent1", "").toString()
-		) {
-			if (this->filename ==
-				this->preferences->value("recent2", "").toString()
-			) {
-				this->preferences->setValue("recent2",
-					this->preferences->value("recent1", "").toString());
-				this->preferences->setValue("recent1", this->filename);
-			}
-			else if (this->filename ==
-				this->preferences->value("recent3", "").toString()
-			) {
-				this->preferences->setValue("recent3",
-					this->preferences->value("recent2", "").toString());
-				this->preferences->setValue("recent2",
-					this->preferences->value("recent1", "").toString());
-				this->preferences->setValue("recent1", this->filename);
-			}
-			else if (this->filename ==
-				this->preferences->value("recent4", "").toString()
-			) {
-				this->preferences->setValue("recent4",
-					this->preferences->value("recent3", "").toString());
-				this->preferences->setValue("recent3",
-					this->preferences->value("recent2", "").toString());
-				this->preferences->setValue("recent2",
-					this->preferences->value("recent1", "").toString());
-				this->preferences->setValue("recent1", this->filename);
-			}
-			else {
-				this->preferences->setValue("recent5",
-					this->preferences->value("recent4", "").toString());
-				this->preferences->setValue("recent4",
-					this->preferences->value("recent3", "").toString());
-				this->preferences->setValue("recent3",
-					this->preferences->value("recent2", "").toString());
-				this->preferences->setValue("recent2",
-					this->preferences->value("recent1", "").toString());
-				this->preferences->setValue("recent1", this->filename);
-			}
-			this->load_recents();
-		}
-	}
-	else {
-		this->filename = "";
-		this->ouvrir_failed(true);
-	}
-	this->webView->setVisible(true);
-	qApp->restoreOverrideCursor();
-}
-
-void FenPrincipale::ouvrir_failed(bool msg) {
-	if (msg) {
+		qApp->restoreOverrideCursor();
 		this->msg(
 			tr("Erreur"),
-			tr("Impossible d'ouvrir ou de lire le classement.\nVérifiez que le fichier est accessible en lecture et peut être ouvert avec DériVoile calc'."),
+			tr("Impossible d'ouvrir le classement. Vérifiez que le fichier est accessible en lecture."),
 			"x"
 		);
+		return false;
 	}
-	this->removeProgressBar();
-	statusBar()->showMessage(
-		tr("L'ouverture du classement a échouée."),
-		3000
-	);
+	QByteArray cl = file.readAll();
+	file.close();
+	QJsonDocument doc = QJsonDocument::fromJson(cl);
+	if (doc.isNull()) {
+		qApp->restoreOverrideCursor();
+		this->msg(
+			tr("Erreur"),
+			tr("Impossible de lire le classement. Vérifiez que le fichier peut être ouvert par DériVoile calc'."),
+			"x"
+		);
+		return false;
+	}
+	this->init();
+	QJsonObject obj = this->json_compatibilite(doc.object());
+	QJsonValue v;
+	v = obj.value("nomRegate");
+	if (!v.isString()) { this->nomRegate = ""; }
+	else { this->nomRegate = v.toString(); }
+	v = obj.value("classement");
+	if (!v.isString()) { this->typeClmt = CLMT_TEMPS; }
+	else {
+		this->typeClmt = v.toString();
+		QList<QString> l;
+		l << CLMT_TEMPS << CLMT_SCRATCH;
+		if (!l.contains(this->typeClmt)) { this->typeClmt = CLMT_TEMPS; }
+	}
+	if (this->typeClmt == CLMT_TEMPS) {
+		v = obj.value("ratings");
+		if (!v.isString()) { this->typeRt = RT_FFV; }
+		else {
+			this->typeRt = v.toString();
+			QList<QString> l;
+			l << RT_FFV << RT_RYA << RT_DERI;
+			if (!l.contains(this->typeRt)) { this->typeRt = RT_FFV; }
+		}
+		if (this->typeRt == RT_FFV) {
+			v = obj.value("bateaux");
+			if (!v.isString()) { this->typeBt = BT_DER; }
+			else {
+				this->typeBt = v.toString();
+				QList<QString> l;
+				l << BT_MUL << BT_DER << BT_QUI << BT_HAB << BT_DER_QUI_HAB;
+				if (!l.contains(this->typeBt)) { this->typeBt = BT_DER; }
+			}
+		}
+		else if (this->typeRt == RT_RYA) {
+			v = obj.value("bateaux");
+			if (!v.isString()) { this->typeBt = BT_DER; }
+			else {
+				this->typeBt = v.toString();
+				QList<QString> l;
+				l << BT_MUL << BT_DER << BT_QUI << BT_MUL_DER_QUI;
+				if (!l.contains(this->typeBt)) { this->typeBt = BT_DER; }
+			}
+		}
+		else if (this->typeRt == RT_DERI) {
+			v = obj.value("bateaux");
+			if (!v.isString()) { this->typeBt = BT_MUL_DER_QUI; }
+			else {
+				this->typeBt = v.toString();
+				QList<QString> l;
+				l << BT_MUL_DER_QUI << BT_ALL;
+				if (!l.contains(this->typeBt)) { this->typeBt = BT_MUL_DER_QUI; }
+			}
+		}
+	}
+	v = obj.value("nbEquipages");
+	if (v.isDouble()) { this->nbEquipages = v.toInt(); }
+	v = obj.value("nbManches");
+	if (v.isDouble()) { this->nbManches = v.toInt(); }
+	v = obj.value("manchesRetirees");
+	if (v.isDouble()) { this->manchesRetirees = v.toInt(); }
+	v = obj.value("manchesRetireesMin");
+	if (v.isDouble()) { this->manchesRetireesMin = v.toInt(); }
+	v = obj.value("equipages");
+	if (v.isArray()) {
+		QJsonArray a = v.toArray();
+		for (int i = 0; i < this->nbEquipages; ++i) {
+			if (a.at(i).isUndefined()) { continue; }
+			QJsonObject e = a.at(i).toObject();
+			Equipage eq;
+			v = e.value("nom");
+			if (!v.isString()) { eq.nom = ""; }
+			else { eq.nom = v.toString(); }
+			v = e.value("rating");
+			if (v.isString()) { eq.rating = v.toString(); }
+			else if (v.isDouble()) { eq.rating = QString::number(v.toDouble()); }
+			else { eq.rating = ""; }
+			v = e.value("bateau");
+			if (!v.isString()) { eq.bateau = ""; }
+			else { eq.bateau = v.toString(); }
+			v = e.value("manches");
+			if (v.isArray()) {
+				QJsonArray aa = v.toArray();
+				for (int j = 0; j < this->nbManches; ++j) {
+					if (aa.at(j).isUndefined()) { continue; }
+					QJsonObject m = aa.at(j).toObject();
+					Manche ma;
+					v = m.value("pl");
+					if (v.isDouble()) { ma.pl = v.toInt(); }
+					v = m.value("h");
+					if (v.isDouble()) { ma.h = v.toInt(); }
+					v = m.value("min");
+					if (v.isDouble()) { ma.min = v.toInt(); }
+					v = m.value("s");
+					if (v.isDouble()) { ma.s = v.toInt(); }
+					eq.manches.insert(j, ma);
+				}
+			}
+			this->equipages.insert(i, eq);
+		}
+	}
+	this->filename = QString(name);
+	this->update();
+	// Mise à jour des fichiers récemment ouverts
+	if (this->filename != this->preferences->value("recent1", "").toString()) {
+		if (this->filename == this->preferences->value("recent2", "").toString()) {
+			this->preferences->setValue("recent2",
+				this->preferences->value("recent1", "").toString());
+			this->preferences->setValue("recent1", this->filename);
+		}
+		else if (this->filename == this->preferences->value("recent3", "").toString()) {
+			this->preferences->setValue("recent3",
+				this->preferences->value("recent2", "").toString());
+			this->preferences->setValue("recent2",
+				this->preferences->value("recent1", "").toString());
+			this->preferences->setValue("recent1", this->filename);
+		}
+		else if (this->filename == this->preferences->value("recent4", "").toString()) {
+			this->preferences->setValue("recent4",
+				this->preferences->value("recent3", "").toString());
+			this->preferences->setValue("recent3",
+				this->preferences->value("recent2", "").toString());
+			this->preferences->setValue("recent2",
+				this->preferences->value("recent1", "").toString());
+			this->preferences->setValue("recent1", this->filename);
+		}
+		else {
+			this->preferences->setValue("recent5",
+				this->preferences->value("recent4", "").toString());
+			this->preferences->setValue("recent4",
+				this->preferences->value("recent3", "").toString());
+			this->preferences->setValue("recent3",
+				this->preferences->value("recent2", "").toString());
+			this->preferences->setValue("recent2",
+				this->preferences->value("recent1", "").toString());
+			this->preferences->setValue("recent1", this->filename);
+		}
+		this->load_recents();
+	}
+	qApp->restoreOverrideCursor();
+	return true;
+}
+
+QJsonObject FenPrincipale::json_compatibilite(QJsonObject obj) {
+	// on fixe un numéro de version par défaut, car les fichiers enregistrés
+	// avec les premières versions ne le contenaient pas
+	QString version = "v6-0";
+	QJsonValue v;
+	v = obj.value("version");
+	if (v.isString()) {
+		version = v.toString();
+	}
+	if (this->version_greater(version, "v7-0")) { return obj; }
+	// on remplace les objets indexés par des entiers par des tableaux
+	v = obj.value("equipages");
+	if (v.isObject()) {
+		obj.insert("equipages", this->json_toArray(v.toObject()));
+	}
+	v = obj.value("equipages");
+	if (v.isArray()) {
+		QJsonArray a = v.toArray();
+		for (int i = 0; i < a.size(); i++) {
+			if (a[i].isObject()) {
+				v = a[i].toObject().value("manches");
+				if (v.isObject()) {
+					QJsonObject o = a[i].toObject();
+					o.insert("manches", this->json_toArray(v.toObject()));
+					a[i] = o;
+				}
+			}
+		}
+		obj.insert("equipages", a);
+	}
+	// on corrige les chaines de caractère qui devraient être des entiers
+	v = obj.value("nbEquipages");
+	if (v.isString()) { obj.insert("nbEquipages", v.toString().toInt()); }
+	v = obj.value("nbManches");
+	if (v.isString()) { obj.insert("nbManches", v.toString().toInt()); }
+	v = obj.value("manchesRetirees");
+	if (v.isString()) { obj.insert("manchesRetirees", v.toString().toInt()); }
+	v = obj.value("manchesRetireesMin");
+	if (v.isString()) { obj.insert("manchesRetireesMin", v.toString().toInt()); }
+	// on corrige la façon de rentrer les temps / places / abréviations
+	v = obj.value("classement");
+	bool is_scratch = false;
+	if (v.isString() && v.toString() == CLMT_SCRATCH) {
+		is_scratch = true;
+	}
+	v = obj.value("equipages");
+	if (v.isArray()) {
+		QJsonArray a = v.toArray();
+		for (int i = 0; i < a.size(); i++) {
+			if (a[i].isObject()) {
+				v = a[i].toObject().value("manches");
+				if (v.isArray()) {
+					QJsonArray b = v.toArray();
+					for (int j = 0; j < b.size(); j++) {
+						if (b[j].isObject()) {
+							QJsonObject result;
+							int pos = 0;
+							if (is_scratch) {
+								QIntValidator vv(this);
+								vv.setBottom(1);
+								QString pl;
+								v = b[j].toObject().value("pl");
+								if (v.isDouble()) { pl = QString::number(v.toInt()); }
+								else if (v.isString()) { pl = v.toString(); }
+								else {
+									v = b[j].toObject().value("min");
+									if (v.isDouble()) { pl = QString::number(v.toInt()); }
+									else if (v.isString()) { pl = v.toString(); }
+								}
+								if (vv.validate(pl, pos) == QValidator::Acceptable) {
+									result.insert("pl", pl.toInt());
+								}
+								else {
+									result.insert("abr", pl);
+								}
+							}
+							else {
+								QIntValidator vv(0, 59, this);
+								QString h;
+								v = b[j].toObject().value("h");
+								if (v.isDouble()) { h = QString::number(v.toInt()); }
+								else if (v.isString()) { h = v.toString(); }
+								if (vv.validate(h, pos) == QValidator::Acceptable) {
+									result.insert("h", h.toInt());
+								}
+								else { result.insert("abr", h); }
+								QString min;
+								v = b[j].toObject().value("min");
+								if (v.isDouble()) { min = QString::number(v.toInt()); }
+								else if (v.isString()) { min = v.toString(); }
+								if (vv.validate(min, pos) == QValidator::Acceptable) {
+									result.insert("min", min.toInt());
+								}
+								else { result.insert("abr", min); }
+								QString s;
+								v = b[j].toObject().value("s");
+								if (v.isDouble()) { s = QString::number(v.toInt()); }
+								else if (v.isString()) { s = v.toString(); }
+								if (vv.validate(s, pos) == QValidator::Acceptable) {
+									result.insert("s", s.toInt());
+								}
+								else { result.insert("abr", s); }
+							}
+							b[j] = result;
+						}
+					}
+					QJsonObject o = a[i].toObject();
+					o.insert("manches", b);
+					a[i] = o;
+				}
+			}
+		}
+		obj.insert("equipages", a);
+	}
+	return obj;
+}
+
+QJsonArray FenPrincipale::json_toArray(QJsonObject obj) {
+	int i = 0;
+	QJsonArray a;
+	while (!obj.value(QString::number(i)).isUndefined()) {
+		a.append(obj.value(QString::number(i)));
+		++i;
+	}
+	return a;
 }
 
 
@@ -293,9 +489,6 @@ void FenPrincipale::enregistrer_failed(bool msg) {
 }
 
 void FenPrincipale::on_pdf_triggered() {
-	if (this->etapeActuelle == 4) {
-		/*this->webFrame->evaluateJavaScript("$.pdf();");*/
-	}
 }
 void FenPrincipale::pdf_callback(QString html) {
 	QPrinter printer;
@@ -320,9 +513,6 @@ void FenPrincipale::pdf_callback(QString html) {
 	}
 }
 void FenPrincipale::on_html_triggered() {
-	if (this->etapeActuelle == 4) {
-		/*this->webFrame->evaluateJavaScript("$.html();");*/
-	}
 }
 void FenPrincipale::html_callback(QString html) {
 	QString name = QFileDialog::getSaveFileName(

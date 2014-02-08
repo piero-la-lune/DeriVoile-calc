@@ -2,7 +2,7 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
@@ -27,7 +27,7 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
@@ -150,6 +150,7 @@ struct Manche {
 	int h;
 	int min;
 	int s;
+	int pl;
 	QString abr;
 };
 struct Equipage {
@@ -179,7 +180,6 @@ class FenPrincipale : public QMainWindow {
 		int getInt(QString title, QString text, int value, int min, int max);
 		void restart();
 		bool load_ratings(QString filename);
-		void update_ratings_js();
 			// Régate
 		static QString const CLMT_TEMPS;
 		static QString const CLMT_SCRATCH;
@@ -198,7 +198,6 @@ class FenPrincipale : public QMainWindow {
 		Ui::FenPrincipale *ui;
 		QString filename;
 		bool hasModif;
-		int etapeActuelle;
 		QSettings *preferences;
 		QSplashScreen *splash;
 		int splashDone;
@@ -214,7 +213,10 @@ class FenPrincipale : public QMainWindow {
 		QMainWindow *fenRatings;
 		QMainWindow *fenAide;
 		QString data;
+		void init();
+		void update();
 		void set_titre();
+		void modif();
 		void addProgressBar(QString text);
 		void removeProgressBar();
 		bool confirm_close();
@@ -231,6 +233,7 @@ class FenPrincipale : public QMainWindow {
 			// Step1.cpp
 		void reset_step1();
 		void goto_step1();
+		void leave_step1();
 		int clmt_textToInt(QString text);
 		QString clmt_intToText(int nb);
 		int rt_textToInt(QString text);
@@ -244,6 +247,7 @@ class FenPrincipale : public QMainWindow {
 		bool stopPropagation;
 		void reset_step2();
 		void goto_step2();
+		void leave_step2();
 		void equipages_resize();
 		void update_completer();
 		QList<QString> add_bateaux(QJsonArray bateaux);
@@ -253,21 +257,26 @@ class FenPrincipale : public QMainWindow {
 		QTimer *rmMancheTimer;
 		void reset_step3();
 		void goto_step3();
+		void leave_step3();
 		void add_manche_inputs(int row, int col);
 			// Step4.cpp
 		void reset_step4();
 		void goto_step4();
+		void leave_step4();
 			// Step5.cpp
 		void reset_step5();
 		void goto_step5();
+		void leave_step5();
 			// Classement.cpp
-		void ouvrir(QString name);
-		void ouvrir_failed(bool msg);
+		bool ouvrir(QString name);
+		QJsonObject json_compatibilite(QJsonObject obj);
+		QJsonArray json_toArray(QJsonObject obj);
 		void load_recents();
 		void enregistrer(QString name);
 		void enregistrer_failed(bool msg);
 		QString get_printed_html(QString html);
 			// MAJ.cpp
+		bool version_greater(QString a, QString b, bool strict = false);
 		QNetworkReply *download(QString url, const char *slot);
 		bool check_reply(QNetworkReply *reply);
 		void update_deri();
@@ -275,22 +284,13 @@ class FenPrincipale : public QMainWindow {
 		void download_ratings();
 
 	public slots:
-		void modif();
-		void set_etape(int nb);
-		void calculer();
-		void calculer_callback(QString msg);
 		void progression(int nb);
-		QString get_ratings();
-		QString get_data();
 			// Classement.cpp
-		void ouvrir_callback(bool ok);
 		void enregistrer_callback(QString data);
 		void pdf_callback(QString html);
 		void html_callback(QString html);
 
 	private slots:
-		void attach_javascript();
-		void load_finished(bool ok);
 		void on_francais_triggered();
 		void on_english_triggered();
 		void on_ratings_triggered();

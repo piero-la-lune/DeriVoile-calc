@@ -2,7 +2,7 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
@@ -27,7 +27,7 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v6-5
+Version : v7-0
 Date : 2013-06-19
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
@@ -59,7 +59,7 @@ along with DériVoile calc'. If not, see
 #include "FenRatings.h"
 
 int const FenPrincipale::EXIT_CODE_REBOOT = -123456789;
-QString const FenPrincipale::VERSION = "v6-5";
+QString const FenPrincipale::VERSION = "v7-0";
 
 QString const FenPrincipale::CLMT_TEMPS = "temps";
 QString const FenPrincipale::CLMT_SCRATCH = "scratch";
@@ -82,11 +82,6 @@ FenPrincipale::FenPrincipale(
 
 	this->preferences = preferences;
 	this->splash = splash;
-
-	this->filename = QString("");
-	this->hasModif = false;
-	this->etapeActuelle = 1;
-	/*this->splashDone = 1;*/
 	this->splashDone = 0;
 
 	ui->setupUi(this);
@@ -127,47 +122,16 @@ FenPrincipale::FenPrincipale(
 		load_ratings(":/ratings.json");
 	}
 
-	/*webView = new QWebView;*/
-/*	webView->settings()->setAttribute(QWebSettings::WebAttribute::DeveloperExtrasEnabled, true);
-	inspector = new QWebInspector;
-	inspector->setPage(webView->page());
-	inspector->setFixedSize(800, 600);
-	inspector->setVisible(true);*/
-	/*webFrame = webView->page()->mainFrame();
-
-	attach_javascript();
-	connect(
-		webView,
-		SIGNAL(loadFinished(bool)),
-		this,
-		SLOT(load_finished(bool))
-	);
-	connect(
-		webFrame,
-		SIGNAL(javaScriptWindowObjectCleared()),
-		this,
-		SLOT(attach_javascript())
-	);*/
-
 	splash->showMessage(
 		tr("Chargement..."),
 		Qt::AlignHCenter | Qt::AlignBottom
 	);
-
-/*	webView->load(QUrl("qrc:/html/DeriVoile-calc.html"));
-	webView->setContextMenuPolicy(Qt::NoContextMenu);
-	setCentralWidget(webView);*/
 
 	this->progressText = new QLabel("");
 	statusBar()->addPermanentWidget(progressText);
 	this->progress = new QProgressBar;
 	this->progress->setMaximumWidth(150);
 	statusBar()->addPermanentWidget(progress);
-
-	set_titre();
-	statusBar()->showMessage(
-		tr("DériVoile calc' est un programme proposé par DériVoile (http://derivoile.fr). © 2011-2013 Pierre Monchalin")
-	);
 	
 	if (preferences->value("auto_maj_ratings", true).toBool()) {
 		splash->showMessage(
@@ -189,40 +153,14 @@ FenPrincipale::FenPrincipale(
 	}
 
 	// Initialisation
-	
-	this->nomRegate = "";
-	this->typeClmt = CLMT_TEMPS;
-	this->typeRt = RT_FFV;
-	this->typeBt = BT_DER;
-	this->manchesRetirees = 0;
-	this->manchesRetireesMin = 0;
-	this->nbManches = 0;
-	this->nbEquipages = 0;
-	this->equipages.clear();
+	this->init();
+	this->update();
 
-/*	Equipage e;
-	e.nom = "Pierre";
-	e.rating = "LAR";
-	e.bateau = "Laser Radial";
-	Manche m1;
-	m1.h = 1;
-	m1.min = 36;
-	m1.s = 30;
-	e.manches.insert(0, m1);
-	Manche m2;
-	m2.abr = "DNS";
-	e.manches.insert(1, m2);
-	this->equipages.insert(0, e);
-	this->nbEquipages = 1;
-	this->nbManches = 2;*/
-
-	this->reset_step1();
-	this->reset_step2();
-	this->reset_step3();
-	this->reset_step4();
-	this->goto_step1();
-
-	ui->toolBar->hide();
+	// Ouverture du fichier si nécessaire
+	QStringList args = QCoreApplication::arguments();
+	if (args.count() > 1) {
+		this->ouvrir(args.at(1));
+	}
 
 	while (this->splashDone > 0) { qApp->processEvents(); }
 
@@ -235,47 +173,52 @@ FenPrincipale::~FenPrincipale() {
 	delete ui;
 }
 
+void FenPrincipale::init() {
+	this->filename = QString("");
+	this->hasModif = false;
+	this->nomRegate = "";
+	this->typeClmt = CLMT_TEMPS;
+	this->typeRt = RT_FFV;
+	this->typeBt = BT_DER;
+	this->manchesRetirees = 0;
+	this->manchesRetireesMin = 0;
+	this->nbManches = 0;
+	this->nbEquipages = 0;
+	this->equipages.clear();
+}
+void FenPrincipale::update() {
+	statusBar()->showMessage(
+		tr("DériVoile calc' est un programme proposé par DériVoile (http://derivoile.fr). © 2011-2013 Pierre Monchalin")
+	);
+	this->addProgressBar(tr("Ouverture du fichier :"));
+	this->reset_step1();
+	this->reset_step2();
+	this->reset_step3();
+	this->reset_step4();
+	this->hasModif = false;
+	this->set_titre();
+	this->goto_step1();
+	this->removeProgressBar();
+}
+
 void FenPrincipale::set_titre() {
 	if (this->filename == "") {
 		this->setWindowTitle(tr("Nouveau classement – DériVoile calc'"));
 	}
 	else {
 		QFileInfo infos(filename);
-		this->setWindowTitle(QString(infos.fileName())+" – DériVoile calc'");
+		if (this->hasModif) {
+			this->setWindowTitle(QString(infos.fileName())+"* – DériVoile calc'");
+		}
+		else {
+			this->setWindowTitle(QString(infos.fileName())+" – DériVoile calc'");
+		}
 	}
 }
 
 void FenPrincipale::modif() {
 	this->hasModif = true;
-}
-
-void FenPrincipale::set_etape(int nb) {
-	etapeActuelle = nb;
-	if (etapeActuelle == 4) {
-		ui->pdf->setEnabled(true);
-		ui->html->setEnabled(true);
-	}
-	else {
-		ui->pdf->setEnabled(false);
-		ui->html->setEnabled(false);
-	}
-}
-
-void FenPrincipale::calculer() {
-	this->addProgressBar(tr("Calcul du classement :"));
-	this->webView->setVisible(false);
-	qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
-	/*this->webFrame->evaluateJavaScript("var c = new Calcul(); c.initialisation();");*/
-	qApp->processEvents();
-}
-
-void FenPrincipale::calculer_callback(QString msg) {
-	qApp->restoreOverrideCursor();
-	if (!msg.isEmpty()) {
-		this->msg(tr("Erreur"), msg, "x");
-	}
-	this->removeProgressBar();
-	this->webView->setVisible(true);
+	this->set_titre();
 }
 
 void FenPrincipale::addProgressBar(QString text) {
@@ -291,12 +234,6 @@ void FenPrincipale::removeProgressBar() {
 void FenPrincipale::progression(int nb) {
 	this->progress->setValue(nb);
 	qApp->processEvents();
-}
-
-QString FenPrincipale::get_data() {
-	// On ne veut pas passer les données directement, pour ne pas avoir à
-	// échapper les ' ou ".
-	return this->data;
 }
 
 bool FenPrincipale::load_ratings(QString filename) {
@@ -315,31 +252,6 @@ bool FenPrincipale::load_ratings(QString filename) {
 	this->version_ratings = doc_ratings.object().value("version").toString();
 	preferences->setValue("ratings", filename);
 	return true;
-}
-
-QString FenPrincipale::get_ratings() {
-	return QString::fromUtf8(this->ratings);
-}
-
-void FenPrincipale::update_ratings_js() {
-	this->webFrame->evaluateJavaScript("$.update_ratings();");
-}
-
-void FenPrincipale::attach_javascript() {
-	this->webFrame->addToJavaScriptWindowObject("FenPrincipale", this);
-}
-
-void FenPrincipale::load_finished(bool ok) {
-	if (ok) {
-		QStringList args = QCoreApplication::arguments();
-		if (args.count() > 1
-			&& filename.isEmpty()
-		) {
-			this->addProgressBar(tr("Ouverture du classement :"));
-			this->ouvrir(args.at(1));
-		}
-	}
-	this->splashDone--;
 }
 
 bool FenPrincipale::confirm(QString title, QString text, QString icon) {
