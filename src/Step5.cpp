@@ -379,10 +379,25 @@ void FenPrincipale::calcul_general() {
 		for (int k = 0; k < ids.size(); ++k) {
 			Equipage e = this->equipages[ids[k]];
 			QLabel *pos = new QLabel(QString::number(i+1));
+			QWidget *nomWidget = new QWidget();
+			QVBoxLayout *nomLayout = new QVBoxLayout();
 			QLabel *nom = new QLabel(e.nom);
+			nom->setProperty("label", "nom");
+			nomLayout->addWidget(nom);
+			if (this->typeClmt == CLMT_TEMPS) {
+				QLabel *bateau = new QLabel();
+				bateau->setText(this->bateaux.value(e.rating).serie
+					+" ("+QString::number(e.coef)+")");
+				bateau->setProperty("label", "bateau");
+				nomLayout->addWidget(bateau);
+				table->setRowHeight(i+k, 40);
+			}
+			nomLayout->setContentsMargins(0, 0, 0, 0);
+			nomLayout->setSpacing(0);
+			nomWidget->setLayout(nomLayout);
 			QLabel *points = new QLabel(QString::number(e.points));
 			table->setCellWidget(i+k, 0, pos);
-			table->setCellWidget(i+k, 1, nom);
+			table->setCellWidget(i+k, 1, nomWidget);
 			table->setCellWidget(i+k, 2, points);
 			for (int j = 0; j < this->nbManches; ++j) {
 				Manche m = e.manches[j];
@@ -396,7 +411,7 @@ void FenPrincipale::calcul_general() {
 				for (int l = 0; l < e.pointsRetires.size(); ++l) {
 					if (e.pointsRetires[l] == m.points) {
 						la->setText("("+la->text()+")");
-						this->equipages[ids[k]].pointsRetires.removeAt(l);
+						e.pointsRetires.removeAt(l);
 						break;
 					}
 				}
