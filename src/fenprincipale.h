@@ -296,6 +296,7 @@ class FenPrincipale : public QMainWindow {
 		void enregistrer(QString name);
 		void enregistrer_failed(bool msg);
 		QString get_printed_html(QString html);
+		QList<QPixmap> print_getPages();
 			// MAJ.cpp
 		bool version_greater(QString a, QString b, bool strict = false);
 		QNetworkReply *download(QString url, const char *slot);

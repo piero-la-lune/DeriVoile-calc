@@ -490,7 +490,158 @@ void FenPrincipale::enregistrer_failed(bool msg) {
 	);
 }
 
+QList<QPixmap> FenPrincipale::print_getPages() {
+	QList<QPixmap> parts;
+	int nb = ui->choisirResultat->currentIndex();
+	if (nb < 0) {
+		return parts;
+	}
+	QTableWidget *table = qobject_cast<QTableWidget*>(ui->resultatsLayout
+		->itemAt(nb)->widget());
+	QSize minimumSize = table->minimumSize();
+	QSize maximumSize = table->maximumSize();
+	double totalWidth = table->verticalHeader()->width();
+	for (int c = 0; c < table->columnCount(); ++c) {
+		totalWidth += table->columnWidth(c);
+	}
+	table->setFixedWidth(totalWidth);
+	table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+	int nbFirst = 28;
+	int nbThen = 32;
+	if (nb == 0 && this->typeClmt == CLMT_TEMPS) {
+		nbFirst = 14;
+		nbThen = 16;
+	}
+	if (nb == 0 && this->nbManches > 7) {
+		nbFirst = 16;
+		nbThen = 21;
+		if (this->typeClmt == CLMT_TEMPS) {
+			nbFirst = 8;
+			nbThen = 11;
+		}
+	}
+	if (this->nbEquipages > nbFirst) {
+		for (int i = nbFirst; i < this->nbEquipages; ++i) {
+			table->setRowHidden(i, true);
+		}
+		double totalHeight = table->horizontalHeader()->height();
+		for (int r = 0; r < nbFirst; ++r) {
+			totalHeight += table->rowHeight(r);
+		}
+		table->setFixedHeight(totalHeight);
+		parts.append(table->grab());
+		for (int i = nbFirst; i < this->nbEquipages; ++i) {
+			table->setRowHidden(i, false);
+		}
+		for (int j = 0; j < (this->nbEquipages-nbFirst)/nbThen+1; ++j) {
+			for (int i = 0; i < nbFirst+nbThen*j; ++i) {
+				table->setRowHidden(i, true);
+			}
+			for (int i = nbFirst+nbThen*(j+1); i < this->nbEquipages; ++i) {
+				table->setRowHidden(i, true);
+			}
+			double totalHeight = table->horizontalHeader()->height();
+			for (int r = nbFirst+nbThen*j; r < nbFirst+nbThen*(j+1); ++r) {
+				totalHeight += table->rowHeight(r);
+			}
+			table->setFixedHeight(totalHeight);
+			qApp->processEvents();
+			parts.append(table->grab());
+			for (int i = 0; i < nbFirst+nbThen*j; ++i) {
+				table->setRowHidden(i, false);
+			}
+			for (int i = nbFirst+nbThen*(j+1); i < this->nbEquipages; ++i) {
+				table->setRowHidden(i, false);
+			}
+		}
+	}
+	else {
+		double totalHeight = table->horizontalHeader()->height();
+		for (int r = 0; r < table->rowCount(); ++r) {
+			totalHeight += table->rowHeight(r);
+		}
+		table->setFixedHeight(totalHeight);
+		parts.append(table->grab());
+	}
+	table->setMinimumSize(minimumSize);
+	table->setMaximumSize(maximumSize);
+	table->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+	return parts;
+}
+
+
+
 void FenPrincipale::on_pdf_triggered() {
+	QPrinter printer;
+	printer.setPageSize(QPrinter::A4);
+	printer.setPageMargins(10, 10, 10, 10, QPrinter::Millimeter);
+	printer.setOutputFormat(QPrinter::PdfFormat);
+	QString name = QFileDialog::getSaveFileName(
+		this,
+		tr("Exporter en PDF..."),
+		"",
+		tr("Fichier PDF (*.pdf)")
+	);
+	if (!name.isEmpty()) {
+		printer.setOutputFileName(name);
+		int nb = ui->choisirResultat->currentIndex();
+		if (nb == 0 && this->nbManches > 7) {
+			printer.setOrientation(QPrinter::Landscape);
+		}
+		else {
+			printer.setOrientation(QPrinter::Portrait);
+		}
+		QList<QPixmap> parts = this->print_getPages();
+		QFont titre("Source Sans Pro", 16, QFont::Bold);
+		QFont titre2("Source Sans Pro", 16);
+		QFont normal("Source Sans Pro", 10);
+		QFont petit("Source Sans Pro", 8);
+		QPainter painter;
+		painter.begin(&printer);
+		QRect dim = painter.viewport();
+		painter.setFont(titre);
+		painter.drawText(0, 0, dim.width(), 40, Qt::AlignCenter, this->nomRegate);
+		painter.setFont(titre2);
+		if (nb == 0) {
+			painter.drawText(0, 40, dim.width(), 40, Qt::AlignCenter,
+				tr("Classement général"));
+		}
+		else {
+			painter.drawText(0, 40, dim.width(), 40, Qt::AlignCenter,
+				tr("Résultat de la manche ")+QString::number(nb));
+		}
+		QString bas = tr("Résultats calculés avec DériVoile calc' (http://calc.derivoile), alternative à FReg ultra simplifiée.");
+		QString manches = "";
+		QString mRetirees = "";
+		if (this->nbManches >= this->manchesRetireesMin && this->manchesRetirees >= 0) {
+			mRetirees = tr(" (%n retirée(s))", "", this->manchesRetirees);
+		}
+		if (nb == 0) {
+			manches = tr("%n manches courues%1.", "", this->nbManches).arg(mRetirees);
+		}
+		painter.setFont(normal);
+		painter.drawText(0, 100, dim.width(), 20, Qt::AlignLeft, 
+			tr("%n équipages classés. ", "", this->nbEquipages)+manches);
+		if (parts[0].width() > dim.width()) {
+			parts[0] = parts[0].scaledToWidth(dim.width(), Qt::SmoothTransformation);
+		}
+		painter.drawPixmap((dim.width()-parts[0].width())/2, 140, parts[0]);
+		painter.setFont(petit);
+		painter.drawText(0, dim.height()-15, dim.width(), 15, Qt::AlignCenter, bas);
+		for (int i = 1; i < parts.size(); ++i) {
+			printer.newPage();
+			if (parts[i].width() > dim.width()) {
+				parts[i] = parts[i].scaledToWidth(dim.width(), Qt::SmoothTransformation);
+			}
+			painter.drawPixmap((dim.width()-parts[i].width())/2, 0, parts[i]);
+			painter.setFont(petit);
+			painter.drawText(0, dim.height()-15, dim.width(), 15, Qt::AlignCenter, bas);
+		}
+		painter.end();
+		QDesktopServices::openUrl(QUrl(name));
+	}
 }
 void FenPrincipale::pdf_callback(QString html) {
 	QPrinter printer;

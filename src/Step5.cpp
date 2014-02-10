@@ -52,6 +52,12 @@ along with DériVoile calc'. If not, see
 */
 
 void FenPrincipale::reset_step5() {
+	QLayoutItem *child;
+	while ((child = ui->resultatsLayout->takeAt(0)) != 0) {
+		delete child->widget();
+		delete child;
+	}
+	ui->choisirResultat->clear();
 }
 
 void FenPrincipale::on_btnStep5_clicked() {
@@ -63,19 +69,16 @@ void FenPrincipale::goto_step5() {
 	this->leave_step3();
 	this->leave_step4();
 	ui->btnStep5->setFlat(true);
-	QLayoutItem *child;
-	while ((child = ui->resultatsLayout->takeAt(0)) != 0) {
-		delete child->widget();
-	    delete child;
-	}
-	ui->choisirResultat->clear();
 	ui->choisirResultat->insertItem(0, tr("Classement général"));
 	this->calculer();
 	ui->step5->setVisible(true);
+	ui->pdf->setEnabled(true);
 }
 void FenPrincipale::leave_step5() {
 	ui->btnStep5->setFlat(false);
 	ui->step5->setVisible(false);
+	ui->pdf->setEnabled(false);
+	this->reset_step5();
 }
 
 void FenPrincipale::calculer() {
