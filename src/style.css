@@ -268,3 +268,10 @@ QTableWidget QTableCornerButton::section {
 #manches QLabel:focus {
 	background: #ddd;
 }
+
+/* ######################### 5ème étape ######################### */
+
+#step5 QTableWidget QLabel {
+	qproperty-alignment: AlignCenter;
+	margin: 0 6px;
+}

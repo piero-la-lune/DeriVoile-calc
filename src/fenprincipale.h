@@ -76,6 +76,7 @@ along with DériVoile calc'. If not, see
 #include <QLineEdit>
 #include <QInputDialog>
 #include <QHBoxLayout>
+#include <QScrollBar>
 
 class MyLineEdit : public QLineEdit {
 	Q_OBJECT
@@ -141,10 +142,12 @@ namespace Ui {
 };
 
 struct Bateau {
+	QString type;
 	QString serie;
-	int rating;
-	int coef;
+	double rating;
+	double coef;
 	int rya;
+	double groupe;
 };
 struct Manche {
 	int h;
@@ -152,12 +155,22 @@ struct Manche {
 	int s;
 	int pl;
 	QString abr;
+	int tpsReel;
+	double tpsCompense;
+	double points;
+	Manche() : h(-1), min(-1), s(-1), pl(-1), abr(""), tpsReel(-1), tpsCompense(-1), points(0.0) {}
 };
 struct Equipage {
 	QString nom;
 	QString bateau;
 	QString rating;
+	double coef;
 	MyMap<int, Manche> manches;
+	double points;
+	QList<double> pointsOrdonnes;
+	QList<double> pointsTries;
+	QList<double> pointsRetires;
+	Equipage() : nom(""), bateau(""), rating(""), coef(0), points(0.0) {}
 };
 struct TpsWdg {
 	MyLineEdit *h;
@@ -251,7 +264,7 @@ class FenPrincipale : public QMainWindow {
 		void equipages_resize();
 		void update_completer();
 		void update_nbBateaux();
-		QList<QString> add_bateaux(QJsonArray bateaux);
+		QList<QString> add_bateaux(QJsonArray bateaux, QString type);
 			// Step3.cpp
 		MyMap<int, MyMap<int, TpsWdg>> tpsWdgs;
 		int currentManche;
@@ -268,6 +281,13 @@ class FenPrincipale : public QMainWindow {
 		void reset_step5();
 		void goto_step5();
 		void leave_step5();
+		void calculer();
+		bool verif();
+		void calcul_manches();
+		void calcul_retirermanches();
+		void calcul_general();
+		double get_coef(Bateau bt);
+		QString formate_tps(int tps);
 			// Classement.cpp
 		bool ouvrir(QString name);
 		QJsonObject json_compatibilite(QJsonObject obj);
@@ -335,6 +355,7 @@ class FenPrincipale : public QMainWindow {
 		void on_manchesRetireesMin_valueChanged(int val);
 			// Step5.cpp
 		void on_btnStep5_clicked();
+		void on_choisirResultat_currentIndexChanged(int index);
 			// Classement.cpp
 		void on_nouveau_triggered();
 		void on_ouvrir_triggered();

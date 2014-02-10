@@ -66,22 +66,29 @@ void FenPrincipale::reset_step3() {
 		this->progression(40+50*i/nb);
 		this->on_addManche_clicked();
 		for (int j = 0; j < this->nbEquipages; ++j) {
-			if (this->equipages[j].manches[i].abr.isEmpty()) {
-				if (this->typeClmt == CLMT_SCRATCH) {
+			Manche m = this->equipages[j].manches[i];
+			if (m.abr.isEmpty()) {
+				if (this->typeClmt == CLMT_SCRATCH && m.pl > 0) {
 					qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
 						->layout()->itemAt(2)->widget())
-						->setText(QString::number(this->equipages[j].manches[i].pl));
+						->setText(QString::number(m.pl));
 				}
-				else {
-					qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
-						->layout()->itemAt(0)->widget())
-						->setText(QString::number(this->equipages[j].manches[i].h));
-					qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
-						->layout()->itemAt(2)->widget())
-						->setText(QString::number(this->equipages[j].manches[i].min));
-					qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
-						->layout()->itemAt(4)->widget())
-						->setText(QString::number(this->equipages[j].manches[i].s));
+				else if (this->typeClmt == CLMT_TEMPS) {
+					if (m.h > 0) {
+						qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
+							->layout()->itemAt(0)->widget())
+							->setText(QString::number(m.h));
+					}
+					if (m.min > 0) {
+						qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
+							->layout()->itemAt(2)->widget())
+							->setText(QString::number(m.min));
+					}
+					if (m.s > 0) {
+						qobject_cast<MyLineEdit*>(ui->manches->cellWidget(j+1, i+1)
+							->layout()->itemAt(4)->widget())
+							->setText(QString::number(m.s));
+					}
 				}
 			}
 			else {
@@ -130,7 +137,7 @@ void FenPrincipale::h_changed(QString text) {
 		}
 	}
 	else {
-		this->equipages[row].manches[col].h = 0;
+		this->equipages[row].manches[col].h = -1;
 		this->equipages[row].manches[col].abr = text;
 	}
 	this->modif();
@@ -149,7 +156,7 @@ void FenPrincipale::min_changed(QString text) {
 			this->equipages[row].manches[col].abr = "";
 		}
 		else {
-			this->equipages[row].manches[col].pl = 0;
+			this->equipages[row].manches[col].pl = -1;
 			this->equipages[row].manches[col].abr = text;
 		}
 	}
@@ -165,7 +172,7 @@ void FenPrincipale::min_changed(QString text) {
 			}
 		}
 		else {
-			this->equipages[row].manches[col].min = 0;
+			this->equipages[row].manches[col].min = -1;
 			this->equipages[row].manches[col].abr = text;
 		}
 	}
@@ -193,7 +200,7 @@ void FenPrincipale::s_changed(QString text) {
 		}
 	}
 	else {
-		this->equipages[row].manches[col].s = 0;
+		this->equipages[row].manches[col].s = -1;
 		this->equipages[row].manches[col].abr = text;
 	}
 	this->modif();
@@ -336,6 +343,10 @@ void FenPrincipale::on_addManche_clicked() {
 	ui->manches->insertColumn(this->nbManches+1);
 	ui->manches->setCellWidget(0, this->nbManches+1, nom);
 	for (int i = 0; i < this->nbEquipages; ++i) {
+		if (!this->equipages[i].manches.contains(this->nbManches)) {
+			Manche m;
+			this->equipages[i].manches[this->nbManches] = m;
+		}
 		this->add_manche_inputs(i, this->nbManches);
 	}
 	ui->manches->resizeColumnsToContents();

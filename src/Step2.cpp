@@ -100,36 +100,54 @@ void FenPrincipale::equipages_resize() {
 	ui->equipages->setColumnWidth(3, 200);
 }
 
-QList<QString> FenPrincipale::add_bateaux(QJsonArray bateaux) {
+QList<QString> FenPrincipale::add_bateaux(QJsonArray bateaux, QString type) {
 	QList<QString> list;
 	for (int i = 0; i < bateaux.count(); ++i) {
 		QJsonObject bateau = bateaux.at(i).toObject();
 		QString code = bateau.value("code").toString();
+		if (bateau.value("id").isDouble()) {
+			// les habitables n'ont pas de code mais un ID
+			code = QString::number(bateau.value("id").toDouble());
+		}
 		Bateau bt;
+		bt.type = type;
 		bt.serie = bateau.value("serie").toString();
 		bt.rating = 0;
 		bt.coef = 0;
 		bt.rya = 0;
-		if (!bateau.value("rating").isNull()) {
-			bt.rating = bateau.value("rating").toInt();
+		bt.groupe = 0;
+		if (bateau.value("rating").isDouble()) {
+			bt.rating = bateau.value("rating").toDouble();
 			if (this->typeRt == RT_FFV || this->typeRt == RT_DERI) {
 				list << bt.serie;
+				this->bateaux.insert(code, bt);
+				this->bateauxInv.insert(bt.serie.toLower(), code);
 			}
 		}
-		if (!bateau.value("coef").isNull()) {
-			bt.coef = bateau.value("coef").toInt();
+		if (bateau.value("coef").isDouble()) {
+			bt.coef = bateau.value("coef").toDouble();
 			if (this->typeRt == RT_FFV || this->typeRt == RT_DERI) {
 				list << bt.serie;
+				this->bateaux.insert(code, bt);
+				this->bateauxInv.insert(bt.serie.toLower(), code);
 			}
 		}
-		if (!bateau.value("rya").isNull()) {
+		if (bateau.value("rya").isDouble()) {
 			bt.rya = bateau.value("rya").toInt();
 			if (this->typeRt == RT_RYA) {
 				list << bt.serie;
+				this->bateaux.insert(code, bt);
+				this->bateauxInv.insert(bt.serie.toLower(), code);
 			}
 		}
-		this->bateaux.insert(code, bt);
-		this->bateauxInv.insert(bt.serie.toLower(), code);
+		if (bateau.value("groupe").isDouble()) {
+			bt.groupe = bateau.value("groupe").toDouble();
+			if (this->typeRt == RT_FFV || this->typeRt == RT_DERI) {
+				list << bt.serie;
+				this->bateaux.insert(code, bt);
+				this->bateauxInv.insert(bt.serie.toLower(), code);
+			}
+		}
 	}
 	return list;
 }
@@ -141,19 +159,19 @@ void FenPrincipale::update_completer() {
 	QJsonDocument doc = QJsonDocument::fromJson(this->ratings);
 	if (this->typeBt == BT_MUL || this->typeBt == BT_MUL_DER_QUI
 		|| this->typeBt == BT_ALL) {
-		list << this->add_bateaux(doc.object().value("multicoques").toArray());
+		list << this->add_bateaux(doc.object().value("multicoques").toArray(), BT_MUL);
 	}
 	if (this->typeBt == BT_DER || this->typeBt == BT_MUL_DER_QUI
 		|| this->typeBt == BT_DER_QUI_HAB || this->typeBt == BT_ALL) {
-		list << this->add_bateaux(doc.object().value("deriveurs").toArray());
+		list << this->add_bateaux(doc.object().value("deriveurs").toArray(), BT_DER);
 	}
 	if (this->typeBt == BT_QUI || this->typeBt == BT_MUL_DER_QUI
 		|| this->typeBt == BT_DER_QUI_HAB || this->typeBt == BT_ALL) {
-		list << this->add_bateaux(doc.object().value("quillards").toArray());
+		list << this->add_bateaux(doc.object().value("quillards").toArray(), BT_QUI);
 	}
 	if (this->typeBt == BT_HAB || this->typeBt == BT_DER_QUI_HAB
 		|| this->typeBt == BT_ALL) {
-		list << this->add_bateaux(doc.object().value("habitables").toArray());
+		list << this->add_bateaux(doc.object().value("habitables").toArray(), BT_HAB);
 	}
 	this->completer = new QCompleter(list, this);
 	this->completer->setCaseSensitivity(Qt::CaseInsensitive);
@@ -173,7 +191,7 @@ void FenPrincipale::type_complete(QString type) {
 	}
 }
 void FenPrincipale::code_complete(QString code) {
-	QString type = this->bateaux.value(type.toUpper()).serie;
+	QString type = this->bateaux.value(code.toUpper()).serie;
 	this->stopPropagation = true;
 	qobject_cast<QLineEdit*>(ui->equipages
 		->cellWidget(sender()->property("rowIndex").toInt(), 3))->setText(type);
@@ -217,6 +235,14 @@ void FenPrincipale::on_addEquipage_clicked() {
 	connect(nom, SIGNAL(textChanged(QString)), this, SLOT(nom_changed(QString)));
 	connect(code, SIGNAL(textChanged(QString)), this, SLOT(code_changed(QString)));
 	connect(type, SIGNAL(textChanged(QString)), this, SLOT(type_changed(QString)));
+	if (!this->equipages.contains(this->nbEquipages)) {
+		Equipage e;
+		this->equipages[this->nbEquipages] = e;
+		for (int i = 0; i < this->nbManches; ++i) {
+			Manche m;
+			this->equipages[this->nbEquipages].manches[i] = m;
+		}
+	}
 		// ajout de la ligne dans "Manches"
 		// cette ligne est la row+1 (car il faut compter le header des manches)
 	ui->manches->insertRow(row+1);
