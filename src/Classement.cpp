@@ -189,6 +189,8 @@ bool FenPrincipale::ouvrir(QString name) {
 					if (v.isDouble()) { ma.min = v.toInt(); }
 					v = m.value("s");
 					if (v.isDouble()) { ma.s = v.toInt(); }
+					v = m.value("abr");
+					if (v.isString()) { ma.abr = v.toString(); }
 					eq.manches.insert(j, ma);
 				}
 			}
@@ -322,7 +324,7 @@ QJsonObject FenPrincipale::json_compatibilite(QJsonObject obj) {
 								if (vv.validate(h, pos) == QValidator::Acceptable) {
 									result.insert("h", h.toInt());
 								}
-								else { result.insert("abr", h); }
+								else if (!h.isEmpty()) { result.insert("abr", h); }
 								QString min;
 								v = b[j].toObject().value("min");
 								if (v.isDouble()) { min = QString::number(v.toInt()); }
@@ -330,7 +332,7 @@ QJsonObject FenPrincipale::json_compatibilite(QJsonObject obj) {
 								if (vv.validate(min, pos) == QValidator::Acceptable) {
 									result.insert("min", min.toInt());
 								}
-								else { result.insert("abr", min); }
+								else if (!min.isEmpty()) { result.insert("abr", min); }
 								QString s;
 								v = b[j].toObject().value("s");
 								if (v.isDouble()) { s = QString::number(v.toInt()); }
@@ -338,7 +340,7 @@ QJsonObject FenPrincipale::json_compatibilite(QJsonObject obj) {
 								if (vv.validate(s, pos) == QValidator::Acceptable) {
 									result.insert("s", s.toInt());
 								}
-								else { result.insert("abr", s); }
+								else if (!s.isEmpty()) { result.insert("abr", s); }
 							}
 							b[j] = result;
 						}
