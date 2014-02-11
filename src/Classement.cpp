@@ -570,14 +570,81 @@ QList<QPixmap> FenPrincipale::print_getPages() {
 	table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 	return parts;
 }
+void FenPrincipale::print(QPrinter *printer) {
+	int nb = ui->choisirResultat->currentIndex();
+	if (nb == 0 && this->nbManches > 7) {
+		printer->setOrientation(QPrinter::Landscape);
+	}
+	else {
+		printer->setOrientation(QPrinter::Portrait);
+	}
+	QList<QPixmap> parts = this->print_getPages();
+	QFont titre("Source Sans Pro", 16, QFont::Bold);
+	QFont titre2("Source Sans Pro", 16);
+	QFont normal("Source Sans Pro", 10);
+	QFont petit("Source Sans Pro", 8);
+	QPainter painter;
+	painter.begin(printer);
+	QRect dim = painter.viewport();
+	painter.setFont(titre);
+	painter.drawText(0, 0, dim.width(), 40, Qt::AlignCenter, this->nomRegate);
+	painter.setFont(titre2);
+	if (nb == 0) {
+		painter.drawText(0, 40, dim.width(), 40, Qt::AlignCenter,
+				tr("Classement général"));
+	}
+	else {
+		painter.drawText(0, 40, dim.width(), 40, Qt::AlignCenter,
+			tr("Résultats de la manche ")+QString::number(nb));
+	}
+	QString bas = tr("Résultats calculés avec DériVoile calc' (http://calc.derivoile.fr), alternative à FReg ultra simplifiée.");
+	QString manches = "";
+	QString mRetirees = "";
+	if (this->nbManches >= this->manchesRetireesMin && this->manchesRetirees >= 0) {
+		mRetirees = tr(" (%n retirée(s))", "", this->manchesRetirees);
+	}
+	if (nb == 0) {
+		manches = tr("%n manches courues%1.", "", this->nbManches).arg(mRetirees);
+	}
+	painter.setFont(normal);
+	painter.drawText(0, 100, dim.width(), 20, Qt::AlignLeft, 
+		tr("%n équipages classés. ", "", this->nbEquipages)+manches);
+	if (parts[0].width() > dim.width()) {
+		parts[0] = parts[0].scaledToWidth(dim.width(), Qt::SmoothTransformation);
+	}
+	painter.drawPixmap((dim.width()-parts[0].width())/2, 140, parts[0]);
+	painter.setFont(petit);
+	painter.drawText(0, dim.height()-15, dim.width(), 15, Qt::AlignCenter, bas);
+	for (int i = 1; i < parts.size(); ++i) {
+		printer->newPage();
+		if (parts[i].width() > dim.width()) {
+			parts[i] = parts[i].scaledToWidth(dim.width(), Qt::SmoothTransformation);
+		}
+		painter.drawPixmap((dim.width()-parts[i].width())/2, 0, parts[i]);
+		painter.setFont(petit);
+		painter.drawText(0, dim.height()-15, dim.width(), 15, Qt::AlignCenter, bas);
+	}
+	painter.end();
+}
 
 
+// Ça ne marche pas (les images n'apparaissent pas, les textes centrés
+// non plus )
+/*void FenPrincipale::on_imprimer_triggered() {
+	QPrinter *printer = new QPrinter();
+	printer->setPageSize(QPrinter::A4);
+	printer->setPageMargins(10, 10, 10, 10, QPrinter::Millimeter);
+	QPrintDialog dialog(printer);
+	if (dialog.exec() == QDialog::Accepted) {
+		this->print(printer);
+	}
+}*/
 
 void FenPrincipale::on_pdf_triggered() {
-	QPrinter printer;
-	printer.setPageSize(QPrinter::A4);
-	printer.setPageMargins(10, 10, 10, 10, QPrinter::Millimeter);
-	printer.setOutputFormat(QPrinter::PdfFormat);
+	QPrinter *printer = new QPrinter();
+	printer->setPageSize(QPrinter::A4);
+	printer->setPageMargins(10, 10, 10, 10, QPrinter::Millimeter);
+	printer->setOutputFormat(QPrinter::PdfFormat);
 	QString name = QFileDialog::getSaveFileName(
 		this,
 		tr("Exporter en PDF..."),
@@ -585,34 +652,28 @@ void FenPrincipale::on_pdf_triggered() {
 		tr("Fichier PDF (*.pdf)")
 	);
 	if (!name.isEmpty()) {
-		printer.setOutputFileName(name);
-		int nb = ui->choisirResultat->currentIndex();
-		if (nb == 0 && this->nbManches > 7) {
-			printer.setOrientation(QPrinter::Landscape);
-		}
-		else {
-			printer.setOrientation(QPrinter::Portrait);
-		}
-		QList<QPixmap> parts = this->print_getPages();
-		QFont titre("Source Sans Pro", 16, QFont::Bold);
-		QFont titre2("Source Sans Pro", 16);
-		QFont normal("Source Sans Pro", 10);
-		QFont petit("Source Sans Pro", 8);
-		QPainter painter;
-		painter.begin(&printer);
-		QRect dim = painter.viewport();
-		painter.setFont(titre);
-		painter.drawText(0, 0, dim.width(), 40, Qt::AlignCenter, this->nomRegate);
-		painter.setFont(titre2);
+		printer->setOutputFileName(name);
+		this->print(printer);
+		QDesktopServices::openUrl(QUrl(name));
+		statusBar()->showMessage(
+			tr("Le classement a été exporté en PDF."),
+			3000
+		);
+	}
+}
+
+
+
+void FenPrincipale::on_html_triggered() {
+	int nb = ui->choisirResultat->currentIndex();
+	if (nb >= 0) {
+		QString html = "<h1>"+this->nomRegate+"</h1>\n";
 		if (nb == 0) {
-			painter.drawText(0, 40, dim.width(), 40, Qt::AlignCenter,
-				tr("Classement général"));
+			html += "<h2>"+tr("Classement général")+"</h2>";
 		}
 		else {
-			painter.drawText(0, 40, dim.width(), 40, Qt::AlignCenter,
-				tr("Résultat de la manche ")+QString::number(nb));
+			html += "<h2>"+tr("Résultats de la manche ")+QString::number(nb)+"</h2>";
 		}
-		QString bas = tr("Résultats calculés avec DériVoile calc' (http://calc.derivoile), alternative à FReg ultra simplifiée.");
 		QString manches = "";
 		QString mRetirees = "";
 		if (this->nbManches >= this->manchesRetireesMin && this->manchesRetirees >= 0) {
@@ -621,80 +682,38 @@ void FenPrincipale::on_pdf_triggered() {
 		if (nb == 0) {
 			manches = tr("%n manches courues%1.", "", this->nbManches).arg(mRetirees);
 		}
-		painter.setFont(normal);
-		painter.drawText(0, 100, dim.width(), 20, Qt::AlignLeft, 
-			tr("%n équipages classés. ", "", this->nbEquipages)+manches);
-		if (parts[0].width() > dim.width()) {
-			parts[0] = parts[0].scaledToWidth(dim.width(), Qt::SmoothTransformation);
-		}
-		painter.drawPixmap((dim.width()-parts[0].width())/2, 140, parts[0]);
-		painter.setFont(petit);
-		painter.drawText(0, dim.height()-15, dim.width(), 15, Qt::AlignCenter, bas);
-		for (int i = 1; i < parts.size(); ++i) {
-			printer.newPage();
-			if (parts[i].width() > dim.width()) {
-				parts[i] = parts[i].scaledToWidth(dim.width(), Qt::SmoothTransformation);
-			}
-			painter.drawPixmap((dim.width()-parts[i].width())/2, 0, parts[i]);
-			painter.setFont(petit);
-			painter.drawText(0, dim.height()-15, dim.width(), 15, Qt::AlignCenter, bas);
-		}
-		painter.end();
-		QDesktopServices::openUrl(QUrl(name));
-	}
-}
-void FenPrincipale::pdf_callback(QString html) {
-	QPrinter printer;
-	printer.setPageSize(QPrinter::A4);
-	printer.setOutputFormat(QPrinter::PdfFormat);
-	QString name = QFileDialog::getSaveFileName(
-		this,
-		tr("Exporter en PDF..."),
-		"",
-		tr("Fichier PDF (*.pdf)")
-	);
-	if (!name.isEmpty()) {
-		printer.setOutputFileName(name);
-		QWebView printable;
-		printable.setHtml(this->get_printed_html(html));
-		printable.print(&printer);
-		QDesktopServices::openUrl(QUrl(name));
-		statusBar()->showMessage(
-			tr("Le classement a été exporté en PDF."),
-			3000
+		html += "<p id=\"stats\">"
+			+tr("%n équipages classés. ", "", this->nbEquipages)+manches
+			+"</p>";
+		html += this->htmls[nb];
+		QString name = QFileDialog::getSaveFileName(
+			this,
+			tr("Exporter en HTML..."),
+			"",
+			tr("Fichier HTML (*.html)")
 		);
-	}
-}
-void FenPrincipale::on_html_triggered() {
-}
-void FenPrincipale::html_callback(QString html) {
-	QString name = QFileDialog::getSaveFileName(
-		this,
-		tr("Exporter en HTML..."),
-		"",
-		tr("Fichier HTML (*.html)")
-	);
-	if (!name.isEmpty()) {
-		QFile file(name);
-		if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-			this->msg(
-				tr("Erreur"),
-				tr("Impossible d'exporter le classement.\nVérifiez que le fichier est accessible en écriture."),
-				"x"
-			);
-			file.close();
-			statusBar()->showMessage(tr("L'export a échoué."), 3000);
-		}
-		else {
-			QTextStream flux(&file);
-			flux.setCodec("UTF-8");
-			flux << this->get_printed_html(html);
-			file.close();
-			QDesktopServices::openUrl(QUrl(name));
-			statusBar()->showMessage(
-				tr("Le classement a été exporté en HTML."),
-				3000
-			);
+		if (!name.isEmpty()) {
+			QFile file(name);
+			if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+				this->msg(
+					tr("Erreur"),
+					tr("Impossible d'exporter le classement.\nVérifiez que le fichier est accessible en écriture."),
+					"x"
+				);
+				file.close();
+				statusBar()->showMessage(tr("L'export a échoué."), 3000);
+			}
+			else {
+				QTextStream flux(&file);
+				flux.setCodec("UTF-8");
+				flux << this->get_printed_html(html);
+				file.close();
+				QDesktopServices::openUrl(QUrl(name));
+				statusBar()->showMessage(
+					tr("Le classement a été exporté en HTML."),
+					3000
+				);
+			}
 		}
 	}
 }
@@ -708,12 +727,19 @@ QString FenPrincipale::get_printed_html(QString html) {
 		body {\
 			font-family: \"Source Sans Pro\", \"Verdana\", \"Arial\", \"Helvetica\", sans-serif;\
 			font-size: 16px;\
+			color: #333;\
 		}\
-		h2 {\
+		h1 {\
 			text-align: center;\
 			font-weight: 900;\
 			font-size: 2em;\
-			margin: 24px 0 32px 0;\
+			margin: 24px 0 12px 0;\
+		}\
+		h2 {\
+			text-align: center;\
+			font-weight: normal;\
+			font-size: 1.8em;\
+			margin: 12px 0 32px 0;\
 		}\
 		a {\
 			color: #005FA3;\
@@ -722,50 +748,51 @@ QString FenPrincipale::get_printed_html(QString html) {
 		a:hover {\
 			text-decoration: underline;\
 		}\
-		#stats { text-align: center; margin: 24px 0 32px 0; }\
+		#stats { margin: 24px 0 32px 0; text-align: center; }\
 		table {\
 			margin: 0 auto;\
 			border-collapse: collapse;\
 		}\
 		td {\
-			border: 1px solid #DDE6F6;\
+			border: 1px solid #ddd;\
 			text-align: center;\
 			padding: 5px;\
+			min-width: 30px;\
 		}\
-		td.b-top { border-top: none; }\
-		td.b-bottom { border-bottom: none; }\
 		thead td {\
-			background: #DDE6F6;\
-			color: #005FA3;\
+			background: #eeeeee;\
+			background: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#eeeeee));\
+			background: -webkit-linear-gradient(top, #f8f8f8, #eeeeee);\
+			background: -moz-linear-gradient(top, #f8f8f8, #eeeeee);\
+			background: -o-linear-gradient(top, #f8f8f8, #eeeeee);\
+			background: linear-gradient(top, #f8f8f8, #eeeeee);\
 			padding: 6px 10px;\
-			font-weight: 900;\
 		}\
-		.eqg {\
+		.equipage {\
+			display: block;\
 			text-align: left;\
 			min-width: 200px;\
 		}\
 		.bateau {\
 			display: block;\
-			margin-top: 4px;\
+			margin-left: 12px;\
 			padding: 4px 4px 0 0;\
-			border-top: 1px dotted #C9D7F1;\
 			font-style: italic;\
 			font-size: 0.8em;\
 			text-transform: uppercase;\
-			text-align: right;\
+			color: #aaa;\
+			text-align: left;\
 		}\
-		.rm-pts:before { content: \"(\"; }\
-		.rm-pts:after { content: \")\"; }\
 		.copy {\
 			text-align: center;\
 			margin-top: 32px;\
-			font-style: italic;\
+			font-size: 0.8em;\
 		}\
 		</style>\
 	</head>\
 	<body>\
 		"+html+"\
-		<p class=\"copy\">Ces résultats ont été calculés avec DériVoile calc' (<a href=\"http://calc.derivoile.fr\">calc.derivoile.fr</a>), une alternative à FReg ultra simplifiée.</p>\
+		<p class=\"copy\">"+tr("Résultats calculés avec DériVoile calc' (<a href=\"http://calc.derivoile.fr\">http://calc.derivoile.fr</a>), alternative à FReg ultra simplifiée.")+"</p>\
 	</body>\
 </html>\
 	";

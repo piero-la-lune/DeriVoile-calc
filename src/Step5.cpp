@@ -58,6 +58,7 @@ void FenPrincipale::reset_step5() {
 		delete child;
 	}
 	ui->choisirResultat->clear();
+	this->htmls.clear();
 }
 
 void FenPrincipale::on_btnStep5_clicked() {
@@ -73,11 +74,13 @@ void FenPrincipale::goto_step5() {
 	this->calculer();
 	ui->step5->setVisible(true);
 	ui->pdf->setEnabled(true);
+	ui->html->setEnabled(true);
 }
 void FenPrincipale::leave_step5() {
 	ui->btnStep5->setFlat(false);
 	ui->step5->setVisible(false);
 	ui->pdf->setEnabled(false);
+	ui->html->setEnabled(false);
 	this->reset_step5();
 }
 
@@ -176,16 +179,25 @@ bool FenPrincipale::verif() {
 
 void FenPrincipale::calcul_manches() {
 	for (int j = 0;  j < this->nbManches; ++j) {
+			// on initialise la table html pour l'export
+		QString html = "<table>\n\t<thead>\n\t\t<tr>\n\t\t\t";
+		html += "<td>"+tr("Place")+"</td>";
+		html += "<td>"+tr("Équipage")+"</td>";
+		html += "<td>"+tr("Points")+"</td>";
+		if (this->typeClmt == CLMT_TEMPS) {
+			html += "<td>"+tr("Temps réel")+"</td><td>"+tr("Temps compensé")+"</td>";
+		}
+		html += "\n\t\t</tr>\n\t</thead>\n\t<tboby>";
 			// on affiche la table qui va contenir les résultats de la manche
 		QTableWidget *table = new QTableWidget();
 		table->verticalHeader()->hide();
 		table->setSelectionMode(QAbstractItemView::NoSelection);
 		table->setProperty("table", "manches");
 		QList<QString> labels;
-		labels << "Place" << "Équipage" << "Points";
+		labels << tr("Place") << tr("Équipage") << tr("Points");
 		if (this->typeClmt == CLMT_TEMPS) {
 			table->setColumnCount(5);
-			labels << "Temps réel" << "Temps compensé";
+			labels << tr("Temps réel") << tr("Temps compensé");
 			table->setMaximumWidth(560 + 20);
 			table->setMinimumWidth(560 + 20);
 			table->setColumnWidth(3, 120);
@@ -268,6 +280,21 @@ void FenPrincipale::calcul_manches() {
 					QLabel *tpsCompense = new QLabel(this->formate_tps(qRound(m.tpsCompense)));
 					table->setCellWidget(i+l, 4, tpsCompense);
 				}
+				// on ajoute l'équipage à la table html
+				QString nomString = "<span class=\"equipage\">"+e.nom+"</span>";
+				if (this->typeClmt == CLMT_TEMPS) {
+					nomString += "<span class=\"bateau\">"
+						+this->bateaux.value(e.rating).serie
+						+" ("+QString::number(e.coef)+")</span>";
+				}
+				html += "\n\t\t<tr>\n\t\t\t<td>"+QString::number(i+1)+"</td>"
+					+"<td>"+nomString+"</td>"
+					+"<td>"+QString::number(m.points)+"</td>";
+				if (this->typeClmt == CLMT_TEMPS) {
+					html += "<td>"+this->formate_tps(m.tpsReel)+"</td>"
+						+"<td>"+this->formate_tps(qRound(m.tpsCompense))+"</td>";
+				}
+				html += "\n\t\t</tr>";
 				++nbAffiches;
 			}
 			i = i+ids.size()-1;
@@ -310,11 +337,26 @@ void FenPrincipale::calcul_manches() {
 					QLabel *tpsCompense = new QLabel(m.abr);
 					table->setCellWidget(nbAffiches, 4, tpsCompense);
 				}
+				// on ajoute l'équipage à la table html
+				QString nomString = "<span class=\"equipage\">"+e.nom+"</span>";
+				if (this->typeClmt == CLMT_TEMPS) {
+					nomString += "<span class=\"bateau\">"
+						+this->bateaux.value(e.rating).serie
+						+" ("+QString::number(e.coef)+")</span>";
+				}
+				html += "\n\t\t<tr>\n\t\t\t<td>"+m.abr+"</td><td>"+nomString+"</td>"
+					+"<td>"+QString::number(m.points)+"</td>";
+				if (this->typeClmt == CLMT_TEMPS) {
+					html += "<td>"+m.abr+"</td><td>"+m.abr+"</td>";
+				}
+				html += "\n\t\t</tr>";
 				++nbAffiches;
 			}
 		}
 		ui->resultatsLayout->addWidget(table);
 		table->hide();
+		html += "\n\t</tbody>\n</table>";
+		this->htmls.append(html);
 		this->progression(5+j*75/this->nbManches);
 	}
 	// on trie les liste pointsTries
@@ -338,6 +380,14 @@ void FenPrincipale::calcul_retirermanches() {
 }
 
 void FenPrincipale::calcul_general() {
+	QString html = "<table>\n\t<thead>\n\t\t<tr>\n\t\t\t";
+	html += "<td>"+tr("Position")+"</td>";
+	html += "<td>"+tr("Équipage")+"</td>";
+	html += "<td>"+tr("Points")+"</td>";
+	for (int j = 0; j < this->nbManches; ++j) {
+		html += "<td>"+tr("M")+QString::number(j+1)+"</td>";
+	}
+	html += "\n\t\t</tr>\n\t</thead>\n\t<tboby>";
 	QTableWidget *table = new QTableWidget();
 	table->verticalHeader()->hide();
 	table->setSelectionMode(QAbstractItemView::NoSelection);
@@ -348,9 +398,9 @@ void FenPrincipale::calcul_general() {
 	table->setColumnWidth(2, 60);
 	int size = 80 + 200 + 60;
 	QList<QString> labels;
-	labels << "Position" << "Équipage" << "Points";
+	labels << tr("Position") << tr("Équipage") << tr("Points");
 	for (int j = 0; j < this->nbManches; ++j) {
-		labels << "M"+QString::number(j+1);
+		labels << tr("M")+QString::number(j+1);
 		size += 50;
 		table->setColumnWidth(3+j, 50);
 	}
@@ -411,6 +461,18 @@ void FenPrincipale::calcul_general() {
 		}
 		for (int k = 0; k < ids.size(); ++k) {
 			Equipage e = this->equipages[ids[k]];
+			// on ajoute le début de la table html
+			// on rajoute les manches en parallèle à causes de celles retirées
+			QString nomString = "<span class=\"equipage\">"+e.nom+"</span>";
+			if (this->typeClmt == CLMT_TEMPS) {
+				nomString += "<span class=\"bateau\">"
+					+this->bateaux.value(e.rating).serie
+					+" ("+QString::number(e.coef)+")</span>";
+			}
+			html += "\n\t\t<tr>\n\t\t\t<td>"+QString::number(i+1)+"</td>"
+				+"<td>"+nomString+"</td>"
+				+"<td>"+QString::number(e.points)+"</td>";
+			// on ajout l'équipage
 			QLabel *pos = new QLabel(QString::number(i+1));
 			QWidget *nomWidget = new QWidget();
 			QVBoxLayout *nomLayout = new QVBoxLayout();
@@ -448,12 +510,16 @@ void FenPrincipale::calcul_general() {
 						break;
 					}
 				}
+				html += "<td>"+la->text()+"</td>";
 				table->setCellWidget(i+k, j+3, la);
 			}
+			html += "\n\t\t</tr>";
 			this->equipages[ids[k]].points = 0;
 		}
 		i += ids.size()-1;
 	}
+	html += "\n\t</tbody>\n</table>";
+	this->htmls.prepend(html);
 	this->progression(95);
 }
 

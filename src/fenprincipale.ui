@@ -919,6 +919,7 @@
     <addaction name="enregistrer"/>
     <addaction name="enregistrer_sous"/>
     <addaction name="separator"/>
+    <addaction name="imprimer"/>
     <addaction name="pdf"/>
     <addaction name="html"/>
     <addaction name="separator"/>
@@ -1300,6 +1301,27 @@
    </property>
    <property name="statusTip">
     <string>Accèder au site web de DériVoile calc'...</string>
+   </property>
+  </action>
+  <action name="imprimer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icones/document-print.png</normaloff>:/icones/document-print.png</iconset>
+   </property>
+   <property name="text">
+    <string>Imprimer</string>
+   </property>
+   <property name="toolTip">
+    <string>Imprimer ce classement</string>
+   </property>
+   <property name="statusTip">
+    <string>Imprimer ce classement</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
   </action>
  </widget>

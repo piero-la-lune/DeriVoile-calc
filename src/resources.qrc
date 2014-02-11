@@ -16,6 +16,7 @@
         <file alias="document-save.png">../img/document-save.png</file>
         <file alias="document-open.png">../img/document-open.png</file>
         <file alias="document-new.png">../img/document-new.png</file>
+        <file alias="document-print.png">../img/document-print.png</file>
         <file alias="step1.png">../img/psd/options.png</file>
         <file alias="step2.png">../img/psd/equipages.png</file>
         <file alias="step3.png">../img/psd/manches.png</file>

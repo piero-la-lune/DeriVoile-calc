@@ -278,6 +278,7 @@ class FenPrincipale : public QMainWindow {
 		void goto_step4();
 		void leave_step4();
 			// Step5.cpp
+		QList<QString> htmls;
 		void reset_step5();
 		void goto_step5();
 		void leave_step5();
@@ -309,8 +310,6 @@ class FenPrincipale : public QMainWindow {
 		void progression(int nb);
 			// Classement.cpp
 		void enregistrer_callback(QString data);
-		void pdf_callback(QString html);
-		void html_callback(QString html);
 
 	private slots:
 		void on_francais_triggered();
@@ -371,6 +370,7 @@ class FenPrincipale : public QMainWindow {
 		void on_pdf_triggered();
 		void on_html_triggered();
 		void on_quitter_triggered();
+		void print(QPrinter *printer);
 			// MAJ.cpp
 				// Menu
 		void on_maj_deri_triggered();
