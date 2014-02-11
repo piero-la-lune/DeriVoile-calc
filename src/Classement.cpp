@@ -509,16 +509,16 @@ QList<QPixmap> FenPrincipale::print_getPages() {
 	table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 	int nbFirst = 28;
 	int nbThen = 32;
-	if (nb == 0 && this->typeClmt == CLMT_TEMPS) {
-		nbFirst = 14;
-		nbThen = 16;
+	if (this->typeClmt == CLMT_TEMPS) {
+		nbFirst = 18;
+		nbThen = 21;
 	}
 	if (nb == 0 && this->nbManches > 7) {
 		nbFirst = 16;
 		nbThen = 21;
 		if (this->typeClmt == CLMT_TEMPS) {
-			nbFirst = 8;
-			nbThen = 11;
+			nbFirst = 11;
+			nbThen = 14;
 		}
 	}
 	if (this->nbEquipages > nbFirst) {

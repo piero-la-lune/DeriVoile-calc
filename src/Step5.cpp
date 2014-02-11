@@ -243,8 +243,23 @@ void FenPrincipale::calcul_manches() {
 				Manche m = e.manches[j];
 				QLabel *place = new QLabel(QString::number(i+1));
 				table->setCellWidget(i+l, 0, place);
+				QWidget *nomWidget = new QWidget();
+				QVBoxLayout *nomLayout = new QVBoxLayout();
 				QLabel *nom = new QLabel(e.nom);
-				table->setCellWidget(i+l, 1, nom);
+				nom->setProperty("label", "nom");
+				nomLayout->addWidget(nom);
+				if (this->typeClmt == CLMT_TEMPS) {
+					QLabel *bateau = new QLabel();
+					bateau->setText(this->bateaux.value(e.rating).serie
+						+" ("+QString::number(e.coef)+")");
+					bateau->setProperty("label", "bateau");
+					nomLayout->addWidget(bateau);
+					table->setRowHeight(i+l, 45);
+				}
+				nomLayout->setContentsMargins(0, 0, 0, 0);
+				nomLayout->setSpacing(0);
+				nomWidget->setLayout(nomLayout);
+				table->setCellWidget(i+l, 1, nomWidget);
 				QLabel *pointsi = new QLabel(QString::number(m.points));
 				table->setCellWidget(i+l, 2, pointsi);
 				if (this->typeClmt == CLMT_TEMPS) {
@@ -270,8 +285,23 @@ void FenPrincipale::calcul_manches() {
 				Manche m = e.manches[j];
 				QLabel *place = new QLabel(m.abr);
 				table->setCellWidget(nbAffiches, 0, place);
+				QWidget *nomWidget = new QWidget();
+				QVBoxLayout *nomLayout = new QVBoxLayout();
 				QLabel *nom = new QLabel(e.nom);
-				table->setCellWidget(nbAffiches, 1, nom);
+				nom->setProperty("label", "nom");
+				nomLayout->addWidget(nom);
+				if (this->typeClmt == CLMT_TEMPS) {
+					QLabel *bateau = new QLabel();
+					bateau->setText(this->bateaux.value(e.rating).serie
+						+" ("+QString::number(e.coef)+")");
+					bateau->setProperty("label", "bateau");
+					nomLayout->addWidget(bateau);
+					table->setRowHeight(nbAffiches, 45);
+				}
+				nomLayout->setContentsMargins(0, 0, 0, 0);
+				nomLayout->setSpacing(0);
+				nomWidget->setLayout(nomLayout);
+				table->setCellWidget(nbAffiches, 1, nomWidget);
 				QLabel *pointsi = new QLabel(QString::number(m.points));
 				table->setCellWidget(nbAffiches, 2, pointsi);
 				if (this->typeClmt == CLMT_TEMPS) {
@@ -393,7 +423,7 @@ void FenPrincipale::calcul_general() {
 					+" ("+QString::number(e.coef)+")");
 				bateau->setProperty("label", "bateau");
 				nomLayout->addWidget(bateau);
-				table->setRowHeight(i+k, 40);
+				table->setRowHeight(i+k, 45);
 			}
 			nomLayout->setContentsMargins(0, 0, 0, 0);
 			nomLayout->setSpacing(0);

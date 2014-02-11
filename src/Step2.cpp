@@ -73,6 +73,10 @@ void FenPrincipale::reset_step2() {
 			->setText(this->equipages[i].bateau);
 		qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 2))
 			->setText(this->equipages[i].rating);
+		if (!this->equipages[i].rating.isEmpty()) {
+			qobject_cast<QLineEdit*>(ui->equipages->cellWidget(i, 2))
+				->textEdited(this->equipages[i].rating);
+		}
 	}
 	this->update_nbBateaux();
 }
