@@ -282,6 +282,9 @@ void FenPrincipale::msg(QString title, QString text, QString icon) {
 	if (icon == "i") {
 		msgBox.setIcon(QMessageBox::Information);
 	}
+	else if (icon == "!") {
+		msgBox.setIcon(QMessageBox::Warning);
+	}
 	else {
 		msgBox.setIcon(QMessageBox::Critical);
 	}

@@ -248,6 +248,15 @@ QJsonObject FenPrincipale::json_compatibilite(QJsonObject obj) {
 	if (v.isString()) {
 		version = v.toString();
 	}
+	if (this->version_greater(version, VERSION, true)) {
+		qApp->restoreOverrideCursor();
+		this->msg(
+			tr("Problème de compatibilité"),
+			tr("Ce fichier a été enregistré avec une version plus récente de DériVoile calc'.<br />Pour éviter tout problème, vous devriez mettre à jour DériVoile calc' (<a href='http://calc.derivoile.fr'>http://calc.derivoile.fr</a>)."),
+			"!"
+		);
+		qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
+	}
 	if (this->version_greater(version, "v7-0")) { return obj; }
 	// on remplace les objets indexés par des entiers par des tableaux
 	v = obj.value("equipages");
@@ -661,8 +670,6 @@ void FenPrincipale::on_pdf_triggered() {
 		);
 	}
 }
-
-
 
 void FenPrincipale::on_html_triggered() {
 	int nb = ui->choisirResultat->currentIndex();
