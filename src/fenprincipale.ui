@@ -608,7 +608,7 @@
               <enum>QAbstractItemView::NoSelection</enum>
              </property>
              <property name="rowCount">
-              <number>1</number>
+              <number>2</number>
              </property>
              <property name="columnCount">
               <number>1</number>
@@ -625,6 +625,7 @@
              <attribute name="verticalHeaderVisible">
               <bool>false</bool>
              </attribute>
+             <row/>
              <row/>
              <column/>
             </widget>

@@ -243,6 +243,7 @@ class FenPrincipale : public QMainWindow {
 		int nbManches;
 		int nbEquipages;
 		MyMap<int, Equipage> equipages;
+		MyMap<int, Manche> manches;
 			// Step1.cpp
 		void reset_step1();
 		void goto_step1();

@@ -57,8 +57,8 @@ void FenPrincipale::reset_step2() {
 	while (ui->equipages->rowCount() > 0) {
 		ui->equipages->removeRow(0);
 	}
-	while (ui->manches->rowCount() > 1) {
-		ui->manches->removeRow(1);
+	while (ui->manches->rowCount() > 2) {
+		ui->manches->removeRow(2);
 	}
 	int nb = this->nbEquipages;
 	this->nbEquipages = 0; // car on va l'augmenter juste après
@@ -248,13 +248,13 @@ void FenPrincipale::on_addEquipage_clicked() {
 		}
 	}
 		// ajout de la ligne dans "Manches"
-		// cette ligne est la row+1 (car il faut compter le header des manches)
-	ui->manches->insertRow(row+1);
+		// cette ligne est la row+2 (car il faut compter le header des manches)
+	ui->manches->insertRow(row+2);
 	QLabel *nom2 = new QLabel();
 	nom2->setProperty("type", "header");
 	nom2->setProperty("left", true);
 	nom2->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-	ui->manches->setCellWidget(row+1, 0, nom2);
+	ui->manches->setCellWidget(row+2, 0, nom2);
 	// on n'utilise pas this->nbManches car certaines colonnes peuvent ne pas
 	// encore avoir été créées (ouverture d'un document)
 	for (int i = 0; i < ui->manches->columnCount()-1; ++i) {
@@ -263,14 +263,14 @@ void FenPrincipale::on_addEquipage_clicked() {
 	QWidget *h;
 	QWidget *min;
 	QWidget *s;
-	for (int i = 0; i < ui->manches->columnCount()-1; ++i) {
-		for (int j = 0; j < this->nbEquipages; ++j) {
-			h = ui->manches->cellWidget(j+1, i+1)->layout()->itemAt(0)->widget();
-			min = ui->manches->cellWidget(j+1, i+1)->layout()->itemAt(2)->widget();
-			if (i != 0 || j != 0) {
+	for (int i = 1; i < ui->manches->columnCount(); ++i) {
+		for (int j = 1; j < ui->manches->rowCount(); ++j) {
+			h = ui->manches->cellWidget(j, i)->layout()->itemAt(0)->widget();
+			min = ui->manches->cellWidget(j, i)->layout()->itemAt(2)->widget();
+			if (i != 1 || j != 1) {
 				setTabOrder(s, h);
 			}
-			s = ui->manches->cellWidget(j+1, i+1)->layout()->itemAt(4)->widget();
+			s = ui->manches->cellWidget(j, i)->layout()->itemAt(4)->widget();
 			setTabOrder(h, min);
 			setTabOrder(min, s);
 		}
@@ -283,13 +283,13 @@ void FenPrincipale::on_addEquipage_clicked() {
 void FenPrincipale::deleteEquipage() {
 	int nb = sender()->property("rowIndex").toInt();
 	ui->equipages->removeRow(nb);
-	ui->manches->removeRow(nb+1);
+	ui->manches->removeRow(nb+2);
 	for (int i = (nb+1); i < this->nbEquipages; ++i) {
 		ui->equipages->cellWidget(i-1, 0)->setProperty("rowIndex", i-1);
 		ui->equipages->cellWidget(i-1, 2)->setProperty("rowIndex", i-1);
 		ui->equipages->cellWidget(i-1, 3)->setProperty("rowIndex", i-1);
 		for (int j = 0; j < this->nbManches; ++j) {
-			ui->manches->cellWidget(i, j+1)->setProperty("rowIndex", i-1);
+			ui->manches->cellWidget(i+1, j+1)->setProperty("rowIndex", i-1);
 		}
 	}
 	this->equipages.rm(nb);

@@ -161,9 +161,12 @@ bool FenPrincipale::ouvrir(QString name) {
 	if (v.isArray()) {
 		QJsonArray a = v.toArray();
 		for (int i = 0; i < this->nbEquipages; ++i) {
-			if (a.at(i).isUndefined()) { continue; }
-			QJsonObject e = a.at(i).toObject();
 			Equipage eq;
+			if (a.at(i).isUndefined()) {
+				this->equipages.insert(i, eq);
+				continue;
+			}
+			QJsonObject e = a.at(i).toObject();
 			v = e.value("nom");
 			if (!v.isString()) { eq.nom = ""; }
 			else { eq.nom = v.toString(); }
@@ -195,6 +198,25 @@ bool FenPrincipale::ouvrir(QString name) {
 				}
 			}
 			this->equipages.insert(i, eq);
+		}
+	}
+	v = obj.value("manches");
+	if (v.isArray()) {
+		QJsonArray a = v.toArray();
+		for (int i = 0; i < this->nbManches; ++i) {
+			Manche ma;
+			if (a.at(i).isUndefined()) {
+				this->manches.insert(i, ma);
+				continue;
+			}
+			QJsonObject m = a.at(i).toObject();
+			v = m.value("h");
+			if (v.isDouble()) { ma.h = v.toInt(); }
+			v = m.value("min");
+			if (v.isDouble()) { ma.min = v.toInt(); }
+			v = m.value("s");
+			if (v.isDouble()) { ma.s = v.toInt(); }
+			this->manches.insert(i, ma);
 		}
 	}
 	this->filename = QString(name);
@@ -259,6 +281,10 @@ QJsonObject FenPrincipale::json_compatibilite(QJsonObject obj) {
 	}
 	if (this->version_greater(version, "v7-0")) { return obj; }
 	// on remplace les objets indexés par des entiers par des tableaux
+	v = obj.value("manches");
+	if (v.isObject()) {
+		obj.insert("manches", this->json_toArray(v.toObject()));
+	}
 	v = obj.value("equipages");
 	if (v.isObject()) {
 		obj.insert("equipages", this->json_toArray(v.toObject()));
@@ -361,6 +387,40 @@ QJsonObject FenPrincipale::json_compatibilite(QJsonObject obj) {
 			}
 		}
 		obj.insert("equipages", a);
+	}
+	v = obj.value("manches");
+	if (v.isArray()) {
+		QJsonArray a = v.toArray();
+		for (int i = 0; i < a.size(); i++) {
+			if (a[i].isObject()) {
+				QJsonObject result;
+				int pos = 0;
+				QIntValidator vv(0, 59, this);
+				QString h;
+				v = a[i].toObject().value("h");
+				if (v.isDouble()) { h = QString::number(v.toInt()); }
+				else if (v.isString()) { h = v.toString(); }
+				if (vv.validate(h, pos) == QValidator::Acceptable) {
+					result.insert("h", h.toInt());
+				}
+				QString min;
+				v = a[i].toObject().value("min");
+				if (v.isDouble()) { min = QString::number(v.toInt()); }
+				else if (v.isString()) { min = v.toString(); }
+				if (vv.validate(min, pos) == QValidator::Acceptable) {
+					result.insert("min", min.toInt());
+				}
+				QString s;
+				v = a[i].toObject().value("s");
+				if (v.isDouble()) { s = QString::number(v.toInt()); }
+				else if (v.isString()) { s = v.toString(); }
+				if (vv.validate(s, pos) == QValidator::Acceptable) {
+					result.insert("s", s.toInt());
+				}
+				a[i] = result;
+			}
+		}
+		obj.insert("manches", a);
 	}
 	return obj;
 }

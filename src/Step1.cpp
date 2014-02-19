@@ -93,7 +93,8 @@ void FenPrincipale::on_typeClassement_currentIndexChanged(int nb) {
 	ui->equipages->setColumnHidden(2, !show);
 	ui->equipages->setColumnHidden(3, !show);
 	this->equipages_resize();
-	for (int i = 1; i < ui->manches->rowCount(); ++i) {
+	ui->manches->setRowHidden(1, !show);
+	for (int i = 2; i < ui->manches->rowCount(); ++i) {
 		for (int j = 1; j < ui->manches->columnCount(); ++j) {
 			ui->manches->cellWidget(i, j)->layout()->itemAt(0)
 				->widget()->setVisible(show);
