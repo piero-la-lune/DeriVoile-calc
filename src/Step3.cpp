@@ -344,16 +344,20 @@ void FenPrincipale::tps_focussed(bool hasFocus) {
 		->parentWidget()->property("rowIndex").toInt();
 	int col = qobject_cast<QWidget*>(sender())
 		->parentWidget()->property("colIndex").toInt();
-	QWidget *wdg1 = ui->manches->cellWidget(0, col+1);
-	wdg1->setProperty("selected", hasFocus);
-	wdg1->style()->unpolish(wdg1);
-	wdg1->style()->polish(wdg1);
-	wdg1->update();
-	QWidget *wdg2 = ui->manches->cellWidget(row+2, 0);
-	wdg2->setProperty("selected", hasFocus);
-	wdg2->style()->unpolish(wdg2);
-	wdg2->style()->polish(wdg2);
-	wdg2->update();
+	if (ui->manches->columnCount() > col+1) {
+		QWidget *wdg1 = ui->manches->cellWidget(0, col+1);
+		wdg1->setProperty("selected", hasFocus);
+		wdg1->style()->unpolish(wdg1);
+		wdg1->style()->polish(wdg1);
+		wdg1->update();
+	}
+	if (ui->manches->rowCount() > row+2) {
+		QWidget *wdg2 = ui->manches->cellWidget(row+2, 0);
+		wdg2->setProperty("selected", hasFocus);
+		wdg2->style()->unpolish(wdg2);
+		wdg2->style()->polish(wdg2);
+		wdg2->update();
+	}
 	this->currentManche = col;
 	if (hasFocus) {
 		this->rmMancheTimer->stop();
