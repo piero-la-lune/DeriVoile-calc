@@ -221,42 +221,7 @@ bool FenPrincipale::ouvrir(QString name) {
 	}
 	this->filename = QString(name);
 	this->update();
-	// Mise à jour des fichiers récemment ouverts
-	if (this->filename != this->preferences->value("recent1", "").toString()) {
-		if (this->filename == this->preferences->value("recent2", "").toString()) {
-			this->preferences->setValue("recent2",
-				this->preferences->value("recent1", "").toString());
-			this->preferences->setValue("recent1", this->filename);
-		}
-		else if (this->filename == this->preferences->value("recent3", "").toString()) {
-			this->preferences->setValue("recent3",
-				this->preferences->value("recent2", "").toString());
-			this->preferences->setValue("recent2",
-				this->preferences->value("recent1", "").toString());
-			this->preferences->setValue("recent1", this->filename);
-		}
-		else if (this->filename == this->preferences->value("recent4", "").toString()) {
-			this->preferences->setValue("recent4",
-				this->preferences->value("recent3", "").toString());
-			this->preferences->setValue("recent3",
-				this->preferences->value("recent2", "").toString());
-			this->preferences->setValue("recent2",
-				this->preferences->value("recent1", "").toString());
-			this->preferences->setValue("recent1", this->filename);
-		}
-		else {
-			this->preferences->setValue("recent5",
-				this->preferences->value("recent4", "").toString());
-			this->preferences->setValue("recent4",
-				this->preferences->value("recent3", "").toString());
-			this->preferences->setValue("recent3",
-				this->preferences->value("recent2", "").toString());
-			this->preferences->setValue("recent2",
-				this->preferences->value("recent1", "").toString());
-			this->preferences->setValue("recent1", this->filename);
-		}
-		this->load_recents();
-	}
+	this->update_recents();
 	qApp->restoreOverrideCursor();
 	return true;
 }
@@ -435,6 +400,43 @@ QJsonArray FenPrincipale::json_toArray(QJsonObject obj) {
 	return a;
 }
 
+void FenPrincipale::update_recents() {
+	if (this->filename != this->preferences->value("recent1", "").toString()) {
+		if (this->filename == this->preferences->value("recent2", "").toString()) {
+			this->preferences->setValue("recent2",
+				this->preferences->value("recent1", "").toString());
+			this->preferences->setValue("recent1", this->filename);
+		}
+		else if (this->filename == this->preferences->value("recent3", "").toString()) {
+			this->preferences->setValue("recent3",
+				this->preferences->value("recent2", "").toString());
+			this->preferences->setValue("recent2",
+				this->preferences->value("recent1", "").toString());
+			this->preferences->setValue("recent1", this->filename);
+		}
+		else if (this->filename == this->preferences->value("recent4", "").toString()) {
+			this->preferences->setValue("recent4",
+				this->preferences->value("recent3", "").toString());
+			this->preferences->setValue("recent3",
+				this->preferences->value("recent2", "").toString());
+			this->preferences->setValue("recent2",
+				this->preferences->value("recent1", "").toString());
+			this->preferences->setValue("recent1", this->filename);
+		}
+		else {
+			this->preferences->setValue("recent5",
+				this->preferences->value("recent4", "").toString());
+			this->preferences->setValue("recent4",
+				this->preferences->value("recent3", "").toString());
+			this->preferences->setValue("recent3",
+				this->preferences->value("recent2", "").toString());
+			this->preferences->setValue("recent2",
+				this->preferences->value("recent1", "").toString());
+			this->preferences->setValue("recent1", this->filename);
+		}
+		this->load_recents();
+	}
+}
 
 void FenPrincipale::load_recents() {
 	if (preferences->value("recent1", "").toString().isEmpty()) {
@@ -509,7 +511,7 @@ void FenPrincipale::on_enregistrer_sous_triggered() {
 	this->enregistrer("");
 }
 
-void FenPrincipale::enregistrer(QString name) {
+bool FenPrincipale::enregistrer(QString name) {
 	statusBar()->showMessage(tr("Enregistrement du classement en cours..."));
 	if (name.isEmpty()) {
 		name = QFileDialog::getSaveFileName(
@@ -520,44 +522,76 @@ void FenPrincipale::enregistrer(QString name) {
 		);
 	}
 	if (name.isEmpty()) {
-		this->enregistrer_failed(false);
+		statusBar()->showMessage(tr("Enregistrement annulé"));
+		return false;
 	}
-	else {
-		this->data = name;
-		/*webFrame->evaluateJavaScript("$.enregistrer();");*/
+	// on créer la structure JSON
+	QJsonDocument *doc = new QJsonDocument();
+	QJsonObject obj;
+	obj.insert("version", VERSION);
+	obj.insert("nomRegate", this->nomRegate);
+	obj.insert("classement", this->typeClmt);
+	obj.insert("ratings", this->typeRt);
+	obj.insert("bateaux", this->typeBt);
+	obj.insert("nbEquipages", this->nbEquipages);
+	obj.insert("nbManches", this->nbManches);
+	obj.insert("manchesRetirees", this->manchesRetirees);
+	obj.insert("manchesRetireesMin", this->manchesRetireesMin);
+	QJsonArray equipages;
+	for (int i = 0; i < this->nbEquipages; ++i) {
+		QJsonObject eq;
+		eq.insert("nom", this->equipages[i].nom);
+		eq.insert("rating", this->equipages[i].rating);
+		eq.insert("bateau", this->equipages[i].bateau);
+		QJsonArray manches;
+		for (int j = 0; j < this->nbManches; ++j) {
+			QJsonObject m;
+			m.insert("h", this->equipages[i].manches[j].h);
+			m.insert("min", this->equipages[i].manches[j].min);
+			m.insert("s", this->equipages[i].manches[j].s);
+			m.insert("pl", this->equipages[i].manches[j].pl);
+			m.insert("abr", this->equipages[i].manches[j].abr);
+			manches.insert(j, m);
+		}
+		eq.insert("manches", manches);
+		equipages.insert(i, eq);
 	}
-}
-
-void FenPrincipale::enregistrer_callback(QString data) {
-	QFile file(this->data);
+	obj.insert("equipages", equipages);
+	QJsonArray manches;
+	for (int j = 0; j < this->nbManches; ++j) {
+		QJsonObject m;
+		m.insert("h", this->manches[j].h);
+		m.insert("min", this->manches[j].min);
+		m.insert("s", this->manches[j].s);
+		manches.insert(j, m);
+	}
+	obj.insert("manches", manches);
+	doc->setObject(obj);
+	qDebug() << doc->toJson();
+	// on enregistre les données
+	QFile file(name);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-		this->enregistrer_failed(true);
-	}
-	else {
-		QTextStream flux(&file);
-		flux.setCodec("UTF-8");
-		flux << data;
-		this->filename = this->data;
-		this->set_titre();
-		hasModif = false;
-		statusBar()->showMessage(tr("Le classement a été enregistré."), 3000);
-	}
-	file.close();
-}
-
-void FenPrincipale::enregistrer_failed(bool msg) {
-	if (msg) {
+		file.close();
 		this->msg(
 			tr("Erreur"),
 			tr("Impossible d'enregistrer le classement.\nVérifiez que le fichier est accessible en écriture."),
 			"x"
 		);
+		statusBar()->showMessage(tr("Enregistrement annulé"));
+		return false;
 	}
-	statusBar()->showMessage(
-		tr("L'enregistrement du classement a échoué."),
-		3000
-	);
+	QTextStream flux(&file);
+	flux.setCodec("UTF-8");
+	flux << doc->toJson();
+	file.close();
+	this->hasModif = false;
+	this->filename = name;
+	this->set_titre();
+	this->update_recents();
+	statusBar()->showMessage(tr("Le classement a été enregistré."));
+	return true;	
 }
+
 
 QList<QPixmap> FenPrincipale::print_getPages() {
 	QList<QPixmap> parts;

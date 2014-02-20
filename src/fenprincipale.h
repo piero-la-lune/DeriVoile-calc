@@ -293,9 +293,9 @@ class FenPrincipale : public QMainWindow {
 		bool ouvrir(QString name);
 		QJsonObject json_compatibilite(QJsonObject obj);
 		QJsonArray json_toArray(QJsonObject obj);
+		void update_recents();
 		void load_recents();
-		void enregistrer(QString name);
-		void enregistrer_failed(bool msg);
+		bool enregistrer(QString name);
 		QString get_printed_html(QString html);
 		QList<QPixmap> print_getPages();
 			// MAJ.cpp
@@ -308,8 +308,6 @@ class FenPrincipale : public QMainWindow {
 
 	public slots:
 		void progression(int nb);
-			// Classement.cpp
-		void enregistrer_callback(QString data);
 
 	private slots:
 		void on_francais_triggered();
