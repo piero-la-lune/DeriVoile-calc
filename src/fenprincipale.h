@@ -283,7 +283,6 @@ class FenPrincipale : public QMainWindow {
 		void reset_step5();
 		void goto_step5();
 		void leave_step5();
-		void calculer();
 		bool verif();
 		void calcul_manches();
 		void calcul_retirermanches();

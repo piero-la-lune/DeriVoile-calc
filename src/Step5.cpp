@@ -71,10 +71,17 @@ void FenPrincipale::goto_step5() {
 	this->leave_step4();
 	ui->btnStep5->setFlat(true);
 	ui->choisirResultat->insertItem(0, tr("Classement général"));
-	this->calculer();
-	ui->step5->setVisible(true);
-	ui->pdf->setEnabled(true);
-	ui->html->setEnabled(true);
+	this->addProgressBar(tr("Calcul du classement :"));
+	qApp->processEvents();
+	if (this->verif()) {
+		this->calcul_manches();
+		this->calcul_retirermanches();
+		this->calcul_general();
+		ui->step5->setVisible(true);
+		ui->pdf->setEnabled(true);
+		ui->html->setEnabled(true);
+	}
+	this->removeProgressBar();
 }
 void FenPrincipale::leave_step5() {
 	ui->btnStep5->setFlat(false);
@@ -84,18 +91,18 @@ void FenPrincipale::leave_step5() {
 	this->reset_step5();
 }
 
-void FenPrincipale::calculer() {
-	this->addProgressBar(tr("Calcul du classement"));
-	qApp->processEvents();
-	if (this->verif()) {
-		this->calcul_manches();
-		this->calcul_retirermanches();
-		this->calcul_general();
-	}
-	this->removeProgressBar();
-}
-
 bool FenPrincipale::verif() {
+	if (this->typeClmt == CLMT_TEMPS) {
+		for (int j = 0; j < this->nbManches; ++j) {
+			int mh = this->manches[j].h;
+			int mmin = this->manches[j].min;
+			int ms = this->manches[j].s;
+			if (mh < 0) { mh = 0; }
+			if (mmin < 0) { mmin = 0; }
+			if (ms < 0) { ms = 0; }
+			this->manches[j].tpsReel = mh*3600+mmin*60+ms;
+		}
+	}
 	for (int i = 0; i < this->nbEquipages; ++i) {
 		// on met les variables utilisés pour produire le classement
 		// à leur valeur par défaut
@@ -152,8 +159,8 @@ bool FenPrincipale::verif() {
 				if (m.h < 0) { m.h = 0; }
 				if (m.min < 0) { m.min = 0; }
 				if (m.s < 0) { m.s = 0; }
-				int tps = m.h*3600+m.min*60+m.s;
-				if (tps == 0) {
+				int tps = m.h*3600+m.min*60+m.s-this->manches[j].tpsReel;
+				if (tps <= 0) {
 					this->equipages[i].manches[j].abr = "DNF";
 				}
 				else {
@@ -172,6 +179,15 @@ bool FenPrincipale::verif() {
 				}
 			}
 		}
+	}
+	if (this->nbManches < 1) {
+		this->msg(
+			tr("Erreur"),
+			tr("Ajoutez d'abord une manche avant de calculer le classement."),
+			"x"
+		);
+		this->goto_step3();
+		return false;
 	}
 	this->progression(5);
 	return true;
@@ -262,7 +278,7 @@ void FenPrincipale::calcul_manches() {
 				nomLayout->addWidget(nom);
 				if (this->typeClmt == CLMT_TEMPS) {
 					QLabel *bateau = new QLabel();
-					bateau->setText(this->bateaux.value(e.rating).serie
+					bateau->setText(this->bateaux.value(e.rating.toUpper()).serie
 						+" ("+QString::number(e.coef)+")");
 					bateau->setProperty("label", "bateau");
 					nomLayout->addWidget(bateau);
@@ -284,7 +300,7 @@ void FenPrincipale::calcul_manches() {
 				QString nomString = "<span class=\"equipage\">"+e.nom+"</span>";
 				if (this->typeClmt == CLMT_TEMPS) {
 					nomString += "<span class=\"bateau\">"
-						+this->bateaux.value(e.rating).serie
+						+this->bateaux.value(e.rating.toUpper()).serie
 						+" ("+QString::number(e.coef)+")</span>";
 				}
 				html += "\n\t\t<tr>\n\t\t\t<td>"+QString::number(i+1)+"</td>"
@@ -319,7 +335,7 @@ void FenPrincipale::calcul_manches() {
 				nomLayout->addWidget(nom);
 				if (this->typeClmt == CLMT_TEMPS) {
 					QLabel *bateau = new QLabel();
-					bateau->setText(this->bateaux.value(e.rating).serie
+					bateau->setText(this->bateaux.value(e.rating.toUpper()).serie
 						+" ("+QString::number(e.coef)+")");
 					bateau->setProperty("label", "bateau");
 					nomLayout->addWidget(bateau);
@@ -341,7 +357,7 @@ void FenPrincipale::calcul_manches() {
 				QString nomString = "<span class=\"equipage\">"+e.nom+"</span>";
 				if (this->typeClmt == CLMT_TEMPS) {
 					nomString += "<span class=\"bateau\">"
-						+this->bateaux.value(e.rating).serie
+						+this->bateaux.value(e.rating.toUpper()).serie
 						+" ("+QString::number(e.coef)+")</span>";
 				}
 				html += "\n\t\t<tr>\n\t\t\t<td>"+m.abr+"</td><td>"+nomString+"</td>"
@@ -466,7 +482,7 @@ void FenPrincipale::calcul_general() {
 			QString nomString = "<span class=\"equipage\">"+e.nom+"</span>";
 			if (this->typeClmt == CLMT_TEMPS) {
 				nomString += "<span class=\"bateau\">"
-					+this->bateaux.value(e.rating).serie
+					+this->bateaux.value(e.rating.toUpper()).serie
 					+" ("+QString::number(e.coef)+")</span>";
 			}
 			html += "\n\t\t<tr>\n\t\t\t<td>"+QString::number(i+1)+"</td>"
@@ -481,7 +497,7 @@ void FenPrincipale::calcul_general() {
 			nomLayout->addWidget(nom);
 			if (this->typeClmt == CLMT_TEMPS) {
 				QLabel *bateau = new QLabel();
-				bateau->setText(this->bateaux.value(e.rating).serie
+				bateau->setText(this->bateaux.value(e.rating.toUpper()).serie
 					+" ("+QString::number(e.coef)+")");
 				bateau->setProperty("label", "bateau");
 				nomLayout->addWidget(bateau);
@@ -632,8 +648,3 @@ QString FenPrincipale::formate_tps(int tps) {
 	else { temps += ":"+QString::number(s); }
 	return temps;
 }
-
-
-// this->addProgressBar(tr("Calcul du classement :"));
-// qApp->setOverrideCursor(QCursor(Qt::WaitCursor));
-// qApp->restoreOverrideCursor();
