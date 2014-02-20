@@ -189,7 +189,7 @@ void FenPrincipale::init() {
 void FenPrincipale::update() {
 	ui->centralwidget->hide();
 	statusBar()->showMessage(
-		tr("DériVoile calc' est un programme proposé par DériVoile (http://derivoile.fr). © 2011-2013 Pierre Monchalin")
+		tr("DériVoile calc' est un programme proposé par DériVoile (http://derivoile.fr). © 2011-2014 Pierre Monchalin")
 	);
 	this->addProgressBar(tr("Ouverture du fichier :"));
 	this->reset_step1();

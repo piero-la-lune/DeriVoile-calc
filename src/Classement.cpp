@@ -522,7 +522,7 @@ bool FenPrincipale::enregistrer(QString name) {
 		);
 	}
 	if (name.isEmpty()) {
-		statusBar()->showMessage(tr("Enregistrement annulé"));
+		statusBar()->showMessage(tr("Enregistrement annulé"), 3000);
 		return false;
 	}
 	// on créer la structure JSON
@@ -567,7 +567,6 @@ bool FenPrincipale::enregistrer(QString name) {
 	}
 	obj.insert("manches", manches);
 	doc->setObject(obj);
-	qDebug() << doc->toJson();
 	// on enregistre les données
 	QFile file(name);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -577,7 +576,7 @@ bool FenPrincipale::enregistrer(QString name) {
 			tr("Impossible d'enregistrer le classement.\nVérifiez que le fichier est accessible en écriture."),
 			"x"
 		);
-		statusBar()->showMessage(tr("Enregistrement annulé"));
+		statusBar()->showMessage(tr("Enregistrement annulé"), 3000);
 		return false;
 	}
 	QTextStream flux(&file);
@@ -588,7 +587,7 @@ bool FenPrincipale::enregistrer(QString name) {
 	this->filename = name;
 	this->set_titre();
 	this->update_recents();
-	statusBar()->showMessage(tr("Le classement a été enregistré."));
+	statusBar()->showMessage(tr("Le classement a été enregistré."), 3000);
 	return true;	
 }
 

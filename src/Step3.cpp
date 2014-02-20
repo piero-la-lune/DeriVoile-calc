@@ -387,7 +387,7 @@ void FenPrincipale::manche_focussed(bool hasFocus) {
 void FenPrincipale::disable_rmManche() { ui->rmManche->setEnabled(false); }
 
 void FenPrincipale::on_addManche_clicked() {
-	MyLabel *nom = new MyLabel("Manche n°"+QString::number(this->nbManches+1));
+	MyLabel *nom = new MyLabel(tr("Manche n°%1").arg(QString::number(this->nbManches+1)));
 	nom->setProperty("type", "header");
 	nom->setProperty("top", true);
 	nom->setProperty("colIndex", this->nbManches);
@@ -458,7 +458,12 @@ void FenPrincipale::add_manche_inputs(int row, int col) {
 
 void FenPrincipale::on_rmManche_pressed() {
 	if (this->nbManches > 0 &&
-		this->confirm("Supprimer une manche", "Voulez-vous vraiment supprimer la manche n°"+QString::number(this->currentManche+1)+" ?", "!")
+		this->confirm(
+			tr("Supprimer une manche"),
+			tr("Voulez-vous vraiment supprimer la manche n°%1 ?")
+				.arg(QString::number(this->currentManche+1)),
+			"!"
+		)
 	) {
 		ui->manches->removeColumn(this->currentManche+2);
 		this->manches.rm(this->currentManche);
@@ -470,7 +475,7 @@ void FenPrincipale::on_rmManche_pressed() {
 		}
 		for (int i = (this->currentManche+1); i < this->nbManches; ++i) {
 			QLabel *nom = qobject_cast<QLabel*>(ui->manches->cellWidget(0, i));
-			nom->setText("Manche n°"+QString::number(i));
+			nom->setText(tr("Manche n°%1").arg(QString::number(i)));
 			nom->setProperty("colIndex", i-1);
 
 		}
