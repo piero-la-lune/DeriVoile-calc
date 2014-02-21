@@ -133,6 +133,7 @@ QTableWidget QTableCornerButton::section {
 }
 
 #btnStep1, #btnStep2, #btnStep3, #btnStep4, #btnStep5 {
+	min-width: 72px;
 	background: #1c8daf;
 	color: #fff;
 	font-size: 12px;

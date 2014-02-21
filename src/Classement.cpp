@@ -703,7 +703,15 @@ void FenPrincipale::print(QPrinter *printer) {
 	QString manches = "";
 	QString mRetirees = "";
 	if (this->nbManches >= this->manchesRetireesMin && this->manchesRetirees >= 0) {
-		mRetirees = tr(" (%n retirée(s))", "", this->manchesRetirees);
+		if (this->manchesRetirees > 1) {
+			mRetirees = tr(" (%1 retirées)").arg(this->manchesRetirees);
+		}
+		else if (this->manchesRetirees > 0) {
+			mRetirees = tr(" (une retirée)");
+		}
+		else {
+			mRetirees = tr(" (aucune retirée)");
+		}
 	}
 	if (nb == 0) {
 		manches = tr("%n manches courues%1.", "", this->nbManches).arg(mRetirees);
@@ -777,7 +785,15 @@ void FenPrincipale::on_html_triggered() {
 		QString manches = "";
 		QString mRetirees = "";
 		if (this->nbManches >= this->manchesRetireesMin && this->manchesRetirees >= 0) {
-			mRetirees = tr(" (%n retirée(s))", "", this->manchesRetirees);
+			if (this->manchesRetirees > 1) {
+				mRetirees = tr(" (%1 retirées)").arg(this->manchesRetirees);
+			}
+			else if (this->manchesRetirees > 0) {
+				mRetirees = tr(" (une retirée)");
+			}
+			else {
+				mRetirees = tr(" (aucune retirée)");
+			}
 		}
 		if (nb == 0) {
 			manches = tr("%n manches courues%1.", "", this->nbManches).arg(mRetirees);
