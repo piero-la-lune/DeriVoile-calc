@@ -401,7 +401,7 @@
     <message>
         <location filename="../FenPrincipale.ui" line="718"/>
         <source>manches si au moins</source>
-        <translation type="unfinished">races if at least</translation>
+        <translation>races if at least</translation>
     </message>
     <message>
         <location filename="../FenPrincipale.ui" line="796"/>
@@ -903,7 +903,7 @@ Vérifiez que le fichier est accessible en écriture.</source>
     <message>
         <location filename="../Step5.cpp" line="186"/>
         <source>Ajoutez d&apos;abord une manche avant de calculer le classement.</source>
-        <translation>Please add first a race.</translation>
+        <translation>Please first add a race.</translation>
     </message>
     <message>
         <location filename="../Step5.cpp" line="200"/>
