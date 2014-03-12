@@ -465,13 +465,18 @@ void FenPrincipale::on_rmManche_pressed() {
 			"!"
 		)
 	) {
-		ui->manches->removeColumn(this->currentManche+2);
+		ui->manches->removeColumn(this->currentManche+1);
 		this->manches.rm(this->currentManche);
 		for (int i = 0; i < this->nbEquipages; ++i) {
 			for (int j = (this->currentManche+1); j < this->nbManches; ++j) {
 				ui->manches->cellWidget(i+2, j)->setProperty("colIndex", j-1);
 			}
 			this->equipages[i].manches.rm(this->currentManche);
+		}
+		if (this->typeClmt == CLMT_TEMPS) {
+			for (int j = (this->currentManche+1); j < this->nbManches; ++j) {
+				ui->manches->cellWidget(1, j)->setProperty("colIndex", j-1);
+			}
 		}
 		for (int i = (this->currentManche+1); i < this->nbManches; ++i) {
 			QLabel *nom = qobject_cast<QLabel*>(ui->manches->cellWidget(0, i));
