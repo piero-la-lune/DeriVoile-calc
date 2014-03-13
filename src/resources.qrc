@@ -39,6 +39,10 @@
         <file alias="etape3.html">../doc/etape3.html</file>
         <file alias="etape4.html">../doc/etape4.html</file>
         <file alias="etape5.html">../doc/etape5.html</file>
+        <file alias="astuces.html">../doc/astuces.html</file>
+        <file alias="maj.html">../doc/maj.html</file>
+        <file alias="ratings.html">../doc/ratings.html</file>
+        <file alias="regles.html">../doc/regles.html</file>
         <file alias="style.css">../doc/style.css</file>
         <file alias="script.js">../doc/script.js</file>
     </qresource>

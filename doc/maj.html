@@ -1,4 +1,4 @@
-/*
+<!--
 
 ###################    DériVoile calc' - Français    ###################
 
@@ -49,32 +49,27 @@ You should have received a copy of the GNU General Public License
 along with DériVoile calc'. If not, see
 <http://www.gnu.org/licenses/>
 
-*/
+-->
 
-#ifndef FENAIDE_H
-#define FENAIDE_H
 
-#include <QMainWindow>
-#include <QWebView>
-#include <QDesktopServices>
+<h1>Mises à jour</h1>
 
-namespace Ui {
-	class FenAide;
-}
+<section>
 
-class FenAide : public QMainWindow {
-	Q_OBJECT
+	<h2>Mise à jour des ratings</h2>
 
-	public:
-		explicit FenAide(QWidget *parent = 0);
-		~FenAide();
+	<p>Les ratings des bateaux ne sont pas figés et évoluent dans le temps. Afin de tenir compte de cette évolution (et d’avoir les ratings des nouveaux bateaux), il est recommandé de mettre à jour régulièrement les ratings</p>
 
-	private:
-		Ui::FenAide *ui;
-		QWebView *webView;
+	<p>Les nouvelles mises à jours sont normalement automatiquement détectées à chaque démarrage de DériVoile calc’, à moins qu’elles aient été désactivées via le menu <code>Préférences</code> ou que l’ordinateur ne dispose pas de connexion internet. Lorsqu’une mise à jour est disponible, une boîte de dialogue vous permet de la télécharger : les ratings sont ensuite automatiquement mis à jour.</p>
 
-	private slots:
-		void link_clicked(QUrl url);
-};
+	<p>Le fichier de ratings peut aussi être téléchargé manuellement sur <a href="http://calc.derivoile.fr">calc.derivoile.fr</a> puis importé dans DériVoile calc’ (<code>Ratings utilisés</code> dans le menu <code>Préférences</code>).</p>
 
-#endif // FENAIDE_H
+	<h2>Mise à jour de DeriVoile calc’</h2>
+
+	<p>Comme pour les ratings, il est recommandé d’installer les mises à jour de DériVoile calc’ qui peuvent corriger des bugs ou apporter de nouvelles fonctionnalités.</p>
+
+	<p>Les nouvelles mises à jours sont normalement automatiquement détectées à chaque démarrage de DériVoile calc’, à moins qu’elles aient été désactivées via le menu <code>Préférences</code> ou que l’ordinateur ne dispose pas de connexion internet. Lorsqu’une mise à jour est disponible, une boîte de dialogue vous propose de la télécharger. Vous n’avez ensuite plus qu’à l’installer.</p>
+
+	<p>Les mises à jour de DériVoile calc’ peuvent aussi être téléchargées manuellement sur <a href="http://calc.derivoile.fr">calc.derivoile.fr</a>.</p>
+
+</section>

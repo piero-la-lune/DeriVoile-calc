@@ -1,4 +1,4 @@
-/*
+<!--
 
 ###################    DériVoile calc' - Français    ###################
 
@@ -49,32 +49,28 @@ You should have received a copy of the GNU General Public License
 along with DériVoile calc'. If not, see
 <http://www.gnu.org/licenses/>
 
-*/
+-->
 
-#ifndef FENAIDE_H
-#define FENAIDE_H
 
-#include <QMainWindow>
-#include <QWebView>
-#include <QDesktopServices>
+<h1>Astuces</h1>
 
-namespace Ui {
-	class FenAide;
-}
+<section>
 
-class FenAide : public QMainWindow {
-	Q_OBJECT
+	<p>Cette page essaye de regrouper quelques astuces qui pourraient vous faire gagner un peu de temps lors de la saisie des données</p>
 
-	public:
-		explicit FenAide(QWidget *parent = 0);
-		~FenAide();
+	<h3>Équipages</h3>
 
-	private:
-		Ui::FenAide *ui;
-		QWebView *webView;
+	<ul>
+		<li>vous pouvez vous déplacer dans le tableau en utilisant la touche <code>Tab</code> de votre clavier</li>
+		<li>en mémorisant le code de certains bateaux, plus besoin de les rechercher dans la liste déroulante</li>
+	</ul>
 
-	private slots:
-		void link_clicked(QUrl url);
-};
+	<h3>Manches</h3>
 
-#endif // FENAIDE_H
+	<ul>
+		<li>au lieu de taper « 00 » dans un champ, laissez-le vide (vous pouvez donc laisser vide la ligne <code>Heure de départ</code> si vous renseignez des temps de parcours et pas des heures d’arrivée)</li>
+		<li>vous pouvez vous déplacer dans le tableau en utilisant la touche <code>Tab</code> ainsi que les flèches de votre clavier</li>
+		<li>lorsqu’une case est entièrement laissée vide (c’est-à-dire que ni les heures, ni les minutes, ni les secondes ne sont renseignées en classement temps compensé), l’équipage sera classé DNF à la manche correspondante</li>
+	</ul>
+
+</section>

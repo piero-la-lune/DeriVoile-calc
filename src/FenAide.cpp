@@ -53,82 +53,31 @@ along with DériVoile calc'. If not, see
 
 #include "FenAide.h"
 #include "ui_FenAide.h"
-#include <QWebInspector>
+/*#include <QWebInspector>*/
 
 FenAide::FenAide(QWidget *parent) : QMainWindow(parent), ui(new Ui::FenAide) {
 
 	ui->setupUi(this);
 
-/*	tree = new QTreeWidget;
-	tree->setColumnCount(1);
-	tree->setHeaderHidden(true);
-	tree->setFixedWidth(200);
-
-	aide = new QTreeWidgetItem;
-	aide->setText(0, tr("Aide"));
-
-	debut = new QTreeWidgetItem;
-	debut->setText(0, tr("Première utilisation"));
-	aide->addChild(debut);
-
-	etapes = new QTreeWidgetItem;
-	etapes->setText(0, tr("Étapes"));
-	etape1 = new QTreeWidgetItem;
-	etape1->setText(0, tr("Étape 1"));
-	etapes->addChild(etape1);
-	etape2 = new QTreeWidgetItem;
-	etape2->setText(0, tr("Étape 2"));
-	etapes->addChild(etape2);
-	etape3 = new QTreeWidgetItem;
-	etape3->setText(0, tr("Étape 3"));
-	etapes->addChild(etape3);
-	aide->addChild(etapes);
-
-	ratings = new QTreeWidgetItem;
-	ratings->setText(0, tr("Ratings"));
-	aide->addChild(ratings);
-
-	astuces = new QTreeWidgetItem;
-	astuces->setText(0, tr("Astuces"));
-	aide->addChild(astuces);
-
-	maj = new QTreeWidgetItem;
-	maj->setText(0, tr("Mises à jour"));
-	aide->addChild(maj);
-
-	regles = new QTreeWidgetItem;
-	regles->setText(0, tr("Extraits des Règles de Course"));
-
-	tree->addTopLevelItem(aide);
-	tree->addTopLevelItem(regles);
-	tree->expandAll();
-	ui->toolBar->addWidget(tree);*/
-
 	webView = new QWebView;
 
 	webView->load(QUrl("qrc:/doc/index.html"));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
+	webView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 
- 	webView->page()->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+/*	webView->page()->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
 	QWebInspector *inspector = new QWebInspector;
-    inspector->setPage(webView->page());
-    inspector->setVisible(true);
+	inspector->setPage(webView->page());
+	inspector->setVisible(true);*/
 
 	setCentralWidget(webView);
 
-/*	connect(
-		tree,
-		SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
-		this,
-		SLOT(change_page(QTreeWidgetItem*, QTreeWidgetItem*))
-	);*/
-
-/*	connect(
+	connect(
 		webView,
-		SIGNAL(urlChanged(QUrl)),
+		SIGNAL(linkClicked(QUrl)),
 		this,
 		SLOT(link_clicked(QUrl))
-	);*/
+	);
 
 }
 
@@ -136,49 +85,6 @@ FenAide::~FenAide() {
 	delete ui;
 }
 
-/*void FenAide::change_page(QTreeWidgetItem *item, QTreeWidgetItem *) {
-	if (item == this->aide) {
-		this->webView->load(QUrl("qrc:/doc/aide.html"));
-	}
-	if (item == this->debut) {
-		this->webView->load(QUrl("qrc:/doc/debut.html"));
-	}
-	if (item == this->etapes) {
-		this->webView->load(QUrl("qrc:/doc/etapes.html"));
-	}
-	if (item == this->etape1) {
-		this->webView->load(QUrl("qrc:/doc/etape1.html"));
-	}
-	if (item == this->etape2) {
-		this->webView->load(QUrl("qrc:/doc/etape2.html"));
-	}
-	if (item == this->etape3) {
-		this->webView->load(QUrl("qrc:/doc/etape3.html"));
-	}
-	if (item == this->ratings) {
-		this->webView->load(QUrl("qrc:/doc/ratings.html"));
-	}
-	if (item == this->astuces) {
-		this->webView->load(QUrl("qrc:/doc/astuces.html"));
-	}
-	if (item == this->maj) {
-		this->webView->load(QUrl("qrc:/doc/maj.html"));
-	}
-	if (item == this->regles) {
-		this->webView->load(QUrl("qrc:/doc/regles.html"));
-	}
-}
-
 void FenAide::link_clicked(QUrl url) {
-	QString urlStr = url.toDisplayString();
-	this->aide->setSelected(urlStr == "qrc:/doc/aide.html");
-	this->debut->setSelected(urlStr == "qrc:/doc/debut.html");
-	this->etapes->setSelected(urlStr == "qrc:/doc/etapes.html");
-	this->etape1->setSelected(urlStr == "qrc:/doc/etape1.html");
-	this->etape2->setSelected(urlStr == "qrc:/doc/etape2.html");
-	this->etape3->setSelected(urlStr == "qrc:/doc/etape3.html");
-	this->ratings->setSelected(urlStr == "qrc:/doc/ratings.html");
-	this->astuces->setSelected(urlStr == "qrc:/doc/astuces.html");
-	this->maj->setSelected(urlStr == "qrc:/doc/maj.html");
-	this->regles->setSelected(urlStr == "qrc:/doc/regles.html");
-}*/
+	QDesktopServices::openUrl(url);
+}
