@@ -257,11 +257,14 @@ bool FenPrincipale::load_ratings(QString filename) {
 }
 
 bool FenPrincipale::confirm(QString title, QString text, QString icon) {
+	return this->confirm(title, text, icon, tr("Oui"));
+}
+bool FenPrincipale::confirm(QString title, QString text, QString icon, QString oui) {
 	QMessageBox msgBox;
 	msgBox.setWindowTitle(title);
 	msgBox.setText(text);
 	msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
-	msgBox.setButtonText(QMessageBox::Yes, tr("Oui"));
+	msgBox.setButtonText(QMessageBox::Yes, oui);
 	msgBox.setButtonText(QMessageBox::Cancel, tr("Annuler"));
 	msgBox.setDefaultButton(QMessageBox::Cancel);
 	if (icon == "!") {

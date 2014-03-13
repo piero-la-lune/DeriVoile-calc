@@ -1,5 +1,12 @@
 @fontface: "Source Sans Pro";
 
+@bleu: #1c8daf;
+@bleuclair: #4db3d2;
+
+@fond: #eee;
+@couleur: #333;
+@bordure: #ccc;
+
 @blue: #C9D7F1;
 @blue2: #005FA3;
 @dark: #2D2D2D;
@@ -9,19 +16,20 @@
 	font-family: "Source Sans Pro";
 	font-style: normal;
 	font-weight: normal;
-	src: local("Source Sans Pro"), local("SourceSansPro-Regular");
+	src: url("qrc:/fonts/SourceSansPro-Regular.ttf") format("truetype"), local("Source Sans Pro"), local("SourceSansPro-Regular");
 }
 
 @font-face {
 	font-family: "Source Sans Pro";
-	font-style: normal;
-	font-weight: 900;
-	src: local("Source Sans Pro Black"), local("SourceSansPro-Black");
+	font-style: italic;
+	font-weight: normal;
+	src: url("qrc:/fonts/SourceSansPro-Italic.ttf") format("truetype"), local("Source Sans Pro Italic"), local("SourceSansPro-Italic");
 }
 
 html, body {
 	margin: 0;
 	padding: 0;
+	height: 100%;
 }
 
 body {
@@ -29,34 +37,79 @@ body {
 	font-weight: normal;
 	font-family: @fontface;
 	text-align: left;
+	background: @fond;
+	color: @couleur;
+	display: table;
+	width: 100%;
+}
+
+nav, article {
+	display: table-cell;
+}
+
+nav {
+	background: @bleu;
+	width: 210px;
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+	> ul {
+		position: fixed;
+		padding: 12px;
+		width: 210px-12px-12px;
+	}
+	li {
+		margin: 6px 0;
+		padding: 0;
+		a {
+			color: #fff;
+			display: block;
+			padding: 4px 8px;
+			border-radius: 4px;
+			&:hover {
+				background: @bleuclair;
+				text-decoration: none;
+			}
+			&:focus {
+				outline: none;
+			}
+			&.selected {
+				background: @bleuclair;
+			}
+		}
+		ul {
+			margin: 0 0 0 12px;
+		}
+	}
 }
 
 h1 {
 	text-align: center;
 	margin: 0 0 32px 0;
 	padding: 12px;
-	background: lighten(@dark, 10%);
-	color: darken(@light, 10%);
+	background: @bleuclair;
+	color: #fff;
 	font-size: 2.2em;
-	font-weight: 900;
+	font-weight: normal;
 }
 
 h2 {
-	margin: 32px 0 24px 0;
-	padding: 6px;
-	color: lighten(@dark, 10%);
-	border-bottom: 1px solid lighten(@dark, 30%);
+	margin: 48px 0 24px 0;
+	padding: 4px 8px;
+	border: 1px solid @bordure;
+	border-radius: 3px;
 	font-size: 1.6em;
-	font-weight: 900;
+	font-weight: normal;
 }
 
 h3 {
 	margin: 24px 0 12px 44px;
 	padding: 4px;
-	color: lighten(@dark, 10%);
-	border-bottom: 1px dotted lighten(@dark, 50%);
-	font-size: 1.2em;
-	font-weight: 900;
+	border-bottom: 1px dotted @bordure;
+	font-size: 1.4em;
+	font-weight: normal;
 }
 
 p {
@@ -72,31 +125,32 @@ a {
 	}
 }
 
+em {
+	font-style: italic;
+}
+
 ul {
 	margin-top: 12px;
 	margin-bottom: 12px;
-	li {
-		margin-top: 6px;
-		margin-bottom: 6px;
-	}
+}
+li {
+	margin-top: 6px;
+	margin-bottom: 6px;
 }
 
 section {
 	margin: 0 12px;
 }
 
-.nav {
-	list-style: none;
-	margin: 32px 0;
-	padding: 0;
-	/*text-align: center;*/
-	font-size: 1.2em;
-	li {
-		margin: 8px 0;
-		padding: 0;
-	}
-}
-
 img {
 	max-width: 100%;
+}
+
+code {
+	font-family: @fontface;
+	font-size: 0.9em;
+	display: inline-block;
+	padding: 0 3px;
+	border: 1px solid @bordure;
+	border-radius: 2px;
 }

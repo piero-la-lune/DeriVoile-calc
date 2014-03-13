@@ -189,6 +189,7 @@ class FenPrincipale : public QMainWindow {
 		static int const EXIT_CODE_REBOOT;
 		static QString const VERSION;
 		bool confirm(QString title, QString text, QString icon);
+		bool confirm(QString title, QString text, QString icon, QString oui);
 		void msg(QString title, QString text, QString icon);
 		int getInt(QString title, QString text, int value, int min, int max);
 		void restart();
@@ -365,6 +366,7 @@ class FenPrincipale : public QMainWindow {
 		void on_recents_clean_triggered();
 		void on_enregistrer_triggered();
 		void on_enregistrer_sous_triggered();
+		void on_imprimer_triggered();
 		void on_pdf_triggered();
 		void on_html_triggered();
 		void on_quitter_triggered();

@@ -53,12 +53,13 @@ along with DériVoile calc'. If not, see
 
 #include "FenAide.h"
 #include "ui_FenAide.h"
+#include <QWebInspector>
 
 FenAide::FenAide(QWidget *parent) : QMainWindow(parent), ui(new Ui::FenAide) {
 
 	ui->setupUi(this);
 
-	tree = new QTreeWidget;
+/*	tree = new QTreeWidget;
 	tree->setColumnCount(1);
 	tree->setHeaderHidden(true);
 	tree->setFixedWidth(200);
@@ -101,28 +102,33 @@ FenAide::FenAide(QWidget *parent) : QMainWindow(parent), ui(new Ui::FenAide) {
 	tree->addTopLevelItem(aide);
 	tree->addTopLevelItem(regles);
 	tree->expandAll();
-	ui->toolBar->addWidget(tree);
+	ui->toolBar->addWidget(tree);*/
 
 	webView = new QWebView;
 
-	webView->load(QUrl("qrc:/doc/aide.html"));
+	webView->load(QUrl("qrc:/doc/index.html"));
 	webView->setContextMenuPolicy(Qt::NoContextMenu);
+
+ 	webView->page()->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+	QWebInspector *inspector = new QWebInspector;
+    inspector->setPage(webView->page());
+    inspector->setVisible(true);
 
 	setCentralWidget(webView);
 
-	connect(
+/*	connect(
 		tree,
 		SIGNAL(currentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)),
 		this,
 		SLOT(change_page(QTreeWidgetItem*, QTreeWidgetItem*))
-	);
+	);*/
 
-	connect(
+/*	connect(
 		webView,
 		SIGNAL(urlChanged(QUrl)),
 		this,
 		SLOT(link_clicked(QUrl))
-	);
+	);*/
 
 }
 
@@ -130,7 +136,7 @@ FenAide::~FenAide() {
 	delete ui;
 }
 
-void FenAide::change_page(QTreeWidgetItem *item, QTreeWidgetItem *) {
+/*void FenAide::change_page(QTreeWidgetItem *item, QTreeWidgetItem *) {
 	if (item == this->aide) {
 		this->webView->load(QUrl("qrc:/doc/aide.html"));
 	}
@@ -175,4 +181,4 @@ void FenAide::link_clicked(QUrl url) {
 	this->astuces->setSelected(urlStr == "qrc:/doc/astuces.html");
 	this->maj->setSelected(urlStr == "qrc:/doc/maj.html");
 	this->regles->setSelected(urlStr == "qrc:/doc/regles.html");
-}
+}*/

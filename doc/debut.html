@@ -1,7 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-
 <!--
 
 ###################    DériVoile calc' - Français    ###################
@@ -56,49 +52,39 @@ along with DériVoile calc'. If not, see
 -->
 
 
-		<title>Première utilisation</title>
-		<link rel="stylesheet" type="text/css" media="all" href="./style.css" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<h1>Guide d’utilisation</h1>
 
-	</head>
+<section>
 
-	<body>
+	<h2>Présentation</h2>
 
-		<h1>Première utilisation</h1>
+	<p>DériVoile calc’ est un logiciel qui vous permet de calculer très simplement le classement d’une régate. C’est une alternative à FReg, le logiciel officiel de la Fédération Française de Voile.</p>
 
-		<section>
+	<p>Pour rentrer les données, vous avez deux possibilités :</p>
+	<ul>
+		<li>soit le classement est en temps réel : vous n’avez qu’à rentrer le nom des équipages et leur place d’arrivée à chaque manche ;</li>
+		<li>soit le classement est en temps compensé : il suffit de rentrer le nom des équipages, leur type de bateau et leur temps de course à chaque manche</li>
+	</ul>
+	<p>et DériVoile calc’ s’occupe du reste !</p>
 
-			<h2>Présentation</h2>
+	<h2>Rentrer les données</h2>
 
-			<p>DériVoile calc' est un logiciel qui vous permet de calculer très simplement le classement d'une régate. C'est une alternative à FReg, le logiciel officiel de la Fédération Française de Voile.</p>
+	<p>La création d’un nouveau classement se décompose en cinq étapes :</p>
+	<ul>
+		<li><a href="javascript:load('etape1.html');">étape 1</a> : entrée des données générales de la régate (nom, classement en temps réel ou temps compensé, …) ;</li>
+		<li><a href="javascript:load('etape2.html');">étape 2</a> : entrée des équipages (avec les types de bateau si classement en temps compensé) ;</li>
+		<li><a href="javascript:load('etape3.html');">étape 3</a> : entrée des résultats des manches (temps ou position de chaque équipage) ;</li>
+		<li><a href="javascript:load('etape4.html');">étape 4</a> : entrée des options (nombre de plus mauvaises manches à retirer) ;</li>
+		<li><a href="javascript:load('etape5.html');">étape 5</a> : affichage des résultats de la régate (classement général et par manche).</li>
+	</ul>
 
-			<p>Pour rentrer les données, vous avez deux possibilités :</p>
-			<ul>
-				<li>soit le classement est en temps réel : vous n'avez qu'à rentrer le nom des équipages et leur place d'arrivée à chaque manche ;</li>
-				<li>soit le classement est en temps compensé : il suffit de rentrer le nom des équipages, leur type de bateau et leur temps de course à chaque manche</li>
-			</ul>
-			<p>et DériVoile calc' s'occupe du reste !</p>
+	<h2>Enregistrer et diffuser le classement</h2>
 
-			<h2>Rentrer les données</h2>
+	<p>Attention : <em>enregistrer</em> et <em>exporter</em> le classement sont deux choses très différentes !</p>
+	<ul>
+		<li>Il est possible d’<em>enregistrer</em> le classement actuel (via le menu <code>Classement </code>) pour pouvoir le ré-ouvrir plus tard avec DériVoile calc’. Le fichier obtenu ne peut être ouvert qu’avec DériVoile calc’.</li>
+		<li>Il est possible d’<em>exporter</em> le classement au format HTML ou PDF (uniquement après avoir cliqué sur <code>Résultats</code>), pour pouvoir le diffuser sur Internet ou par mail par exemple. Les fichiers ainsi obtenus ne pourront plus être ré-ouverts par DériVoile calc’ et le classement ne pourra doc plus être modifié s’il n’a pas également été enregistré.</li>
+	</ul>
+	<p>En conclusion, il est préférable d’enregistrer régulièrement le classement sur son ordinateur. Une fois les données toutes rentrées et le classement calculé, un export du classement permet de le diffuser facilement. Cependant, il vaut mieux ne pas supprimer le fichier de sauvegarde initial, de manière à pouvoir modifier le classement ultérieurement si besoin il y a.</p>
 
-			<p>La création d'un nouveau classement se décompose en trois étapes :</p>
-			<ul>
-				<li><a href="./etape1.html">étape 1</a> : entrée des données générales de la régate (nom, classement en temps réel ou temps compensé, ...) ;</li>
-				<li><a href="./etape2.html">étape 2</a> : entrée des données de la régate (noms des participants, temps ou places à chaque manche, ...) ;</li>
-				<li><a href="./etape3.html">étape 3</a> : entrée des options (nombre de plus mauvaise manche à retirer).</li>
-			</ul>
-			<p>Ensuite, il ne reste plus qu'à cliquer sur « Calculer le classement » pour obtenir le classement final de la régate !</p>
-
-			<h2>Enregistrer et diffuser le classement</h2>
-
-			<p>Attention : <i>enregistrer</i> et <i>exporter</i> le classement sont deux choses très différentes :</p>
-			<ul>
-				<li>Il est possible d'<i>enregistrer</i> le classement actuel (via le menu « Classement ») pour pouvoir le ré-ouvrir plus tard avec DériVoile calc'. Le fichier obtenu ne peut être ouvert qu'avec DériVoile calc'.</li>
-				<li>Il est possible d'<i>exporter</i> le classement au format HTML ou PDF (uniquement après avoir cliqué sur « Calculer le classement »), pour pouvoir le diffuser sur Internet ou par mail par exemple. Les fichiers ainsi obtenus ne pourront plus être ré-ouverts par DériVoile calc' et le classement ne pourra doc plus être modifié s'il n'a pas également été enregistré.</li>
-			</ul>
-			<p>En conclusion, il est préférable d'enregistrer régulièrement le classement sur son ordinateur. Une fois les données toutes rentrées et le classement calculé, un export du classement permet de le diffuser facilement. Cependant, il vaut mieux ne pas supprimer le fichier de sauvegarde initial, de manière à pouvoir modifier le classement ultérieurement si besoin il y a.</p>
-
-		</section>
-
-	</body>
-</html>
+</section>

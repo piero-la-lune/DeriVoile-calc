@@ -80,6 +80,7 @@ void FenPrincipale::goto_step5() {
 		ui->step5->setVisible(true);
 		ui->pdf->setEnabled(true);
 		ui->html->setEnabled(true);
+		ui->imprimer->setEnabled(true);
 	}
 	this->removeProgressBar();
 }
@@ -88,6 +89,7 @@ void FenPrincipale::leave_step5() {
 	ui->step5->setVisible(false);
 	ui->pdf->setEnabled(false);
 	ui->html->setEnabled(false);
+	ui->imprimer->setEnabled(false);
 	this->reset_step5();
 }
 

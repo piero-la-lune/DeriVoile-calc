@@ -14,20 +14,6 @@
    <string>Aide</string>
   </property>
   <widget class="QWidget" name="centralwidget"/>
-  <widget class="QToolBar" name="toolBar">
-   <property name="movable">
-    <bool>false</bool>
-   </property>
-   <property name="floatable">
-    <bool>false</bool>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>LeftToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-  </widget>
  </widget>
  <resources/>
  <connections/>

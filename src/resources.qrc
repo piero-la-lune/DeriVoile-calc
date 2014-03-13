@@ -32,16 +32,20 @@
         <file alias="EN.qm">translations/EN.qm</file>
     </qresource>
     <qresource prefix="/doc">
-        <file alias="aide.html">../doc/aide.html</file>
+        <file alias="index.html">../doc/index.html</file>
         <file alias="debut.html">../doc/debut.html</file>
-        <file alias="etapes.html">../doc/etapes.html</file>
         <file alias="etape1.html">../doc/etape1.html</file>
         <file alias="etape2.html">../doc/etape2.html</file>
+        <file alias="etape3.html">../doc/etape3.html</file>
+        <file alias="etape4.html">../doc/etape4.html</file>
+        <file alias="etape5.html">../doc/etape5.html</file>
         <file alias="style.css">../doc/style.css</file>
+        <file alias="script.js">../doc/script.js</file>
     </qresource>
     <qresource prefix="/fonts">
         <file alias="SourceSansPro-Regular.ttf">../fonts/SourceSansPro-Regular.ttf</file>
         <file alias="SourceSansPro-Black.ttf">../fonts/SourceSansPro-Black.ttf</file>
+        <file alias="SourceSansPro-Italic.ttf">../fonts/SourceSansPro-Italic.ttf</file>
     </qresource>
     <qresource prefix="/html">
         <file alias="DeriVoile-calc.html">../html/DeriVoile-calc.html</file>

@@ -56,27 +56,37 @@ along with DériVoile calc'. If not, see
 -->
 
 
-		<title>Étapes</title>
+		<title>Aide</title>
 		<link rel="stylesheet" type="text/css" media="all" href="./style.css" />
+		<script src="./script.js"></script>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 	</head>
 
 	<body>
 
-		<h1>Étapes</h1>
-
-		<section>
-
-			<p>La création d'un nouveau classement se décompose en trois étapes :</p>
+		<nav>
 			<ul>
-				<li><a href="./etape1.html">étape 1</a> : entrée des données générales de la régate (nom, classement en temps réel ou temps compensé, ...) ;</li>
-				<li><a href="./etape2.html">étape 2</a> : entrée des données de la régate (noms des participants, temps ou places à chaque manche, ...) ;</li>
-				<li><a href="./etape3.html">étape 3</a> : entrée des options (nombre de plus mauvaise manche à retirer).</li>
+				<li><a href="javascript:load('debut.html');">Guide d’utilisation</a><ul>
+					<li><a href="javascript:load('etape1.html');">Étape 1 : Régate</a></li>
+					<li><a href="javascript:load('etape2.html');">Étape 2 : Équipages</a></li>
+					<li><a href="javascript:load('etape3.html');">Étape 3 : Manches</a></li>
+					<li><a href="javascript:load('etape4.html');">Étape 4 : Options</a></li>
+					<li><a href="javascript:load('etape5.html');">Étape 5 : Résultats</a></li>
+				</ul></li>
+				<li><a href="javascript:load('astuces.html');">Astuces</a></li>
+				<li><a href="javascript:load('ratings.html');">Ratings</a></li>
+				<li><a href="javascript:load('maj.html');">Mises à jour</a></li>
 			</ul>
-			<p>Ensuite, il ne reste plus qu'à cliquer sur « Calculer le classement » pour obtenir le classement final de la régate !</p>
+		</nav>
 
-		</section>
+		<article>
+			<h1>Aide de DériVoile calc’</h1>
+			<section>
+				<p>Bienvenue dans l'aide de DériVoile calc’.</p>
+				<p>C’est la première fois que vous utilisez DériVoile calc’ ? Jettez un coup d’œil au <a href="javascript:load('debut.html');">guide d’utilisation</a> et aux <a href="javascript:load('astuces.html');">astuces</a>.</p>
+			</section>
+		</article>
 
 	</body>
 </html>

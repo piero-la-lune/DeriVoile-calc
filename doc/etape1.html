@@ -1,7 +1,3 @@
-<!DOCTYPE html>
-<html>
-	<head>
-
 <!--
 
 ###################    DériVoile calc' - Français    ###################
@@ -55,51 +51,39 @@ along with DériVoile calc'. If not, see
 
 -->
 
+<h1>Étape 1 : Régate</h1>
 
-		<title>Étape 1</title>
-		<link rel="stylesheet" type="text/css" media="all" href="./style.css" />
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<section>
 
-	</head>
+	<p>La première étape a pour but de récupérer les informations générales de la régate.</p>
 
-	<body>
+	<h2>Nom de la régate</h2>
 
-		<h1>Étape 1</h1>
+	<p>Vous pouvez donner un nom à la régate, bien que cela soit facultatif. Ce nom apparaîtra dans l’entête du classement final.</p>
 
-		<section>
+	<h2>Classement scratch</h2>
 
-			<p>La première étape a pour but de récupérer les informations générales de la régate.</p>
+	<p>Un <em>classement scratch</em> (ou encore <em>classement en temps réel</em>) est un classement qui ne tient pas compte du temps que mettent les concurrents à terminer le parcours, mais uniquement de leur place d’arrivée.</p>
 
-			<h2>Nom de la régate</h2>
+	<p>C’est donc un classement particulièrement adapté lorsque tous les bateaux en compétition sont identiques, puisqu’il suffit de noter l’ordre d’arrivée des équipages.</p>
 
-			<p>Vous pouvez donner un nom à la régate, bien que cela soit facultatif. Ce nom apparaîtra dans l'entête du classement final.</p>
+	<h2>Classement en temps compensé</h2>
 
-			<h2>Classement scratch</h2>
+	<p>Dès que des bateaux différents participent à la régate, il vaut mieux utiliser un <em>classement en temps compensé</em>, bien que cela demande de chronométrer le temps de chaque équipage. Ce temps est ensuite automatiquement ajusté par DériVoile calc’ en fonction du bateau (système de ratings), de manière à rétablir l’équilibre entre les bateaux les plus rapides et les plus lents.</p>
 
-			<p>Un <i>classement scratch</i> (ou encore <i>classement en temps réel</i>) est un classement qui ne tient pas compte du temps que mettent les concurrents à terminer le parcours, mais uniquement de leur place d'arrivée.</p>
+	<h3>Ratings utilisés</h3>
 
-			<p>C'est donc un classement particulièrement adapté lorsque tous les bateaux en compétition sont identiques, puisqu'il suffit de noter l'ordre d'arrivée des équipages.</p>
+	<p>DériVoile calc’ propose plusieurs systèmes de ratings, de manière à couvrir tous les possibilités :</p>
+	<ul>
+		<li>Les ratings de la Fédération Français de Voile sont à utiliser en priorité. Cependant, ils ne permettent pas de rassembler dériveurs et multicoques dans un même classement.</li>
+		<li>Les ratings de la Royal Yachting Association (ou <em>Portsmouth Numbers</em>, Angleterre) permettent eux de mélanger dériveurs et multicoques. Cependant, peu de dériveurs et multicoques sont disponibles, et aucun habitable.</li>
+		<li>Les ratings de DériVoile calc’ sont une extrapolation des Portsmouth Numbers de la RYA à tous les bateaux. Ils permettent de rassembler dans un même classement tous les types de bateaux, mais ne sont absolument pas officiels !</li>
+	</ul>
+	<p>Pour plus d’information, consultez la <a href="javascript:load('ratings.html');">page sur les ratings</a>.</p>
 
-			<h2>Classement en temps compensé</h2>
+	<h3>Types de bateaux</h3>
 
-			<p>Dès que des bateaux différents participent à la régate, il vaut mieux utiliser un <i>classement en temps compensé</i>, bien que cela demande de chronométrer le temps de chaque équipage. Ce temps est ensuite automatiquement ajusté par DériVoile calc' en fonction du bateau (système de ratings), de manière à rétablir l'équilibre entre les bateaux les plus rapides et les plus lents.</p>
+	<p>Choisir les types de bateau participant à la régate permet de réduire la liste de choix lors de la sélection du bateau de chaque équipage.</p>
+	<p>Attention, certaines combinaisons ne sont pas possibles, cela dépend des ratings utilisés (cf. partie précédente).</p>
 
-			<h3>Ratings utilisés</h3>
-
-			<p>DériVoile calc' propose plusieurs systèmes de ratings, de manière à couvrir tous les possibilités :</p>
-			<ul>
-				<li>Les ratings de la Fédération Français de Voile sont à utiliser en priorité. Cependant, ils ne permettent pas de rassembler dériveurs et multicoques dans un même classement.</li>
-				<li>Les ratings de la Royal Yachting Association (ou <i>Portsmouth Numbers</i>, Angleterre) permettent eux de mélanger dériveurs et multicoques. Cependant, peu de dériveurs et multicoques sont disponibles, et aucun habitable.</li>
-				<li>Les ratings de DériVoile calc' sont une extrapolation des Portsmouth Numbers de la RYA à tous les bateaux. Ils permettent de rassembler dans un même classement tous les types de bateaux, mais ne sont absolument pas officiels !</li>
-			</ul>
-			<p>Pour plus d'information, consultez la <a href="./ratings.html">page sur les ratings</a>.</p>
-
-			<h3>Types de bateaux</h3>
-
-			<p>Choisir les types de bateaux participant à la régate permet de réduire la liste de choix lors de la sélection du bateau de chaque équipage.</p>
-			<p>Attention, certaines combinaisons ne sont pas possibles, cela dépend des ratings utilisés (cf. partie précédente).</p>
-
-		</section>
-
-	</body>
-</html>
+</section>

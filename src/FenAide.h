@@ -72,7 +72,7 @@ class FenAide : public QMainWindow {
 	private:
 		Ui::FenAide *ui;
 		QWebView *webView;
-		QTreeWidget *tree;
+/*		QTreeWidget *tree;
 		QTreeWidgetItem *aide;
 		QTreeWidgetItem *debut;
 		QTreeWidgetItem *etapes;
@@ -82,11 +82,11 @@ class FenAide : public QMainWindow {
 		QTreeWidgetItem *ratings;
 		QTreeWidgetItem *astuces;
 		QTreeWidgetItem *maj;
-		QTreeWidgetItem *regles;
+		QTreeWidgetItem *regles;*/
 
 	private slots:
-		void change_page(QTreeWidgetItem *item, QTreeWidgetItem *);
-		void link_clicked(QUrl url);
+/*		void change_page(QTreeWidgetItem *item, QTreeWidgetItem *);
+		void link_clicked(QUrl url);*/
 };
 
 #endif // FENAIDE_H

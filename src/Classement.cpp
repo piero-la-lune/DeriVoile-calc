@@ -738,17 +738,21 @@ void FenPrincipale::print(QPrinter *printer) {
 }
 
 
-// Ça ne marche pas (les images n'apparaissent pas, les textes centrés
-// non plus )
-/*void FenPrincipale::on_imprimer_triggered() {
-	QPrinter *printer = new QPrinter();
+
+void FenPrincipale::on_imprimer_triggered() {
+	// Ça ne marche pas (les images n'apparaissent pas, les textes centrés
+	// non plus )
+	/*QPrinter *printer = new QPrinter();
 	printer->setPageSize(QPrinter::A4);
 	printer->setPageMargins(10, 10, 10, 10, QPrinter::Millimeter);
 	QPrintDialog dialog(printer);
 	if (dialog.exec() == QDialog::Accepted) {
 		this->print(printer);
+	}*/
+	if (this->confirm(tr("Imprimer ce classement"), tr("Pour imprimer ce classement, exportez-le en PDF, ouvrez-le avec votre visionneuse PDF et imprimez-le"), "!", tr("Exporter en PDF"))) {
+		this->on_pdf_triggered();
 	}
-}*/
+}
 
 void FenPrincipale::on_pdf_triggered() {
 	QPrinter *printer = new QPrinter();
