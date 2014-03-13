@@ -5,54 +5,44 @@
     <name>FenAide</name>
     <message>
         <location filename="../FenAide.ui" line="14"/>
-        <location filename="../FenAide.cpp" line="67"/>
         <source>Aide</source>
         <translation>Help</translation>
     </message>
     <message>
-        <location filename="../FenAide.cpp" line="70"/>
         <source>Première utilisation</source>
-        <translation>First use</translation>
+        <translation type="vanished">First use</translation>
     </message>
     <message>
-        <location filename="../FenAide.cpp" line="74"/>
         <source>Étapes</source>
-        <translation>Steps</translation>
+        <translation type="vanished">Steps</translation>
     </message>
     <message>
-        <location filename="../FenAide.cpp" line="76"/>
         <source>Étape 1</source>
-        <translation>Step 1</translation>
+        <translation type="vanished">Step 1</translation>
     </message>
     <message>
-        <location filename="../FenAide.cpp" line="79"/>
         <source>Étape 2</source>
-        <translation>Step 2</translation>
+        <translation type="vanished">Step 2</translation>
     </message>
     <message>
-        <location filename="../FenAide.cpp" line="82"/>
         <source>Étape 3</source>
-        <translation>Step 3</translation>
+        <translation type="vanished">Step 3</translation>
     </message>
     <message>
-        <location filename="../FenAide.cpp" line="87"/>
         <source>Ratings</source>
-        <translation>Ratings</translation>
+        <translation type="vanished">Ratings</translation>
     </message>
     <message>
-        <location filename="../FenAide.cpp" line="91"/>
         <source>Astuces</source>
-        <translation>Tips</translation>
+        <translation type="vanished">Tips</translation>
     </message>
     <message>
-        <location filename="../FenAide.cpp" line="95"/>
         <source>Mises à jour</source>
-        <translation>Updates</translation>
+        <translation type="vanished">Updates</translation>
     </message>
     <message>
-        <location filename="../FenAide.cpp" line="99"/>
         <source>Extraits des Règles de Course</source>
-        <translation>Extracts from the official rules</translation>
+        <translation type="vanished">Extracts from the official rules</translation>
     </message>
 </context>
 <context>
@@ -151,7 +141,7 @@
     <message>
         <location filename="../FenPrincipale.ui" line="1040"/>
         <location filename="../FenPrincipale.ui" line="1043"/>
-        <location filename="../Classement.cpp" line="760"/>
+        <location filename="../Classement.cpp" line="764"/>
         <source>Exporter en PDF...</source>
         <translation>Export to PDF... </translation>
     </message>
@@ -421,6 +411,7 @@
     <message>
         <location filename="../FenPrincipale.ui" line="1319"/>
         <location filename="../FenPrincipale.ui" line="1322"/>
+        <location filename="../Classement.cpp" line="752"/>
         <source>Imprimer ce classement</source>
         <translation>Print this file</translation>
     </message>
@@ -463,7 +454,7 @@
     <message>
         <location filename="../FenPrincipale.ui" line="1114"/>
         <location filename="../FenPrincipale.ui" line="1117"/>
-        <location filename="../Classement.cpp" line="807"/>
+        <location filename="../Classement.cpp" line="811"/>
         <source>Exporter en HTML...</source>
         <translation>Export to HTML...</translation>
     </message>
@@ -569,46 +560,46 @@
         <translation>New file – DériVoile calc&apos;</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="264"/>
+        <location filename="../FenPrincipale.cpp" line="260"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="265"/>
-        <location filename="../FenPrincipale.cpp" line="300"/>
+        <location filename="../FenPrincipale.cpp" line="268"/>
+        <location filename="../FenPrincipale.cpp" line="303"/>
         <location filename="../MAJ.cpp" line="217"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="280"/>
+        <location filename="../FenPrincipale.cpp" line="283"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="301"/>
+        <location filename="../FenPrincipale.cpp" line="304"/>
         <source>Continuer</source>
         <translation>Continue</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="337"/>
+        <location filename="../FenPrincipale.cpp" line="340"/>
         <source>Fermeture du classement</source>
         <translation>Closing file</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="338"/>
+        <location filename="../FenPrincipale.cpp" line="341"/>
         <source>Certaines données n&apos;ont pas été enregistrées et vont être perdues.
 Voulez-vous vraiment continuer ?</source>
         <translation>Some data have not been saved and will be lost.
 Do you really want to continue?</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="344"/>
+        <location filename="../FenPrincipale.cpp" line="347"/>
         <source>Redémarrage nécéssaire</source>
         <translation>Restart needed</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="345"/>
+        <location filename="../FenPrincipale.cpp" line="348"/>
         <source>L&apos;application doit être redémarrée pour que les changements s&apos;appliquent.
 Voulez-vous continuer ?</source>
         <translation>The application must be restarted for the changes to apply.
@@ -647,10 +638,10 @@ Do you want to continue?</translation>
         <location filename="../Classement.cpp" line="80"/>
         <location filename="../Classement.cpp" line="92"/>
         <location filename="../Classement.cpp" line="575"/>
-        <location filename="../Classement.cpp" line="815"/>
-        <location filename="../Step5.cpp" line="118"/>
-        <location filename="../Step5.cpp" line="131"/>
-        <location filename="../Step5.cpp" line="185"/>
+        <location filename="../Classement.cpp" line="819"/>
+        <location filename="../Step5.cpp" line="120"/>
+        <location filename="../Step5.cpp" line="133"/>
+        <location filename="../Step5.cpp" line="187"/>
         <source>Erreur</source>
         <translation>Error</translation>
     </message>
@@ -766,14 +757,14 @@ Make sure the file is writable.</translation>
     </message>
     <message>
         <location filename="../Classement.cpp" line="696"/>
-        <location filename="../Classement.cpp" line="780"/>
+        <location filename="../Classement.cpp" line="784"/>
         <location filename="../Step5.cpp" line="73"/>
         <source>Classement général</source>
         <translation>Final results</translation>
     </message>
     <message>
         <location filename="../Classement.cpp" line="700"/>
-        <location filename="../Classement.cpp" line="783"/>
+        <location filename="../Classement.cpp" line="787"/>
         <source>Résultats de la manche </source>
         <translation>Results for race</translation>
     </message>
@@ -784,25 +775,25 @@ Make sure the file is writable.</translation>
     </message>
     <message>
         <location filename="../Classement.cpp" line="707"/>
-        <location filename="../Classement.cpp" line="789"/>
+        <location filename="../Classement.cpp" line="793"/>
         <source> (%1 retirées)</source>
         <translation> (%1 removed)</translation>
     </message>
     <message>
         <location filename="../Classement.cpp" line="710"/>
-        <location filename="../Classement.cpp" line="792"/>
+        <location filename="../Classement.cpp" line="796"/>
         <source> (une retirée)</source>
         <translation> (one removed)</translation>
     </message>
     <message>
         <location filename="../Classement.cpp" line="713"/>
-        <location filename="../Classement.cpp" line="795"/>
+        <location filename="../Classement.cpp" line="799"/>
         <source> (aucune retirée)</source>
         <translation> (none removed)</translation>
     </message>
     <message numerus="yes">
         <location filename="../Classement.cpp" line="717"/>
-        <location filename="../Classement.cpp" line="799"/>
+        <location filename="../Classement.cpp" line="803"/>
         <source>%n manches courues%1.</source>
         <translation>
             <numerusform>one race sailed%1.</numerusform>
@@ -811,7 +802,7 @@ Make sure the file is writable.</translation>
     </message>
     <message numerus="yes">
         <location filename="../Classement.cpp" line="721"/>
-        <location filename="../Classement.cpp" line="802"/>
+        <location filename="../Classement.cpp" line="806"/>
         <source>%n équipages classés. </source>
         <translation>
             <numerusform>one crew ranked. </numerusform>
@@ -819,38 +810,52 @@ Make sure the file is writable.</translation>
         </translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="762"/>
+        <source>Pour imprimer ce classement, exportez-le en PDF, ouvrez-le avec votre visionneuse PDF et imprimez-le</source>
+        <translation type="vanished">To print this ranking, export it to PDF, open it in your PDF viewer and print it</translation>
+    </message>
+    <message>
+        <location filename="../Classement.cpp" line="752"/>
+        <source>Exporter en PDF</source>
+        <translation>Export to PDF</translation>
+    </message>
+    <message>
+        <location filename="../Classement.cpp" line="752"/>
+        <source>Pour imprimer ce classement, exportez-le en PDF, ouvrez-le avec votre visionneuse PDF et imprimez-le.</source>
+        <translation>To print this ranking, export it to PDF, open it in your PDF viewer and print it.</translation>
+    </message>
+    <message>
+        <location filename="../Classement.cpp" line="766"/>
         <source>Fichier PDF (*.pdf)</source>
         <translation>PDF file (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="769"/>
+        <location filename="../Classement.cpp" line="773"/>
         <source>Le classement a été exporté en PDF.</source>
         <translation>File exported to PDF.</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="809"/>
+        <location filename="../Classement.cpp" line="813"/>
         <source>Fichier HTML (*.html)</source>
         <translation>HTML file (*.html)</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="816"/>
+        <location filename="../Classement.cpp" line="820"/>
         <source>Impossible d&apos;exporter le classement.
 Vérifiez que le fichier est accessible en écriture.</source>
         <translation>Unable to export the file. Make sure the file is writable.</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="820"/>
+        <location filename="../Classement.cpp" line="824"/>
         <source>L&apos;export a échoué.</source>
         <translation>Export failed.</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="829"/>
+        <location filename="../Classement.cpp" line="833"/>
         <source>Le classement a été exporté en HTML.</source>
         <translation>File exported to HTML.</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="911"/>
+        <location filename="../Classement.cpp" line="915"/>
         <source>Résultats calculés avec DériVoile calc&apos; (&lt;a href=&quot;http://calc.derivoile.fr&quot;&gt;http://calc.derivoile.fr&lt;/a&gt;), alternative à FReg ultra simplifiée.</source>
         <translation>Results computed by DériVoile calc&apos; (&lt;a href=&quot;http://calc.derivoile.fr&quot;&gt;http://calc.derivoile.fr&lt;/a&gt;).</translation>
     </message>
@@ -871,7 +876,7 @@ Vérifiez que le fichier est accessible en écriture.</source>
     </message>
     <message>
         <location filename="../Step3.cpp" line="390"/>
-        <location filename="../Step3.cpp" line="478"/>
+        <location filename="../Step3.cpp" line="483"/>
         <source>Manche n°%1</source>
         <translation>Race %1</translation>
     </message>
@@ -891,68 +896,68 @@ Vérifiez que le fichier est accessible en écriture.</source>
         <translation>Calculating results:</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="118"/>
+        <location filename="../Step5.cpp" line="120"/>
         <source>Vous devez donner un nom à tous les équipages.</source>
         <translation>You have to name all the crews.</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="132"/>
+        <location filename="../Step5.cpp" line="134"/>
         <source>Le code bateau « %1 » n&apos;existe pas.</source>
         <translation>Boat code “%1” doesn&apos;t exist.</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="186"/>
+        <location filename="../Step5.cpp" line="188"/>
         <source>Ajoutez d&apos;abord une manche avant de calculer le classement.</source>
         <translation>Please first add a race.</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="200"/>
-        <location filename="../Step5.cpp" line="213"/>
+        <location filename="../Step5.cpp" line="202"/>
+        <location filename="../Step5.cpp" line="215"/>
         <source>Place</source>
         <translation>Rank</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="201"/>
-        <location filename="../Step5.cpp" line="213"/>
-        <location filename="../Step5.cpp" line="401"/>
-        <location filename="../Step5.cpp" line="417"/>
+        <location filename="../Step5.cpp" line="203"/>
+        <location filename="../Step5.cpp" line="215"/>
+        <location filename="../Step5.cpp" line="403"/>
+        <location filename="../Step5.cpp" line="419"/>
         <source>Équipage</source>
         <translation>Crew</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="202"/>
-        <location filename="../Step5.cpp" line="213"/>
-        <location filename="../Step5.cpp" line="402"/>
-        <location filename="../Step5.cpp" line="417"/>
+        <location filename="../Step5.cpp" line="204"/>
+        <location filename="../Step5.cpp" line="215"/>
+        <location filename="../Step5.cpp" line="404"/>
+        <location filename="../Step5.cpp" line="419"/>
         <source>Points</source>
         <translation>Points</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="204"/>
-        <location filename="../Step5.cpp" line="216"/>
+        <location filename="../Step5.cpp" line="206"/>
+        <location filename="../Step5.cpp" line="218"/>
         <source>Temps réel</source>
         <translation>Real time</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="204"/>
-        <location filename="../Step5.cpp" line="216"/>
+        <location filename="../Step5.cpp" line="206"/>
+        <location filename="../Step5.cpp" line="218"/>
         <source>Temps compensé</source>
         <translation>Compensated time</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="233"/>
+        <location filename="../Step5.cpp" line="235"/>
         <source>Résultats de la manche %1</source>
         <translation>Results for race %1</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="400"/>
-        <location filename="../Step5.cpp" line="417"/>
+        <location filename="../Step5.cpp" line="402"/>
+        <location filename="../Step5.cpp" line="419"/>
         <source>Position</source>
         <translation>Rank</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="404"/>
-        <location filename="../Step5.cpp" line="419"/>
+        <location filename="../Step5.cpp" line="406"/>
+        <location filename="../Step5.cpp" line="421"/>
         <source>M</source>
         <translation>R</translation>
     </message>
@@ -966,8 +971,12 @@ Vérifiez que le fichier est accessible en écriture.</source>
     </message>
     <message>
         <location filename="../FenPropos.ui" line="42"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;DériVoile calc&apos;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;v7-0&lt;/span&gt;&lt;/p&gt;&lt;p&gt;DériVoile calc&apos; a pour objectif de fournir une alternative à FReg, le logiciel officiel de la Fédération Française de Voile, en proposant un logiciel de calcul de classements de régates ultra simplifié.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;http://calc.derivoile.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://calc.derivoile.fr&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;DériVoile calc&apos; est distribué sous licence GNU GPL.&lt;/p&gt;&lt;p&gt;© 2011-2013 Pierre Monchalin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;DériVoile calc&apos;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;v7-0&lt;/span&gt;&lt;/p&gt;&lt;p&gt;DériVoile calc&apos; a pour objectif de fournir une alternative à FReg, le logiciel officiel de la Fédération Française de Voile, en proposant un logiciel de calcul de classements de régates ultra simplifié.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;http://calc.derivoile.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://calc.derivoile.fr&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;DériVoile calc&apos; est distribué sous licence GNU GPL.&lt;/p&gt;&lt;p&gt;© 2011-2014 Pierre Monchalin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;DériVoile calc&apos;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;v7-0&lt;/span&gt;&lt;/p&gt;&lt;p&gt;DériVoile calc&apos; is a software that allows you to compute the results of a regatta very easily.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;http://calc.derivoile.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://calc.derivoile.fr&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;DériVoile calc&apos; is distributed under the GNU GPL license.&lt;/p&gt;&lt;p&gt;© 2011-2014 Pierre Monchalin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;DériVoile calc&apos;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;v7-0&lt;/span&gt;&lt;/p&gt;&lt;p&gt;DériVoile calc&apos; a pour objectif de fournir une alternative à FReg, le logiciel officiel de la Fédération Française de Voile, en proposant un logiciel de calcul de classements de régates ultra simplifié.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;http://calc.derivoile.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://calc.derivoile.fr&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;DériVoile calc&apos; est distribué sous licence GNU GPL.&lt;/p&gt;&lt;p&gt;© 2011-2013 Pierre Monchalin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="vanished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;DériVoile calc&apos;&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt; font-weight:600;&quot;&gt;v7-0&lt;/span&gt;&lt;/p&gt;&lt;p&gt;DériVoile calc&apos; is a software that allows you to compute the results of a regatta very easily.&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;http://calc.derivoile.fr&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;http://calc.derivoile.fr&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;DériVoile calc&apos; is distributed under the GNU GPL license.&lt;/p&gt;&lt;p&gt;© 2011-2014 Pierre Monchalin&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

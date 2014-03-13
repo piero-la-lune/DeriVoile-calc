@@ -749,7 +749,7 @@ void FenPrincipale::on_imprimer_triggered() {
 	if (dialog.exec() == QDialog::Accepted) {
 		this->print(printer);
 	}*/
-	if (this->confirm(tr("Imprimer ce classement"), tr("Pour imprimer ce classement, exportez-le en PDF, ouvrez-le avec votre visionneuse PDF et imprimez-le"), "!", tr("Exporter en PDF"))) {
+	if (this->confirm(tr("Imprimer ce classement"), tr("Pour imprimer ce classement, exportez-le en PDF, ouvrez-le avec votre visionneuse PDF et imprimez-le."), "!", tr("Exporter en PDF"))) {
 		this->on_pdf_triggered();
 	}
 }
