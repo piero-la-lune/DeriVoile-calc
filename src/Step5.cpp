@@ -622,20 +622,26 @@ double FenPrincipale::get_coef(Bateau bt) {
 		}
 	}
 	else {
-		if (bt.groupe <= 11) {
-			double coef = 600.0/(290.0-bt.groupe*15.0+683.0);
-			return qRound(10000.0*coef)/10000.0;
+		if (this->typeRt == RT_FFV) {
+			if (bt.groupe <= 11) {
+				double coef = 600.0/(290.0-bt.groupe*15.0+683.0);
+				return qRound(10000.0*coef)/10000.0;
+			}
+			else if (bt.groupe <= 30) {
+				double coef = 600.0/(235.0-bt.groupe*10.0+683.0);
+				return qRound(10000.0*coef)/10000.0;
+			}
+			else if (bt.groupe <= 45) {
+				double coef = 600.0/(175.0-bt.groupe*8.0+683.0);
+				return qRound(10000.0*coef)/10000.0;
+			}
+			else {
+				double coef = 600.0/(85.0-bt.groupe*6.0+683.0);
+				return qRound(10000.0*coef)/10000.0;
+			}
 		}
-		else if (bt.groupe <= 30) {
-			double coef = 600.0/(235.0-bt.groupe*10.0+683.0);
-			return qRound(10000.0*coef)/10000.0;
-		}
-		else if (bt.groupe <= 45) {
-			double coef = 600.0/(175.0-bt.groupe*8.0+683.0);
-			return qRound(10000.0*coef)/10000.0;
-		}
-		else {
-			double coef = 600.0/(85.0-bt.groupe*6.0+683.0);
+		else if (this->typeRt == RT_DERI) {
+			double coef = 1000.0/(-11.742*bt.groupe+1163.1);
 			return qRound(10000.0*coef)/10000.0;
 		}
 	}

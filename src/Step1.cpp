@@ -130,12 +130,21 @@ void FenPrincipale::on_typeRatings_currentIndexChanged(int nb) {
 	// pour qu'il corresponde à typeBt avec une valeur possible
 	if (this->typeRt == RT_FFV) {
 		ui->typeBateauxFfv->setCurrentIndex(this->bt_textToInt(this->typeBt));
+		// on a besoin de le déclancher, car il faut mettre à jour la liste des
+		// bateaux ce qui doit être fait même si l’index n’a pas changé
+		this->on_typeBateauxFfv_currentIndexChanged(this->bt_textToInt(this->typeBt));
 	}
 	else if (this->typeRt == RT_RYA) {
 		ui->typeBateauxRya->setCurrentIndex(this->bt_textToInt(this->typeBt));
+		// on a besoin de le déclancher, car il faut mettre à jour la liste des
+		// bateaux ce qui doit être fait même si l’index n’a pas changé
+		this->on_typeBateauxRya_currentIndexChanged(this->bt_textToInt(this->typeBt));
 	}
 	else {
 		ui->typeBateauxDeri->setCurrentIndex(this->bt_textToInt(this->typeBt));
+		// on a besoin de le déclancher, car il faut mettre à jour la liste des
+		// bateaux ce qui doit être fait même si l’index n’a pas changé
+		this->on_typeBateauxDeri_currentIndexChanged(this->bt_textToInt(this->typeBt));
 	}
 	this->modif();
 }
@@ -194,7 +203,7 @@ int FenPrincipale::bt_textToInt(QString text) {
 		if (text == BT_QUI) { return 2; }
 		return 3;
 	}
-	if (text == BT_ALL) { return 1; }
+	if (text == BT_ALL || text == BT_HAB || text == BT_DER_QUI_HAB) { return 1; }
 	return 0;
 }
 QString FenPrincipale::bt_intToText(int nb) {
