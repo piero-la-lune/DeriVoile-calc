@@ -203,6 +203,7 @@ void FenPrincipale::code_complete(QString code) {
 }
 
 void FenPrincipale::nom_changed(QString text) {
+    int row = sender()->property("rowIndex").toInt();
 	this->equipages[sender()->property("rowIndex").toInt()].nom = text;
 	this->modif();
 }
@@ -287,6 +288,7 @@ void FenPrincipale::deleteEquipage() {
 	ui->manches->removeRow(nb+2);
 	for (int i = (nb+1); i < this->nbEquipages; ++i) {
 		ui->equipages->cellWidget(i-1, 0)->setProperty("rowIndex", i-1);
+		ui->equipages->cellWidget(i-1, 1)->setProperty("rowIndex", i-1);
 		ui->equipages->cellWidget(i-1, 2)->setProperty("rowIndex", i-1);
 		ui->equipages->cellWidget(i-1, 3)->setProperty("rowIndex", i-1);
 		for (int j = 0; j < this->nbManches; ++j) {
