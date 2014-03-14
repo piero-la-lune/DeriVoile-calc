@@ -119,7 +119,6 @@ void FenPrincipale::on_typeClassement_currentIndexChanged(int nb) {
 	ui->typeBateauxRya->setVisible(show	&& this->typeRt == RT_RYA);
 	ui->typeBateauxDeri->setVisible(show && this->typeRt == RT_DERI);
 	this->modif();
-
 }
 
 void FenPrincipale::on_typeRatings_currentIndexChanged(int nb) {

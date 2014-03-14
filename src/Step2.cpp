@@ -276,6 +276,7 @@ void FenPrincipale::on_addEquipage_clicked() {
 		}
 	}
 	++this->nbEquipages;
+	this->modif();
 		// mise à jour du nombre de bateaux
 	this->update_nbBateaux();
 }
@@ -294,6 +295,7 @@ void FenPrincipale::deleteEquipage() {
 	}
 	this->equipages.rm(nb);
 	--this->nbEquipages;
+	this->modif();
 	this->update_nbBateaux();
 }
 

@@ -410,6 +410,7 @@ void FenPrincipale::on_addManche_clicked() {
 	}
 	ui->manches->resizeColumnsToContents();
 	++this->nbManches;
+	this->modif();
 }
 
 void FenPrincipale::add_manche_inputs(int row, int col) {
@@ -485,5 +486,6 @@ void FenPrincipale::on_rmManche_pressed() {
 
 		}
 		--this->nbManches;
+		this->modif();
 	}
 }
