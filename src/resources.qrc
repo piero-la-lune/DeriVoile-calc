@@ -29,7 +29,7 @@
         <file alias="close.png">../img/psd/close.png</file>
     </qresource>
     <qresource prefix="/translations">
-        <file alias="EN.qm">translations/EN.qm</file>
+        <file alias="EN.qm">./translations/EN.qm</file>
     </qresource>
     <qresource prefix="/doc">
         <file alias="index.html">../doc/index.html</file>
@@ -50,18 +50,5 @@
         <file alias="SourceSansPro-Regular.ttf">../fonts/SourceSansPro-Regular.ttf</file>
         <file alias="SourceSansPro-Black.ttf">../fonts/SourceSansPro-Black.ttf</file>
         <file alias="SourceSansPro-Italic.ttf">../fonts/SourceSansPro-Italic.ttf</file>
-    </qresource>
-    <qresource prefix="/html">
-        <file alias="DeriVoile-calc.html">../html/DeriVoile-calc.html</file>
-        <file alias="Ratings-editor.html">../html/Ratings-editor.html</file>
-        <file alias="test.html">../html/test.html</file>
-    </qresource>
-    <qresource prefix="/html/inc">
-        <file alias="background.jpg">../html/inc/background.jpg</file>
-        <file alias="minified.js">../html/inc/minified-web-src.noie.js</file>
-        <file alias="script.js">../html/inc/script.js</file>
-        <file alias="calcul.js">../html/inc/calcul.js</file>
-        <file alias="style.css">../html/inc/style.css</file>
-        <file alias="editor.js">../html/inc/editor.js</file>
     </qresource>
 </RCC>
