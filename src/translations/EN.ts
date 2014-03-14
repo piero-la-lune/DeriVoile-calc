@@ -141,7 +141,7 @@
     <message>
         <location filename="../FenPrincipale.ui" line="1040"/>
         <location filename="../FenPrincipale.ui" line="1043"/>
-        <location filename="../Classement.cpp" line="764"/>
+        <location filename="../Classement.cpp" line="774"/>
         <source>Exporter en PDF...</source>
         <translation>Export to PDF... </translation>
     </message>
@@ -349,7 +349,7 @@
     </message>
     <message>
         <location filename="../FenPrincipale.ui" line="468"/>
-        <location filename="../Step2.cpp" line="302"/>
+        <location filename="../Step2.cpp" line="305"/>
         <source>Aucun bateau</source>
         <translation>No crew</translation>
     </message>
@@ -411,7 +411,7 @@
     <message>
         <location filename="../FenPrincipale.ui" line="1319"/>
         <location filename="../FenPrincipale.ui" line="1322"/>
-        <location filename="../Classement.cpp" line="752"/>
+        <location filename="../Classement.cpp" line="762"/>
         <source>Imprimer ce classement</source>
         <translation>Print this file</translation>
     </message>
@@ -454,7 +454,7 @@
     <message>
         <location filename="../FenPrincipale.ui" line="1114"/>
         <location filename="../FenPrincipale.ui" line="1117"/>
-        <location filename="../Classement.cpp" line="811"/>
+        <location filename="../Classement.cpp" line="821"/>
         <source>Exporter en HTML...</source>
         <translation>Export to HTML...</translation>
     </message>
@@ -527,79 +527,79 @@
         <translation>English</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="115"/>
+        <location filename="../FenPrincipale.cpp" line="118"/>
         <source>Chargement des ratings...</source>
         <translation>Loading ratings...</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="126"/>
+        <location filename="../FenPrincipale.cpp" line="129"/>
         <source>Chargement...</source>
         <translation>Loading...</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="138"/>
-        <location filename="../FenPrincipale.cpp" line="147"/>
+        <location filename="../FenPrincipale.cpp" line="141"/>
+        <location filename="../FenPrincipale.cpp" line="150"/>
         <location filename="../MAJ.cpp" line="75"/>
         <location filename="../MAJ.cpp" line="147"/>
         <source>Recherche de mises à jour...</source>
         <translation>Looking for updates...</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="192"/>
+        <location filename="../FenPrincipale.cpp" line="196"/>
         <source>DériVoile calc&apos; est un programme proposé par DériVoile (http://derivoile.fr). © 2011-2014 Pierre Monchalin</source>
         <translation>DériVoile calc&apos; is a software proposed by DériVoile (http://derivoile.fr). © 2011-2014 Pierre Monchalin</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="194"/>
+        <location filename="../FenPrincipale.cpp" line="198"/>
         <source>Ouverture du fichier :</source>
         <translation>Opening file:</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="208"/>
+        <location filename="../FenPrincipale.cpp" line="212"/>
         <source>Nouveau classement – DériVoile calc&apos;</source>
         <translation>New file – DériVoile calc&apos;</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="260"/>
+        <location filename="../FenPrincipale.cpp" line="264"/>
         <source>Oui</source>
         <translation>Yes</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="268"/>
-        <location filename="../FenPrincipale.cpp" line="303"/>
+        <location filename="../FenPrincipale.cpp" line="272"/>
+        <location filename="../FenPrincipale.cpp" line="307"/>
         <location filename="../MAJ.cpp" line="217"/>
         <source>Annuler</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="283"/>
+        <location filename="../FenPrincipale.cpp" line="287"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="304"/>
+        <location filename="../FenPrincipale.cpp" line="308"/>
         <source>Continuer</source>
         <translation>Continue</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="340"/>
+        <location filename="../FenPrincipale.cpp" line="344"/>
         <source>Fermeture du classement</source>
         <translation>Closing file</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="341"/>
+        <location filename="../FenPrincipale.cpp" line="345"/>
         <source>Certaines données n&apos;ont pas été enregistrées et vont être perdues.
 Voulez-vous vraiment continuer ?</source>
         <translation>Some data have not been saved and will be lost.
 Do you really want to continue?</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="347"/>
+        <location filename="../FenPrincipale.cpp" line="351"/>
         <source>Redémarrage nécéssaire</source>
         <translation>Restart needed</translation>
     </message>
     <message>
-        <location filename="../FenPrincipale.cpp" line="348"/>
+        <location filename="../FenPrincipale.cpp" line="352"/>
         <source>L&apos;application doit être redémarrée pour que les changements s&apos;appliquent.
 Voulez-vous continuer ?</source>
         <translation>The application must be restarted for the changes to apply.
@@ -637,11 +637,12 @@ Do you want to continue?</translation>
         <location filename="../MAJ.cpp" line="270"/>
         <location filename="../Classement.cpp" line="80"/>
         <location filename="../Classement.cpp" line="92"/>
-        <location filename="../Classement.cpp" line="575"/>
-        <location filename="../Classement.cpp" line="819"/>
+        <location filename="../Classement.cpp" line="585"/>
+        <location filename="../Classement.cpp" line="829"/>
         <location filename="../Step5.cpp" line="120"/>
         <location filename="../Step5.cpp" line="133"/>
-        <location filename="../Step5.cpp" line="187"/>
+        <location filename="../Step5.cpp" line="181"/>
+        <location filename="../Step5.cpp" line="191"/>
         <source>Erreur</source>
         <translation>Error</translation>
     </message>
@@ -703,7 +704,7 @@ Do you want to continue?</translation>
     </message>
     <message>
         <location filename="../Classement.cpp" line="67"/>
-        <location filename="../Classement.cpp" line="521"/>
+        <location filename="../Classement.cpp" line="531"/>
         <source>Classement (*.race ou *.txt);;Tous les fichiers (*.*)</source>
         <translation>DériVoile calc&apos; file (*.race or *.txt);;All files (*.*)</translation>
     </message>
@@ -728,72 +729,72 @@ Do you want to continue?</translation>
         <translation>This file was saved with a newer version of DériVoile calc&apos;.&lt;br /&gt;To avoid any problem, you should upadte DériVoile calc&apos; (&lt;a href=&apos;http://calc.derivoile.fr&apos;&gt;http://calc.derivoile.fr&lt;/a&gt;).</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="515"/>
+        <location filename="../Classement.cpp" line="525"/>
         <source>Enregistrement du classement en cours...</source>
         <translation>Saving file...</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="519"/>
+        <location filename="../Classement.cpp" line="529"/>
         <source>Enregistrer le classement</source>
         <translation>Save this file</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="525"/>
-        <location filename="../Classement.cpp" line="579"/>
+        <location filename="../Classement.cpp" line="535"/>
+        <location filename="../Classement.cpp" line="589"/>
         <source>Enregistrement annulé</source>
         <translation>Saving canceled</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="576"/>
+        <location filename="../Classement.cpp" line="586"/>
         <source>Impossible d&apos;enregistrer le classement.
 Vérifiez que le fichier est accessible en écriture.</source>
         <translation>Unable to save the file.
 Make sure the file is writable.</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="590"/>
+        <location filename="../Classement.cpp" line="600"/>
         <source>Le classement a été enregistré.</source>
         <translation>File saved.</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="696"/>
-        <location filename="../Classement.cpp" line="784"/>
+        <location filename="../Classement.cpp" line="706"/>
+        <location filename="../Classement.cpp" line="794"/>
         <location filename="../Step5.cpp" line="73"/>
         <source>Classement général</source>
         <translation>Final results</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="700"/>
-        <location filename="../Classement.cpp" line="787"/>
+        <location filename="../Classement.cpp" line="710"/>
+        <location filename="../Classement.cpp" line="797"/>
         <source>Résultats de la manche </source>
         <translation>Results for race</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="702"/>
+        <location filename="../Classement.cpp" line="712"/>
         <source>Résultats calculés avec DériVoile calc&apos; (http://calc.derivoile.fr), alternative à FReg ultra simplifiée.</source>
         <translation>Results computed by DériVoile calc&apos; (http://calc.derivoile.fr).</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="707"/>
-        <location filename="../Classement.cpp" line="793"/>
+        <location filename="../Classement.cpp" line="717"/>
+        <location filename="../Classement.cpp" line="803"/>
         <source> (%1 retirées)</source>
         <translation> (%1 removed)</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="710"/>
-        <location filename="../Classement.cpp" line="796"/>
+        <location filename="../Classement.cpp" line="720"/>
+        <location filename="../Classement.cpp" line="806"/>
         <source> (une retirée)</source>
         <translation> (one removed)</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="713"/>
-        <location filename="../Classement.cpp" line="799"/>
+        <location filename="../Classement.cpp" line="723"/>
+        <location filename="../Classement.cpp" line="809"/>
         <source> (aucune retirée)</source>
         <translation> (none removed)</translation>
     </message>
     <message numerus="yes">
-        <location filename="../Classement.cpp" line="717"/>
-        <location filename="../Classement.cpp" line="803"/>
+        <location filename="../Classement.cpp" line="727"/>
+        <location filename="../Classement.cpp" line="813"/>
         <source>%n manches courues%1.</source>
         <translation>
             <numerusform>one race sailed%1.</numerusform>
@@ -801,8 +802,8 @@ Make sure the file is writable.</translation>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../Classement.cpp" line="721"/>
-        <location filename="../Classement.cpp" line="806"/>
+        <location filename="../Classement.cpp" line="731"/>
+        <location filename="../Classement.cpp" line="816"/>
         <source>%n équipages classés. </source>
         <translation>
             <numerusform>one crew ranked. </numerusform>
@@ -814,79 +815,79 @@ Make sure the file is writable.</translation>
         <translation type="vanished">To print this ranking, export it to PDF, open it in your PDF viewer and print it</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="752"/>
+        <location filename="../Classement.cpp" line="762"/>
         <source>Exporter en PDF</source>
         <translation>Export to PDF</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="752"/>
+        <location filename="../Classement.cpp" line="762"/>
         <source>Pour imprimer ce classement, exportez-le en PDF, ouvrez-le avec votre visionneuse PDF et imprimez-le.</source>
         <translation>To print this ranking, export it to PDF, open it in your PDF viewer and print it.</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="766"/>
+        <location filename="../Classement.cpp" line="776"/>
         <source>Fichier PDF (*.pdf)</source>
         <translation>PDF file (*.pdf)</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="773"/>
+        <location filename="../Classement.cpp" line="783"/>
         <source>Le classement a été exporté en PDF.</source>
         <translation>File exported to PDF.</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="813"/>
+        <location filename="../Classement.cpp" line="823"/>
         <source>Fichier HTML (*.html)</source>
         <translation>HTML file (*.html)</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="820"/>
+        <location filename="../Classement.cpp" line="830"/>
         <source>Impossible d&apos;exporter le classement.
 Vérifiez que le fichier est accessible en écriture.</source>
         <translation>Unable to export the file. Make sure the file is writable.</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="824"/>
+        <location filename="../Classement.cpp" line="834"/>
         <source>L&apos;export a échoué.</source>
         <translation>Export failed.</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="833"/>
+        <location filename="../Classement.cpp" line="843"/>
         <source>Le classement a été exporté en HTML.</source>
         <translation>File exported to HTML.</translation>
     </message>
     <message>
-        <location filename="../Classement.cpp" line="915"/>
+        <location filename="../Classement.cpp" line="925"/>
         <source>Résultats calculés avec DériVoile calc&apos; (&lt;a href=&quot;http://calc.derivoile.fr&quot;&gt;http://calc.derivoile.fr&lt;/a&gt;), alternative à FReg ultra simplifiée.</source>
         <translation>Results computed by DériVoile calc&apos; (&lt;a href=&quot;http://calc.derivoile.fr&quot;&gt;http://calc.derivoile.fr&lt;/a&gt;).</translation>
     </message>
     <message>
-        <location filename="../Step2.cpp" line="305"/>
+        <location filename="../Step2.cpp" line="308"/>
         <source>Un bateau</source>
         <translation>One crew</translation>
     </message>
     <message>
-        <location filename="../Step2.cpp" line="308"/>
+        <location filename="../Step2.cpp" line="311"/>
         <source> bateaux</source>
         <translation> crews</translation>
     </message>
     <message>
-        <location filename="../Step3.cpp" line="119"/>
+        <location filename="../Step3.cpp" line="117"/>
         <source>Heure de départ</source>
         <translation>Start time</translation>
     </message>
     <message>
-        <location filename="../Step3.cpp" line="390"/>
-        <location filename="../Step3.cpp" line="483"/>
+        <location filename="../Step3.cpp" line="393"/>
+        <location filename="../Step3.cpp" line="487"/>
         <source>Manche n°%1</source>
         <translation>Race %1</translation>
     </message>
     <message>
-        <location filename="../Step3.cpp" line="462"/>
+        <location filename="../Step3.cpp" line="466"/>
         <source>Supprimer une manche</source>
         <translation>Delete a race</translation>
     </message>
     <message>
-        <location filename="../Step3.cpp" line="463"/>
+        <location filename="../Step3.cpp" line="467"/>
         <source>Voulez-vous vraiment supprimer la manche n°%1 ?</source>
         <translation>Do you really want to delete race %1?</translation>
     </message>
@@ -906,58 +907,63 @@ Vérifiez que le fichier est accessible en écriture.</source>
         <translation>Boat code “%1” doesn&apos;t exist.</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="188"/>
+        <location filename="../Step5.cpp" line="182"/>
         <source>Ajoutez d&apos;abord une manche avant de calculer le classement.</source>
         <translation>Please first add a race.</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="202"/>
-        <location filename="../Step5.cpp" line="215"/>
+        <location filename="../Step5.cpp" line="192"/>
+        <source>Le nombre de manches à retirer est plus grand que le nombre de manches courues.</source>
+        <translation>The number of races to be removed is greater than the number of sailed races.</translation>
+    </message>
+    <message>
+        <location filename="../Step5.cpp" line="206"/>
+        <location filename="../Step5.cpp" line="219"/>
         <source>Place</source>
         <translation>Rank</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="203"/>
-        <location filename="../Step5.cpp" line="215"/>
-        <location filename="../Step5.cpp" line="403"/>
-        <location filename="../Step5.cpp" line="419"/>
+        <location filename="../Step5.cpp" line="207"/>
+        <location filename="../Step5.cpp" line="219"/>
+        <location filename="../Step5.cpp" line="408"/>
+        <location filename="../Step5.cpp" line="424"/>
         <source>Équipage</source>
         <translation>Crew</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="204"/>
-        <location filename="../Step5.cpp" line="215"/>
-        <location filename="../Step5.cpp" line="404"/>
-        <location filename="../Step5.cpp" line="419"/>
+        <location filename="../Step5.cpp" line="208"/>
+        <location filename="../Step5.cpp" line="219"/>
+        <location filename="../Step5.cpp" line="409"/>
+        <location filename="../Step5.cpp" line="424"/>
         <source>Points</source>
         <translation>Points</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="206"/>
-        <location filename="../Step5.cpp" line="218"/>
+        <location filename="../Step5.cpp" line="210"/>
+        <location filename="../Step5.cpp" line="222"/>
         <source>Temps réel</source>
         <translation>Real time</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="206"/>
-        <location filename="../Step5.cpp" line="218"/>
+        <location filename="../Step5.cpp" line="210"/>
+        <location filename="../Step5.cpp" line="222"/>
         <source>Temps compensé</source>
         <translation>Compensated time</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="235"/>
+        <location filename="../Step5.cpp" line="239"/>
         <source>Résultats de la manche %1</source>
         <translation>Results for race %1</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="402"/>
-        <location filename="../Step5.cpp" line="419"/>
+        <location filename="../Step5.cpp" line="407"/>
+        <location filename="../Step5.cpp" line="424"/>
         <source>Position</source>
         <translation>Rank</translation>
     </message>
     <message>
-        <location filename="../Step5.cpp" line="406"/>
-        <location filename="../Step5.cpp" line="421"/>
+        <location filename="../Step5.cpp" line="411"/>
+        <location filename="../Step5.cpp" line="426"/>
         <source>M</source>
         <translation>R</translation>
     </message>
