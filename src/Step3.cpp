@@ -55,8 +55,6 @@ void FenPrincipale::reset_step3() {
 	QLabel *vide = new QLabel();
 	vide->setProperty("type", "coin");
 	ui->manches->setCellWidget(0, 0, vide);
-	this->rmMancheTimer = new QTimer();
-	connect(this->rmMancheTimer, SIGNAL(timeout()), this, SLOT(disable_rmManche()));
 	while (ui->manches->columnCount() > 1) {
 		ui->manches->removeColumn(1);
 	}
@@ -142,6 +140,11 @@ void FenPrincipale::goto_step3() {
 void FenPrincipale::leave_step3() {
 	ui->btnStep3->setFlat(false);
 	ui->step3->setVisible(false);
+}
+
+void FenPrincipale::init_step3() {
+	this->rmMancheTimer = new QTimer();
+	connect(this->rmMancheTimer, SIGNAL(timeout()), this, SLOT(disable_rmManche()));
 }
 
 void FenPrincipale::h_changed(QString text) {

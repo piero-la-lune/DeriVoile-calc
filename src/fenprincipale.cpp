@@ -156,6 +156,7 @@ FenPrincipale::FenPrincipale(
 	}
 
 	// Initialisation
+	this->init_step3();
 	this->init();
 	this->update();
 

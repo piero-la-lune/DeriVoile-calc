@@ -276,6 +276,7 @@ class FenPrincipale : public QMainWindow {
 		void reset_step3();
 		void goto_step3();
 		void leave_step3();
+		void init_step3();
 		void add_manche_inputs(int row, int col);
 			// Step4.cpp
 		void reset_step4();

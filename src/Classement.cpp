@@ -476,19 +476,29 @@ void FenPrincipale::load_recents() {
 	}
 }
 void FenPrincipale::on_recent1_triggered() {
-	this->ouvrir(this->preferences->value("recent1", "").toString());
+	if (this->confirm_close()) {
+		this->ouvrir(this->preferences->value("recent1", "").toString());
+	}
 }
 void FenPrincipale::on_recent2_triggered() {
-	this->ouvrir(this->preferences->value("recent2", "").toString());
+	if (this->confirm_close()) {
+		this->ouvrir(this->preferences->value("recent2", "").toString());
+	}
 }
 void FenPrincipale::on_recent3_triggered() {
-	this->ouvrir(this->preferences->value("recent3", "").toString());
+	if (this->confirm_close()) {
+		this->ouvrir(this->preferences->value("recent3", "").toString());
+	}
 }
 void FenPrincipale::on_recent4_triggered() {
-	this->ouvrir(this->preferences->value("recent4", "").toString());
+	if (this->confirm_close()) {
+		this->ouvrir(this->preferences->value("recent4", "").toString());
+	}
 }
 void FenPrincipale::on_recent5_triggered() {
-	this->ouvrir(this->preferences->value("recent5", "").toString());
+	if (this->confirm_close()) {
+		this->ouvrir(this->preferences->value("recent5", "").toString());
+	}
 }
 void FenPrincipale::on_recents_clean_triggered() {
 	this->preferences->setValue("recent1", "");

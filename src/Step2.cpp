@@ -203,7 +203,6 @@ void FenPrincipale::code_complete(QString code) {
 }
 
 void FenPrincipale::nom_changed(QString text) {
-    int row = sender()->property("rowIndex").toInt();
 	this->equipages[sender()->property("rowIndex").toInt()].nom = text;
 	this->modif();
 }
