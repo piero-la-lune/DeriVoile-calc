@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="ratings.json">../html/inc/ratings.json</file>
+        <file alias="ratings.json">../ratings/ratings.json</file>
         <file alias="style.css">./style.css</file>
     </qresource>
     <qresource prefix="/img">
