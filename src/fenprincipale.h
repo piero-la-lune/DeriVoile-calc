@@ -207,6 +207,7 @@ class FenPrincipale : public QMainWindow {
 		static QString const BT_MUL_DER_QUI;
 		static QString const BT_DER_QUI_HAB;
 		static QString const BT_ALL;
+		static QString const ABRS;
 
 	private:
 		Ui::FenPrincipale *ui;
@@ -227,6 +228,7 @@ class FenPrincipale : public QMainWindow {
 		QMainWindow *fenRatings;
 		QMainWindow *fenAide;
 		QString data;
+		QStringList abrs;
 		void init();
 		void update();
 		void set_titre();
@@ -290,6 +292,7 @@ class FenPrincipale : public QMainWindow {
 		void calcul_general();
 		double get_coef(Bateau bt);
 		QString formate_tps(int tps);
+		QString get_abr(QString text);
 			// Classement.cpp
 		bool ouvrir(QString name);
 		QJsonObject json_compatibilite(QJsonObject obj);

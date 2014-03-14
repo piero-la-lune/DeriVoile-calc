@@ -73,6 +73,7 @@ QString const FenPrincipale::BT_HAB = "habitables";
 QString const FenPrincipale::BT_MUL_DER_QUI = "deriveurs_multicoques";
 QString const FenPrincipale::BT_DER_QUI_HAB = "deriveurs_habitables";
 QString const FenPrincipale::BT_ALL = "tous";
+QString const FenPrincipale::ABRS = "DNC,DNS,OCS,BFD,DNF,RAF,DSQ";
 
 FenPrincipale::FenPrincipale(
 	QSettings *preferences, QSplashScreen *splash, QWidget *parent) :
@@ -83,6 +84,8 @@ FenPrincipale::FenPrincipale(
 	this->preferences = preferences;
 	this->splash = splash;
 	this->splashDone = 0;
+
+	this->abrs = ABRS.split(",");
 
 	ui->setupUi(this);
 	QActionGroup *group_langue = new QActionGroup(this);

@@ -162,10 +162,7 @@ bool FenPrincipale::verif() {
 				if (m.min < 0) { m.min = 0; }
 				if (m.s < 0) { m.s = 0; }
 				int tps = m.h*3600+m.min*60+m.s-this->manches[j].tpsReel;
-				if (tps <= 0) {
-					this->equipages[i].manches[j].abr = "DNF";
-				}
-				else {
+				if (tps > 0) {
 					double tpsCompense = tps*this->equipages[i].coef;
 					this->equipages[i].manches[j].tpsReel = tps;
 					this->equipages[i].manches[j].tpsCompense = tpsCompense;
@@ -175,9 +172,6 @@ bool FenPrincipale::verif() {
 				if (m.pl > 0) {
 					this->equipages[i].manches[j].tpsReel = m.pl;
 					this->equipages[i].manches[j].tpsCompense = m.pl;
-				}
-				else {
-					this->equipages[i].manches[j].abr = "DNF";
 				}
 			}
 		}
@@ -189,6 +183,16 @@ bool FenPrincipale::verif() {
 			"x"
 		);
 		this->goto_step3();
+		return false;
+	}
+	if (this->nbManches >= this->manchesRetireesMin
+		&& this->manchesRetirees >= this->nbManches) {
+		this->msg(
+			tr("Erreur"),
+			tr("Le nombre de manches à retirer est plus grand que le nombre de manches courues."),
+			"x"
+		);
+		this->goto_step4();
 		return false;
 	}
 	this->progression(5);
@@ -328,7 +332,8 @@ void FenPrincipale::calcul_manches() {
 				// on affiche ces équipages
 				Equipage e = this->equipages[i];
 				Manche m = e.manches[j];
-				QLabel *place = new QLabel(m.abr);
+				QString abr = this->get_abr(m.abr);
+				QLabel *place = new QLabel(abr);
 				table->setCellWidget(nbAffiches, 0, place);
 				QWidget *nomWidget = new QWidget();
 				QVBoxLayout *nomLayout = new QVBoxLayout();
@@ -350,9 +355,9 @@ void FenPrincipale::calcul_manches() {
 				QLabel *pointsi = new QLabel(QString::number(m.points));
 				table->setCellWidget(nbAffiches, 2, pointsi);
 				if (this->typeClmt == CLMT_TEMPS) {
-					QLabel *tpsReel = new QLabel(m.abr);
+					QLabel *tpsReel = new QLabel(abr);
 					table->setCellWidget(nbAffiches, 3, tpsReel);
-					QLabel *tpsCompense = new QLabel(m.abr);
+					QLabel *tpsCompense = new QLabel(abr);
 					table->setCellWidget(nbAffiches, 4, tpsCompense);
 				}
 				// on ajoute l'équipage à la table html
@@ -362,10 +367,10 @@ void FenPrincipale::calcul_manches() {
 						+this->bateaux.value(e.rating.toUpper()).serie
 						+" ("+QString::number(e.coef)+")</span>";
 				}
-				html += "\n\t\t<tr>\n\t\t\t<td>"+m.abr+"</td><td>"+nomString+"</td>"
+				html += "\n\t\t<tr>\n\t\t\t<td>"+abr+"</td><td>"+nomString+"</td>"
 					+"<td>"+QString::number(m.points)+"</td>";
 				if (this->typeClmt == CLMT_TEMPS) {
-					html += "<td>"+m.abr+"</td><td>"+m.abr+"</td>";
+					html += "<td>"+abr+"</td><td>"+abr+"</td>";
 				}
 				html += "\n\t\t</tr>";
 				++nbAffiches;
@@ -516,7 +521,7 @@ void FenPrincipale::calcul_general() {
 				Manche m = e.manches[j];
 				QLabel *la = new QLabel();
 				if (m.tpsCompense < 0) {
-					la->setText(m.abr);
+					la->setText(this->get_abr(m.abr));
 				}
 				else {
 					la->setText(QString::number(m.points));
@@ -649,4 +654,11 @@ QString FenPrincipale::formate_tps(int tps) {
 	if (s < 10) { temps += ":0"+QString::number(s); }
 	else { temps += ":"+QString::number(s); }
 	return temps;
+}
+
+QString FenPrincipale::get_abr(QString text) {
+	if (this->abrs.contains(text.toUpper())) {
+		return text.toUpper();
+	}
+	return "DNF";
 }
