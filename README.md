@@ -15,7 +15,7 @@ Pour plus d'informations, rendez-vous sur [la page du projet](http://calc.derivo
 
 La méthode est sensiblement la même sur tous les systèmes d'exploitation :
 
-1. Téléchargez d'abord Qt si vous ne l'avez pas déjà installé (probablement le paquet « libqt4-dev » sous Ubuntu)
+1. Téléchargez d'abord Qt 5 si vous ne l'avez pas déjà installé
 2. Décompressez les sources sur votre ordinateur et, en mode console, placez vous dans le bon dossier (« cd /[...]/src/ »)
 3. Tapez « qmake », puis « make », et enfin « make clean » : normalement DériVoile calc' devrait se compiler sans erreur
 4. Vous pouvez maintenant ouvrir l'exécutable tout juste compilé : DériVoile calc' est prêt à être utilisé !
@@ -42,7 +42,7 @@ For further information, please visit [the project home page](http://calc.derivo
 
 The procedure is quite the same for all operating systems:
 
-1. First download Qt if it is not already installed
+1. First download Qt 5 if it is not already installed
 2. Unpack the sources on you computer and then, in console mode, go to the correct folder (“cd /[...]/src/”)
 3. Enter « qmake », then « make », and finally « make clean » : DériVoile calc' should compile without error
 4. You can now launch the new executable just compiled : DériVoile calc' is ready for use !
