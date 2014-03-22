@@ -74,10 +74,7 @@ int main(int argc, char* argv[]) {
 		splash.show();
 		qApp->processEvents();
 
-		QSettings preferences(
-			QDir::currentPath() + "/preferences.ini",
-			QSettings::IniFormat
-		);
+		QSettings preferences("DériVoile", "DériVoile calc'");
 
 		QTranslator translator;
 		translator.load(preferences.value("language", "FR").toString(), ":/translations");
