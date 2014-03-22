@@ -2,8 +2,8 @@
 
 ###################    DériVoile calc' - Français    ###################
 
-Version : v7-0
-Date : 2014-03-14
+Version : v7-1
+Date : 2014-03-22
 Licence : dans le fichier « COPYING »
 Site web : http://calc.derivoile.fr
 
@@ -27,8 +27,8 @@ DériVoile calc'. Si ce n'est pas le cas, consultez
 
 ###################    DériVoile calc' - English    ###################
 
-Version : v7-0
-Date : 2014-03-14
+Version : v7-1
+Date : 2014-03-22
 Licence : see file “COPYING”
 Web site : http://calc.derivoile.fr
 
@@ -59,7 +59,7 @@ along with DériVoile calc'. If not, see
 #include "FenRatings.h"
 
 int const FenPrincipale::EXIT_CODE_REBOOT = -123456789;
-QString const FenPrincipale::VERSION = "v7-0";
+QString const FenPrincipale::VERSION = "v7-1";
 
 QString const FenPrincipale::CLMT_TEMPS = "temps";
 QString const FenPrincipale::CLMT_SCRATCH = "scratch";
