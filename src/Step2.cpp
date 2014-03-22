@@ -111,7 +111,7 @@ QList<QString> FenPrincipale::add_bateaux(QJsonArray bateaux, QString type) {
 		QString code = bateau.value("code").toString();
 		if (bateau.value("id").isDouble()) {
 			// les habitables n'ont pas de code mais un ID
-			code = QString::number(bateau.value("id").toDouble());
+			code = "#"+QString::number(bateau.value("id").toDouble());
 		}
 		Bateau bt;
 		bt.type = type;
