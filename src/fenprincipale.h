@@ -127,7 +127,7 @@ class MyLabel : public QLabel {
 template <typename T, typename U>
 class MyMap : public QMap<T,U> {
 	public:
-		MyMap(): QMap() {};
+		MyMap(): QMap<T,U>() {};
 		~MyMap() {};
 		void rm(int nb) {
 			for (int i = nb+1; i < this->count(); ++i) {
@@ -270,7 +270,7 @@ class FenPrincipale : public QMainWindow {
 		void update_nbBateaux();
 		QList<QString> add_bateaux(QJsonArray bateaux, QString type);
 			// Step3.cpp
-		MyMap<int, MyMap<int, TpsWdg>> tpsWdgs;
+		MyMap<int, MyMap<int, TpsWdg> > tpsWdgs;
 		int currentManche;
 		QTimer *rmMancheTimer;
 		void reset_step3();

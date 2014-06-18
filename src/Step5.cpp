@@ -473,7 +473,7 @@ void FenPrincipale::calcul_general() {
 							else if (e2.pointsOrdonnes[l] > e1.pointsOrdonnes[l]) {
 								break;
 							}
-							else if (l = e1.pointsOrdonnes.size()-1) {
+							else if (l == e1.pointsOrdonnes.size()-1) {
 								// égalité parfaite
 								ids.append(k);
 							}
